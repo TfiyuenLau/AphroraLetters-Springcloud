@@ -1,0 +1,57 @@
+/*设置自适应背景图*/
+@media (min-width: 1200px) {
+    /*大型屏幕设备 桌面*/
+    body {
+        background-image: url("../img/CCCP03.jpg");
+        background-position: center 0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+    }
+}
+
+
+@media (min-width: 768px) and (max-width: 992px) {
+    /*小屏幕设备 平板*/
+    body {
+        background-image: url("../img/PhoneBG (3).jpg");
+        background-position: center 0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /*超小屏幕设备 手机*/
+    body {
+        background-image: url("../img/PhoneBG (2).jpg");
+        background-position: center 0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -ms-background-size: cover;
+    }
+}
+
+/*设置正文容器背景*/
+#bg {
+    background: rgba(255, 255, 255, 0.75) no-repeat fixed center 0;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+}

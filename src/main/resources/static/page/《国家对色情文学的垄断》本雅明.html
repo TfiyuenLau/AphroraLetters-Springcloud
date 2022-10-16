@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<!-- 加载thymeleaf模板 -->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Default Title</title>
+
+    <script>
+        function IFrameResize() {
+            //alert(this.document.body.scrollHeight); //弹出当前页面的高度
+            var obj = parent.document.getElementById("childFrame"); //取得父页面IFrame对象
+            //alert(obj.height); //弹出父页面中IFrame中设置的高度
+            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
+        }
+    </script>
+</head>
+
+<body onload="IFrameResize()"><style type="text/css">
+:root {
+    --side-bar-bg-color: #fff;
+    --control-text-color: #777;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: Source Sans Pro, Helvetica Neue, Arial, sans-serif !important;
+    color: #34495e;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6rem;
+    letter-spacing: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+p {
+    /*段落缩进2em*/
+    text-indent:2em;
+}
+
+img {
+    /*设置图片居中显示*/
+    display: block;
+    margin: 0 auto;
+}
+
+#write {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 30px 40px 30px;
+    padding-top: 20px;
+    padding-bottom: 100px;
+}
+
+#write p {
+    /* text-indent: 2rem; */
+    line-height: 1.6rem;
+    word-spacing: .05rem;
+}
+
+#write ol li {
+    padding-left: 0.5rem;
+}
+
+#write > ul:first-child,
+#write > ol:first-child {
+    margin-top: 30px;
+}
+
+body > *:first-child {
+    margin-top: 0 !important;
+}
+
+body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+a {
+    color: #42b983;
+    font-weight: 600;
+    padding: 0px 2px;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+
+h1 tt,
+h1 code {
+    font-size: inherit !important;
+}
+
+h2 tt,
+h2 code {
+    font-size: inherit !important;
+}
+
+h3 tt,
+h3 code {
+    font-size: inherit !important;
+}
+
+h4 tt,
+h4 code {
+    font-size: inherit !important;
+}
+
+h5 tt,
+h5 code {
+    font-size: inherit !important;
+}
+
+h6 tt,
+h6 code {
+    font-size: inherit !important;
+}
+
+h2 a,
+h3 a {
+    color: #34495e;
+}
+
+h3 a:before {
+    content: '#';
+    color: #42b983;
+    position: absolute;;
+    left: -0.7em;
+    margin-top: -0.05em;
+    padding-right: 0.5em;
+    font-size: 1.2em;
+    line-height: 1;
+    font-weight: bold;
+}
+
+h1 {
+    padding-bottom: .4rem;
+    font-size: 2.2rem;
+    line-height: 1.3;
+}
+
+h2 {
+    font-size: 1.75rem;
+    line-height: 1.225;
+    margin: 35px 0px 15px 0px;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ddd;
+}
+
+h3 {
+    font-size: 1.4rem;
+    line-height: 1.43;
+    margin: 20px 0px 7px 0px;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+h5 {
+    font-size: 1rem;
+}
+
+h6 {
+    font-size: 1rem;
+    color: #777;
+}
+
+p,
+blockquote,
+ul,
+ol,
+dl,
+table {
+    margin: 0.8em 0;
+}
+
+li > ol,
+li > ul {
+    margin: 0 0;
+}
+
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+body > h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+body > h1:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+body > h3:first-child,
+body > h4:first-child,
+body > h5:first-child,
+body > h6:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+a:first-child h1,
+a:first-child h2,
+a:first-child h3,
+a:first-child h4,
+a:first-child h5,
+a:first-child h6 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+h1 p,
+h2 p,
+h3 p,
+h4 p,
+h5 p,
+h6 p {
+    margin-top: 0;
+}
+
+li p.first {
+    display: inline-block;
+}
+
+ul,
+ol {
+    padding-left: 30px;
+}
+
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+
+blockquote {
+    border-left: 4px solid #42b983;
+    padding: 10px 0px 10px 15px;
+    color: #777;
+    background-color: rgba(66, 185, 131, .1);
+}
+
+table {
+    padding: 0;
+    word-break: initial;
+}
+
+table tr {
+    border-top: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+
+table tr:nth-child(2n),
+thead {
+    background-color: #fafafa;
+}
+
+table tr th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+
+table tr td {
+    border: 1px solid #dfe2e5;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+
+table tr th:first-child,
+table tr td:first-child {
+    margin-top: 0;
+}
+
+table tr th:last-child,
+table tr td:last-child {
+    margin-bottom: 0;
+}
+
+#write strong {
+    padding: 0px 1px 0 1px;
+}
+
+#write em {
+    padding: 0px 5px 0 2px;
+}
+
+#write table thead th {
+    background-color: #f2f2f2;
+}
+
+#write .CodeMirror-gutters {
+    border-right: none;
+}
+
+#write .md-fences {
+    border: 1px solid #F4F4F4;
+    -webkit-font-smoothing: initial;
+    margin: 0.8rem 0 !important;
+    padding: 0.3rem 0rem !important;
+    line-height: 1.43rem;
+    background-color: #F8F8F8 !important;
+    border-radius: 2px;
+    font-family: Roboto Mono, Source Sans Pro, Monaco, courier, monospace !important;
+    font-size: 0.85rem;
+    word-wrap: normal;
+}
+
+#write .CodeMirror-wrap .CodeMirror-code pre {
+    padding-left: 12px;
+}
+
+#write code, tt {
+    margin: 0 2px;
+    padding: 2px 4px;
+    border-radius: 2px;
+    font-family: Source Sans Pro, Roboto Mono, Monaco, courier, monospace !important;
+    font-size: 0.92rem;
+    color: #e96900;
+    background-color: #f8f8f8;
+}
+
+#write .md-footnote {
+    background-color: #f8f8f8;
+    color: #e96900;
+}
+
+/* heighlight. */
+#write mark {
+    background-color: #EBFFEB;
+    border-radius: 2px;
+    padding: 2px 4px;
+    margin: 0 2px;
+    color: #222;
+    font-weight: 500;
+}
+
+#write del {
+    padding: 1px 2px;
+}
+
+.cm-s-inner .cm-link,
+.cm-s-inner.cm-link {
+    color: #22a2c9;
+}
+
+.cm-s-inner .cm-string {
+    color: #22a2c9;
+}
+
+.md-task-list-item > input {
+    margin-left: -1.3em;
+}
+
+@media screen and (min-width: 914px) {
+    /*body {
+        width: 854px;
+        margin: 0 auto;
+    }*/
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+    background-color: #f8f8f8;
+}
+
+#write pre.md-meta-block {
+    padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block > .code-tooltip {
+    bottom: .375rem;
+}
+
+#write > h3.md-focus:before {
+    left: -1.5625rem;
+    top: .375rem;
+}
+
+#write > h4.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+
+#write > h5.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+
+#write > h6.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+
+.md-image > .md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: inherit;
+}
+
+.md-toc {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#md-notification:before {
+    top: 10px;
+}
+
+/** focus mode */
+
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header,
+.context-menu,
+.megamenu-content,
+footer {
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state {
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #E6F0FE;
+}
+</style>
+<h1>国家对色情文学的垄断</h1>
+<p><strong>〔德〕瓦尔特·本雅明</strong></p>
+<p><em>（1927年12月） 王立秋 译</em></p>
+<pre><code>说明：刊载于1927年12月的《文学世界》（Die literarische Welt）。载《全集第四卷》（Gesammelte Schriften, IV）,
+456-458。罗德尼·李文斯顿（Rodney Livingstone）英译。 译自Walter Benjamin, “A State Monopoly on Pornography”, in Selected
+Writings Volume 2, 1927-1934, trans. Rodney Livingstone, The Belknap Press of Harvard University Press, Cambridge,
+Massachusetts, and London, England 1999. pp.72-74。
+</code></pre>
+<hr />
+<p><img src="../img/walter-benjamin.jpg" alt="walter-benjamin"/></p>
+<p>西班牙很可能有着世界上最美丽的报摊。在巴塞罗那的街道上漫步，你会发现自己自己受到这些被风弄皱的，色彩明丽的结构——舞蹈的面具，下面是信息的年轻的女神，她在表演着她那挑起欲望的舞蹈——的夹道欢迎。几周前当局移除了这个面具上的闪光的饰带。他们禁止贩卖五六种没有用“……”或“——”来处理爱爱的直率的丛书，这两个符号是在文学中被用来再现/表征爱爱的语言的普遍适用的莫尔斯代码。众所周知，这种在对性行为的庙会上脱离莫尔斯代码的解放，被打上了“色情文学”的标签。无论那可能是什么，那些色彩柔和的西班牙杂志与像我们的《一个女帽商的回忆》（Memoirs of a Milliner），《闺房与跑道》（Boudoir and Racetrack），和《她年长的女友》（Her Older Girlfriend）那样的书本没什么差别。关于这些杂志，具有启发性的，是别的什么东西。被禁的作者名录中含有一些受到尊敬的作家的名字，包括像拉蒙·德·拉·塞尔纳[1]那样大名鼎鼎的名字。当然，你总有足够的材料来支持这样一种渴望把它的对象放到道德义愤的怒火中焚烧的评论。在尝试其他种类的事物的时候，让我们在这个对象上稍稍停留片刻。</p>
+<p>在某一点上，色情文学作品与其他作品类似：它们都基于语言和书写。如果语言不在它的词汇表中包含那些本身就淫秽不堪的元素的话，色情文学也就失去了它最好的工具。这些词来自哪里呢？</p>
+<p>在历史发展个阶段上的语言，是一种在实验室中进行的单个的，伟大的实验——有多少人，就有多少个实验室。到处，我们都能通过某种解放性的、暗示性的表达模式看到就那种为立刻、不含糊的沟通交流而作出的努力。（一门语言的说话者认为值得说出来的东西是什么，依赖于他们的表达的机会，以及，通常说来何种话语模式可为他们所用。）对于这个巨大的实验过程来说，伟大的诗歌提供的，是那也许可以被认为是某种公式／配方的东西，而有魔力的语言，则提供了相应的材料。实验的安排处在持续的流动之中，而整个知识的语料库，则持续地被维持在评论之下。一切种类的副产品都是不可避免的。它们包括所有的习语和固定的表达，无论是书面的还是口头的，这些东西在正式／规范的用法之外：昵称，公司名称，骂人的脏话，誓言，祷告的表达，以及淫词秽语。这些表达可能是过度的，是在表达中缺乏的，是神圣的，也可能是一种礼拜语言的发酵，否则，就是过度直率的，无耻的，以及不道德的表达。日常使用的废弃产品，这些同样的要素也在其他语境——首先，在科学的语境中——中获得某种重要的价值，因为在那里，这些令人吃惊的语言碎片，可以被理解为来自语言断层下的原始花岗岩。我们知道这些极端的事物在它们的极张力中是如何精确地吻合。而研究最为有趣的主题之一，将是中世纪修道院语言中的那种污秽的风趣（scatological wit）。 然而，人们可以反对，如果这些词语的生产是如此地基于语言的本性，以至于一切因当地沉溺于交流能量之过度的所有词语，都已经发现自己处在淫秽的边缘的话，那么，禁止把它们写下来（把它们放逐在书写之外）就显得更加重要了。</p>
+<p>恰恰相反。使语言生命中这些自然的——更不要说<strong>世俗的／亵渎的（profane）</strong>——过程社会的责任起到自然力量的作用，正是社会的义务。正如尼亚加拉大瀑布喂养发电站那样，语言向肮脏与粗俗下降的奔流，也应当被用作驱动创造活动置发动机的强有力的能量来源。实际上诗人应当如何生活下去是一个古老且同样羞耻的问题，同时它也是一个至今人们也只能用尴尬的推诿来回答的问题。无论他们是否照顾好自己或者说无论国家是否承担（照料它们的）那项任务，结果都是一样的：他们会饿死。</p>
+<p>出于这个原因，我们要求国家对色情文学的垄断。我们要求这种垄断的社会化不被思虑为权力的来源。国家应当管理这种垄断并应当确保这种文学的文体，是为一个由重要作家组成的精英群体所专有的特权。与一种闲职相反，必须给作家以为当局提供一种对色情文学作品在数据上得到精密计算的，比例特定之要求的许可。过分地压低这种商品的价格既不符合公众的利益也不符合国家的利益。作家必须为满足一种固定的、可论证的需求，以获取现金报酬——这些钱是给他们用来保护自己免遭市场那完全不可见的奇特行为之害的，而折磨作家真正写作的，正是市场——而生产。这项事业要比这样一种情况干净得多，在这种情况下，作家服务于——直接地或间接地，有意识地或无意识地——某个政党或其他的利益集团。作为专家他要比业余者高级，他也将有助于抵消在这个领域中流行的不可容忍的对写作的一知半解（dilettantishness）。而且，他越是从事这种工作，他也就越不会对它加以轻视。他不是一名缝纫工人，而是舒适的新巴别塔中的管道工。</p>
+<p>[1] 拉蒙·德·拉·塞尔纳（Gómez de la Serna, 1891-1963），西班牙作家，其高度联想的诗学断章在欧洲和拉美广为流传。</p>
+<hr />

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- 加载thymeleaf模板 -->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Leftwing-Community首页</title>
+    <link rel="icon" th:href="@{/img/logo.png}" href="../static/img/logo.png" type="image/x-icon">
+
+    <!-- 加载Bootstrap V5，Springboot项目自动扫描resource资源目录 -->
+    <link th:href="@{/bootstrap-5.1.3-dist/css/bootstrap.min.css}"
+          href="../static/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js}"
+            src="../static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js" type="text/javascript"
+            charset="utf-8"></script>
+
+    <!-- 加载index.css -->
+    <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<!-- 顶部导航栏:灰色的水平导航栏在小型屏幕上变为垂直 -->
+<nav class="navbar navbar-expand-lg bg-danger navbar-dark sticky-top">
+
+    <div class="container-fluid">
+        <!-- 设置Logo -->
+        <div class="navbar-brand">
+            LeftwingBlog-Springboot
+        </div>
+
+        <!-- 设置小屏按钮折叠导航栏 -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- 后面的标签向右对齐 -->
+            <div class="me-auto"></div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/home}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/library}">文库</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/error_page}">捐赠</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/error_page}">关于</a>
+                </li>
+            </ul>
+
+            <!-- 搜索功能表单 -->
+            <form class="d-flex" action="#" th:action="@{/article_search}" method="get">
+                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words"
+                       required="required">
+                <input class="" type="hidden" name="page" value="1">
+
+                <button class="btn btn-dark" type="submit">Search</button>
+            </form>
+
+        </div>
+    </div>
+
+</nav>
+
+
+<!-- 网站内容 -->
+<div class="container">
+
+    <!-- 正文:背景透明 -->
+    <div class="mt-3 rounded" id="bg">
+
+        <!-- 第一行 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="container mt-3 rounded">
+                    <!-- Jumbotron -->
+                    <div class="row mt-4 p-5 bg-danger text-white rounded">
+                        <h1>欢迎访问 Leftwing Community ！</h1>
+                        <p>
+                            本文库致力于左翼进步文化的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与经典著作。</p>
+                        <p>注：本项目处于测试阶段，WEB应用的Java后端基于SpringBoot与MyBatisPlus框架进行开发，使用MySql数据库与Alibaba
+                            Druid开源的连接池技术；前端则使用了Bootstrap开源组件，logo与图片素材等均来源于网络。网站仍在测试阶段，未部署域名解析与Https协议；网站积极依照《网络安全法》《网络安全管理条例》相关法律条例进行运营，若存在黄赌毒、政治敏感言论请向网站管理员举报，谢谢配合。</p>
+                    </div>
+
+                    <div class="row mt-3 rounded">
+                        <img class="img-thumbnail img-fluid mx-auto d-block" src="../static/img/封面图.jpg" alt="导师"
+                             th:src="@{/img/封面图2.jpg}">
+                        <p class="h6 text-center text-muted">
+                            图中从左到右依次为——马克思、马赫诺、列宁、毛泽东、阿尔都塞、齐泽克.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二行 -->
+        <div class="row">
+            <div class="container mt-3 rounded">
+                <div class="row">
+
+                    <!-- 正文内容 -->
+                    <div class="col-8 mt-3 ms-3">
+                        <p class="lead" style="text-indent: 2em">
+                            左翼一词一说起源于法国大革命时期：革命家将象征封建制度的、代表落后生产力而阻挠资产阶级民主的皇帝及其保皇派簇拥们称为<strong>右派（或右翼、反动派）</strong>，将显出勃勃生机并羽翼渐丰满的资产阶级革命者称之为<strong>左派（左翼）</strong>。在其百年后的近代，这些词的内涵并未改变，右翼仍代表着统治阶级的<strong>专权与压迫</strong>、<strong>狭隘的民族视角</strong>、对已然<strong>腐化之现状</strong>的捍卫；左翼则以实践争取着底层即多数人的最大利益，探讨与找寻<strong>社会公平的实现方式</strong>，以温和改革或激进革命的方式对暴露弊病的现实进行<strong>否定</strong>。
+                        </p>
+                        <p class="lead" style="text-indent: 2em">
+                            然而，恪守左翼进步主义的知识分子早已不是<strong>资产阶级</strong>与<strong>威权建制派</strong>们。他们或是<strong>享受着资本扩张</strong>的愉悦，以传播<strong>消费主义</strong>与占据<strong>房地产及其附属金融产业（房产抵押贷款）</strong>近乎法西斯式地控制着普罗大众（The
+                            Proletariat）的生产与消费行为；或是<strong>背弃</strong>无产阶级，官商勾结，无视父辈们为劳动者们制定的法律，以已然蜕变为技术官僚统治工具的行政权力<strong>为己谋私利</strong>。左翼的大旗则落到了吸收有马克思主义思想内核、与继承了安那其主义反叛传统的思想流派。
+                        </p>
+                        <p class="lead" style="text-indent: 2em">
+                            事实上，我们都知道，左翼各流派完全不是一团和气的。至少在当今网络环境上，<strong>原初马克思主义、安那其主义、列宁主义、工团主义、马赫诺主义、斯派、托派、毛主义、西马及法兰克福学派、社民、民社</strong>相互“开除左籍”、互扣帽子，这样的<strong>路线之争造成了理论混乱</strong>，“同僚”们在斗争空耗斗志。我们需得在<strong>进步之大旗</strong>下集结，结成统一战线，在哲学理论斗争的相互诘难中共同趋向成熟，在实践斗争中互济互助。
+                        </p>
+                    </div>
+
+                    <!-- 文章推荐 -->
+                    <div class="col-lg-3 displayNone">
+                        <div class="mt-3 rounded">
+                            <div class="list-group text-break" style="width: 320px">
+                                <a href="#"
+                                   class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
+                                <a href="#" class="list-group-item list-group-item-action">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+                                <a href="#" class="list-group-item list-group-item-action">关于自决问题的争论总结
+                                    （1916年7月）</a>
+                                <a href="#"
+                                   class="list-group-item list-group-item-action">评国民党十一中全会和三届二次国民参政会 </a>
+                                <a href="#" class="list-group-item list-group-item-action">台尔曼同志的结束语（共产国际执行委员会第十次全会第二十一次会议，1929年7月19日）</a>
+                                <a href="#"
+                                   class="list-group-item list-group-item-action">巴枯宁“国家制度和无政府状态”一书摘要（1874年）</a>
+                                <a href="#"
+                                   class="list-group-item list-group-item-action">马克思：数学手稿（复旦大学版）</a>
+                                <a href="#" class="list-group-item list-group-item-action">托洛茨基同志的演讲：苏维埃共和国-兄弟联盟！——世界上将有一个属于全人类的苏维埃共和国！（附录音。1919年
+                                    ）</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- 白框底部留白 -->
+        <br>
+        <br>
+        <br>
+    </div>
+    <!-- 底部留白 -->
+    <br>
+    <br>
+    <br>
+
+</div>
+
+<script>
+    //当设备为小型设备时隐藏列表
+    let hid = function () {
+        let array = document.querySelectorAll('.displayNone')
+        for (let a of array) {
+            a.style.display = document.documentElement.clientWidth > 768 ? 'block' : 'none'
+            if (document.documentElement.clientWidth < 768) {
+                a.previousElementSibling.className = "col-12 m-3"
+                a.previousElementSibling.style = "padding-right: 20px;"
+            }
+        }
+    }
+    window.onresize = hid()
+    window.addEventListener("beforeunload", hid())
+
+</script>
+</body>
+
+</html>
