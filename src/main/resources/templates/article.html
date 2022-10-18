@@ -105,6 +105,20 @@
                         </div>
                         <button id="create" type="submit" class="btn btn-danger">提交</button>
                     </form>
+
+                </div>
+
+                <!-- 评论反馈 -->
+                <div th:switch="${token}">
+                    <div class="alert alert-success alert-dismissible fade show" th:case="'true'">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>评论成功！</strong>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible fade show" th:case="'false'">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>评论失败！</strong>请重试
+                    </div>
+                    <div th:case="'null'"></div>
                 </div>
                 <br>
                 <br>
@@ -177,26 +191,6 @@
     }
     window.onresize=hid()
     window.addEventListener("beforeunload", hid())
-
-    //评论反馈
-    // document.querySelector('#create').addEventListener('click',()=>{
-    //
-    //     window.addEventListener("beforeunload",()=>{
-    //
-    //         let e=document.createElement('div')
-    //         e.innerText='评论成功！'
-    //         e.className='success alert alert-success'
-    //         e.style.display='flot-left'
-    //         document.querySelector('#success').appendChild(e)
-    //         setTimeout(()=>{
-    //             document.querySelector('#success').removeChild(document.querySelector('.success'))
-    //         },2002)
-    //
-    //     })
-    //
-    // })
-
-
 
 </script>
 </body>

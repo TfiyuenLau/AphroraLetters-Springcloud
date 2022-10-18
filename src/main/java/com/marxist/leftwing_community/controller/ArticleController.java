@@ -32,7 +32,7 @@ public class ArticleController {
     /**
      * 获取所有文章传递后形成列表
      *
-     * @param page
+     * @param page 文章列表页码
      * @param model
      * @return Template
      */
@@ -61,13 +61,14 @@ public class ArticleController {
     /**
      * 按id获取文章并返回页面
      *
-     * @param id
+     * @param id 文章id
+     * @param token 标识是否发送评论及其是否成功
      * @param model
      * @return Template
      */
     @OperateLog(operateDesc = "查询文章")
     @RequestMapping(value = "/article", method = RequestMethod.GET)
-    public String getArticle(@RequestParam(value = "id", required = false, defaultValue = "1") Long id, Model model) {
+    public String getArticle(@RequestParam(value = "id", defaultValue = "1") Long id, String token, Model model) {
         //获取文章信息
         TblArticleInfo article = articleInfoService.getArticleById(id);
         model.addAttribute("articleTitle", article.getTitle());
@@ -86,15 +87,18 @@ public class ArticleController {
         }
         model.addAttribute("portraitList", portraitList);
 
+        //评论flag
+        model.addAttribute("token", token);
+
         return "article";
     }
 
     /**
      * 在特定文章添加评论
      *
-     * @param articleId
-     * @param email
-     * @param comment
+     * @param articleId 评论的文章Id
+     * @param email 评论者的邮箱
+     * @param comment 评论体
      * @param model
      * @return
      */
@@ -107,18 +111,24 @@ public class ArticleController {
         articleComment.setEmail(email);
         articleComment.setComment(comment);
 
-        //添加至数据库
-        articleCommentService.insertComment(articleComment);
+        //添加至数据库,传送token
+        boolean flag = articleCommentService.insertComment(articleComment);
+        String token;
+        if (flag){
+            token = new String("true");
+        } else {
+            token = new String("false");
+        }
 
         //重定向至文章请求
-        return "redirect:/article?id=" + articleId;
+        return "redirect:/article?id=" + articleId + "&token=" + token;
     }
 
     /**
      * 按字段搜索获取文章并返回页面
      *
-     * @param contentLike
-     * @param page
+     * @param contentLike 搜索的词汇
+     * @param page 页码
      * @param model
      * @return Template
      */

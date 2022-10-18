@@ -26,7 +26,7 @@ public class TblArticleCommentServiceImpl extends ServiceImpl<TblArticleCommentM
     @Override
     public List<TblArticleComment> getComment(Long article_id) {
         QueryWrapper<TblArticleComment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("article_id", article_id);
+        queryWrapper.eq("article_id", article_id).orderByDesc("id");//查询并按id降序排序
 
         return articleCommentMapper.selectList(queryWrapper);
     }
