@@ -1,5 +1,6 @@
 package com.marxist.leftwing_community.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.marxist.leftwing_community.entity.SysLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysLogService extends IService<SysLog> {
 
+    IPage<SysLog> getLogByPage(Long page);
 }

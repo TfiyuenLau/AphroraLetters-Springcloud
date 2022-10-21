@@ -7,6 +7,8 @@ import com.marxist.leftwing_community.domain.MarkdownEntity;
 import com.marxist.leftwing_community.entity.TblArticleComment;
 import com.marxist.leftwing_community.entity.TblArticleInfo;
 import com.marxist.leftwing_community.entity.TblArticlePicture;
+import com.marxist.leftwing_community.entity.User;
+import com.marxist.leftwing_community.service.IUserService;
 import com.marxist.leftwing_community.service.impl.TblArticleCommentServiceImpl;
 import com.marxist.leftwing_community.service.impl.TblArticleInfoServiceImpl;
 import com.marxist.leftwing_community.service.impl.TblArticlePictureServiceImpl;
@@ -32,6 +34,8 @@ class LeftwingCommunityApplicationTests {
     @Autowired
     TblArticleCommentServiceImpl articleCommentService;
 
+    @Autowired
+    IUserService userService;
     @Test
     void contextLoads() {
     }
@@ -122,6 +126,44 @@ class LeftwingCommunityApplicationTests {
         List<TblArticleComment> comments = articleCommentService.getComment(1L);
         for (TblArticleComment comment : comments) {
             System.out.println(comment.getId() + "." + comment.getEmail() + "的评论内容:\n" + comment.getComment());
+        }
+
+    }
+
+    //测试登录功能
+    @Test
+    public void testLogin() {
+        //测试正确的账号密码
+        User user01 = new User();
+        user01.setUserAccount("admin");
+        user01.setPassword("123456");
+
+        User userLogin01 = userService.userLogin(user01);
+        System.err.println(userLogin01);
+
+        //测试错误的账号
+        User user02 = new User();
+        user01.setUserAccount("root");
+        user01.setPassword("password");
+
+        User userLogin02 = userService.userLogin(user02);
+        System.err.println(userLogin02);
+
+        //测试错误的密码
+        User user03 = new User();
+        user01.setUserAccount("admin");
+        user01.setPassword("password");
+
+        User userLogin03 = userService.userLogin(user03);
+        System.err.println(userLogin03);
+    }
+
+    //测试用户分页查询
+    @Test
+    public void testAdminByPage() {
+        IPage<User> listByPage = userService.getUserListByPage(1L);
+        for (User user : listByPage.getRecords()) {
+            System.err.println(user.getUserAccount() + ":" + user.getPassword());
         }
 
     }

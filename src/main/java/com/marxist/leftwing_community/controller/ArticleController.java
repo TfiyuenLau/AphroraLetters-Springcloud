@@ -36,8 +36,8 @@ public class ArticleController {
      * @param model
      * @return Template
      */
-    @RequestMapping("/article_list")
     @OperateLog(operateDesc = "查询文章列表")
+    @RequestMapping("/article_list")
     public String getAllArticleInfo(@RequestParam(value = "page", required = false, defaultValue = "1") Long page, Model model) {
         //分页查询文章列表
         IPage<TblArticleInfo> infoPage = articleInfoService.getArticleByPage(page);

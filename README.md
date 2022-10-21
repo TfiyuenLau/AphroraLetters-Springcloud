@@ -12,7 +12,8 @@
 * 数据库：MySql
 * 数据库框架：MyBatis、MybatisPlus
 * 数据库连接池：Alibaba Druid
-* 前端组件库：Bootstrap
+* 前端组件库：Bootstrap5
+* 后台模板：AdminLTE-3.1.0
 * 页面模板引擎：Thymeleaf
 * MD2HTML工具：FlexMark
 * 接口文档工具：Swagger2
@@ -36,12 +37,14 @@ LeftwingCommunity-Springboot:
 │   │   │               ├───domain  # 部分实体类
 │   │   │               ├───entity  # 实体类
 │   │   │               ├───generator  # 生成器
+│   │   │               ├───interceptor # 拦截器
 │   │   │               ├───service  # Web服务层接口
 │   │   │               │   └───impl  # 实现类
 │   │   │               └───util  #工具类
 │   │   └───resources  # 资源文件
 │   │       ├───mappers  # 存放mybatis映射文件
 │   │       ├───static  # 存放静态资源文件
+│   │       │   ├───adminLTE # adminLTE资源文件
 │   │       │   ├───bootstrap-5.1.3-dist  # bootstrap组件库
 │   │       │   │   ├───css
 │   │       │   │   └───js
@@ -51,6 +54,7 @@ LeftwingCommunity-Springboot:
 │   │       │   ├───md  # 存放markdown资源文件
 │   │       │   └───page  # 存放静态博客页面
 │   │       └───templates  # 存放thymeleaf模板文件
+│   │           └───adminLTE # thymeleaf后台页面
 │   └───test  # 测试类
 │       ├───java
 │       │   └───com
@@ -64,4 +68,4 @@ LeftwingCommunity-Springboot:
 # 延伸阅读
 
 ### [项目部署地址](http://127.0.0.1:8080/home)：http://127.0.0.1:8080/home
-### [项目后台地址](http://127.0.0.1:8080/home)：还没写
+### [项目后台地址](http://127.0.0.1:8080/admin/starter)：http://127.0.0.1:8080/admin/starter

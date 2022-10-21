@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
  * @author @MatikaneSpartakusbund
  * @since 2022-09-21
  */
+@Deprecated
 @Controller
 public class SysLogController {
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author @MatikaneSpartakusbund
@@ -30,6 +30,11 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     @Autowired
     private TblArticleContentServiceImpl articleContentService;
 
+    /**
+     * 获取所有文章信息
+     *
+     * @return
+     */
     @Override
     public List<TblArticleInfo> getAllArticleInfo() {
 
@@ -41,6 +46,12 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
         return articleInfoMapper.selectById(id);
     }
 
+    /**
+     * 按id获取文章标题
+     *
+     * @param id
+     * @return
+     */
     @Override
     public String getArticleTitle(Long id) {
         TblArticleInfo articleInfo = articleInfoMapper.selectById(id);
@@ -50,6 +61,7 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
 
     /**
      * 分页插件，返回分页后的数据
+     *
      * @param page
      * @return IPage
      */
@@ -63,6 +75,7 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
 
     /**
      * 通过content查询返回分页的Info对象集合
+     *
      * @param contentLike
      * @param page
      * @return

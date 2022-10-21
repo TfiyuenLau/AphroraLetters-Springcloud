@@ -6,8 +6,12 @@ src/main/resources/static/img/
 src/main/resources/static/md/*.md
 src/main/resources/static/page/*.html
 
+### 其他非必要资源 ###
+mvnw
+mvnw.cmd
+
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
+!**/src/main/java/**
 !**/src/test/**
 
 ### STS ###

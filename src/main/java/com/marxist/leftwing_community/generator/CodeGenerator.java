@@ -54,7 +54,8 @@ public class CodeGenerator {
         // 策略配置
         StrategyConfig.Builder strategyConfigBuilder = new StrategyConfig.Builder();
         // 设置需要映射的表名
-        strategyConfigBuilder.addInclude("sys_log", "tbl_article_category", "tbl_article_comment", "tbl_article_info", "tbl_article_content", "tbl_article_picture");//字符串数组，可以生成多个表
+//        strategyConfigBuilder.addInclude("sys_log", "tbl_article_category", "tbl_article_comment", "tbl_article_info", "tbl_article_content", "tbl_article_picture");//字符串数组，可以生成多个表
+        strategyConfigBuilder.addInclude("user");//字符串数组，可以生成多个表
 
         // 下划线转驼峰
         strategyConfigBuilder.entityBuilder().naming(NamingStrategy.underline_to_camel);
@@ -66,8 +67,8 @@ public class CodeGenerator {
         strategyConfigBuilder.entityBuilder().enableLombok();
 
         // 逻辑删除
-        strategyConfigBuilder.entityBuilder().logicDeleteColumnName("deleted");
-        strategyConfigBuilder.entityBuilder().logicDeletePropertyName("deleted");
+        strategyConfigBuilder.entityBuilder().logicDeleteColumnName("isEffective");
+        strategyConfigBuilder.entityBuilder().logicDeletePropertyName("isEffective");
 
         // 创建时间
         IFill gmtCreate = new Column("create_time", FieldFill.INSERT);
