@@ -1,17 +1,24 @@
 package com.marxist.leftwing_community.controller;
 
+import com.marxist.leftwing_community.entity.TblArticleInfo;
+import com.marxist.leftwing_community.service.ITblArticleInfoService;
 import com.marxist.leftwing_community.util.OperateLog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 public class IndexController {
+    @Autowired
+    private ITblArticleInfoService articleInfoService;
 
     //访问导航页面
     @OperateLog(operateDesc = "废弃的导航页")
     @RequestMapping("/index")
-    public String index(Model model){
+    public String index(){
 
         return "index";
     }
@@ -19,7 +26,9 @@ public class IndexController {
     //访问首页
     @OperateLog(operateDesc = "访问首页")
     @RequestMapping("/home")
-    public String home() {
+    public String home(Model model) {
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
 
         return "home";
     }
@@ -27,8 +36,9 @@ public class IndexController {
     //error页面
     @OperateLog(operateDesc = "发生错误")
     @RequestMapping("/error_page")
-    public String error(){
-
+    public String error(Model model) {
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
 
         return "error";
     }

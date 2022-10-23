@@ -55,6 +55,10 @@ public class ArticleController {
         List<String> allPictureUrl = articlePictureService.getAllPictureUrl();
         model.addAttribute("allPictureUrl", allPictureUrl);
 
+        //获取推荐文章
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
+
         return "article_list";
     }
 
@@ -89,6 +93,10 @@ public class ArticleController {
 
         //评论flag
         model.addAttribute("token", token);
+
+        //获取推荐文章
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
 
         return "article";
     }
@@ -157,6 +165,10 @@ public class ArticleController {
         //获取相应的图片
         IPage<TblArticlePicture> picturePage = articlePictureService.searchArticlePicByPage(contentLike, page);
         model.addAttribute("pic", picturePage.getRecords());
+
+        //获取推荐文章
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
 
         return "article_search";
     }

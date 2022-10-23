@@ -127,4 +127,16 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
         return articleInfoMapper.deleteById(id);
     }
 
+    /**
+     * 获取推荐文章
+     * @return
+     */
+    @Override
+    public List<TblArticleInfo> getRecommendArticle() {
+        //推荐倒数的8篇文章
+        IPage<TblArticleInfo> infoPage = new Page<>(1, 8);
+
+        return articleInfoMapper.selectPage(infoPage, new QueryWrapper<TblArticleInfo>().orderByDesc("id")).getRecords();
+    }
+
 }

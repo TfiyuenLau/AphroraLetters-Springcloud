@@ -125,13 +125,9 @@
         <!-- 固定在顶部 -->
         <div class="list-group text-break" style="word-break: break-all;position: fixed;width: 310px">
           <a href="#" class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
-          <a href="#" class="list-group-item list-group-item-action">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
-          <a href="#" class="list-group-item list-group-item-action">关于自决问题的争论总结 （1916年7月）</a>
-          <a href="#" class="list-group-item list-group-item-action">评国民党十一中全会和三届二次国民参政会 </a>
-          <a href="#" class="list-group-item list-group-item-action">台尔曼同志的结束语（共产国际执行委员会第十次全会第二十一次会议，1929年7月19日）</a>
-          <a href="#" class="list-group-item list-group-item-action">巴枯宁“国家制度和无政府状态”一书摘要（1874年）</a>
-          <a href="#" class="list-group-item list-group-item-action">马克思：数学手稿（复旦大学版）</a>
-          <a href="#" class="list-group-item list-group-item-action">托洛茨基同志的演讲：苏维埃共和国-兄弟联盟！——世界上将有一个属于全人类的苏维埃共和国！（附录音。1919年 ）</a>
+          <div th:each="recommendArticle, status:${recommendArticles}">
+            <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+          </div>
         </div>
 
       </div>

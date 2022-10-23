@@ -109,6 +109,7 @@ public class AdminController {
     }
 
     //实现文件上传文章
+    @OperateLog(operateDesc = "文章文件上传")
     @RequestMapping(value = "/upload_file", method = RequestMethod.POST)
     @ResponseBody
     public String uploadArticle(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "picture", required = true) MultipartFile picture, @RequestParam() String title, HttpServletRequest request) throws IOException {
@@ -155,6 +156,7 @@ public class AdminController {
     }
 
     //逻辑删除文章
+    @OperateLog(operateDesc = "删除文章")
     @RequestMapping("/del_article")
     public String delArticle(@RequestParam(value = "id") Long id) {
         int flag = articleInfoService.delArticle(id);

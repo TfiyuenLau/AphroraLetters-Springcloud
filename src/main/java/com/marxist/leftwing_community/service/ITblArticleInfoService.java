@@ -29,4 +29,6 @@ public interface ITblArticleInfoService extends IService<TblArticleInfo> {
     int addInfo(TblArticleInfo articleInfo);
 
     int delArticle(Long id);
+
+    List<TblArticleInfo> getRecommendArticle();
 }
