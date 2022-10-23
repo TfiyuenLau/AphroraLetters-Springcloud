@@ -6,19 +6,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.marxist.leftwing_community.domain.MarkdownEntity;
 import com.marxist.leftwing_community.entity.TblArticleContent;
 import com.marxist.leftwing_community.dao.TblArticleContentMapper;
+import com.marxist.leftwing_community.entity.TblArticleInfo;
 import com.marxist.leftwing_community.service.ITblArticleContentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.marxist.leftwing_community.util.MarkDown2HtmlWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.util.Objects;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  * 对文章内容进行操作
  *
@@ -35,6 +37,7 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
 
     /**
      * 将md文本转换为html并保存于本地
+     *
      * @param id
      * @throws IOException
      */
@@ -71,23 +74,34 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         html_content += head;//拼接head标签与js语法
         html_content += html.getHtml();//拼接html
 
-//        String fileName = "article" + content.getArticleId();
-        String fileName = articleInfoService.getArticleTitle(id);//查询文章标题
-        BufferedWriter bw=new BufferedWriter(new FileWriter("src/main/resources/static/page/" + fileName + ".html"));
+        //获取文件名
+        String fileName = articleInfoService.getArticleTitle(id) + ".html";
+        //获取上传文件的地址
+        File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
+        //项目路径绝对mywebproject\target\classes
+        String absolutePath = projectPath.getAbsolutePath();
+        //放入/static/md/目录下
+        String path = absolutePath + "\\static\\page\\";
+        File targetFile = new File(path + fileName);
 
-        //写入文件
+        //写入文件至target
+        BufferedWriter bw = new BufferedWriter(new FileWriter(targetFile));
         bw.write(html_content);
         bw.flush();
         bw.close();
+
+        //复制target文件到/static/page/(仅idea开发时使用)
+        Files.copy(new File(targetFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\page\\" + fileName).toPath());
     }
 
     /**
      * 按字段搜索文章content并返回分页对象
+     *
      * @param contentLike
      * @return QueryWrapper
      */
     @Override
-    public IPage<TblArticleContent> searchContentByPage(String contentLike, Integer page){
+    public IPage<TblArticleContent> searchContentByPage(String contentLike, Integer page) {
         //模糊查询content内容
         QueryWrapper<TblArticleContent> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("content", contentLike);
@@ -97,6 +111,37 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         articleContentMapper.selectPage(contentIPage, queryWrapper);
 
         return contentIPage;
+    }
+
+    /**
+     * 添加内容至数据库
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public Long addContent(File file) throws IOException {
+        //读取获取的文件
+        BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+        StringBuffer content = new StringBuffer();
+        String line;
+        while((line = reader.readLine()) != null) {
+            content.append(line);
+        }
+
+        //添加Content到数据库
+        TblArticleContent articleContent = new TblArticleContent();
+        articleContent.setArticleId(articleContentMapper.selectList(new QueryWrapper<TblArticleContent>().orderByDesc("id")).get(0).getArticleId() + 1);
+        articleContent.setContent(content.toString());
+        articleContentMapper.insert(articleContent);
+
+        //添加Info到数据库
+        TblArticleInfo articleInfo = new TblArticleInfo();
+        articleInfo.setTitle(file.getName().substring(0, file.getName().length()-3));//去除.md后缀
+        articleInfo.setSummary("null");
+        articleInfoService.addInfo(articleInfo);
+
+        return articleContent.getArticleId();
     }
 
 }

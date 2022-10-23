@@ -47,4 +47,7 @@ public class TblArticleInfo implements Serializable {
 
     @ApiModelProperty("修改日期")
     private LocalDateTime modifiedBy;
+
+    @ApiModelProperty("是否有效")
+    private Boolean isEffective;
 }

@@ -25,4 +25,8 @@ public interface ITblArticleInfoService extends IService<TblArticleInfo> {
     public IPage<TblArticleInfo> getArticleByPage(Long page);
 
     IPage<TblArticleInfo> searchArticleInfoByPage(String contentLike, Integer page);
+
+    int addInfo(TblArticleInfo articleInfo);
+
+    int delArticle(Long id);
 }

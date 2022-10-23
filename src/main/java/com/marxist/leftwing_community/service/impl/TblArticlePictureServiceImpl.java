@@ -32,6 +32,7 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
 
     /**
      * 获取所有图片url
+     *
      * @return
      */
     @Override
@@ -48,6 +49,7 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
 
     /**
      * 按文章id查询图片对象返回列表
+     *
      * @param id
      * @return
      */
@@ -62,8 +64,9 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
 
     /**
      * 通过content查询返回分页的Picture对象集合
-     * @param contentLike
-     * @param page
+     *
+     * @param contentLike 搜索字段
+     * @param page 页码
      * @return
      */
     public IPage<TblArticlePicture> searchArticlePicByPage(String contentLike, Integer page) {
@@ -93,6 +96,32 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
         }
 
         return pictureIPage;
+    }
+
+    /**
+     * 添加图片
+     *
+     * @param articlePicture
+     * @return
+     */
+    @Override
+    public int addPic(TblArticlePicture articlePicture) {
+
+        return articlePictureMapper.insert(articlePicture);
+    }
+
+    /**
+     * 通过图片地址添加图片对象
+     *
+     * @param url 图片地址
+     */
+    @Override
+    public void addPicByUrl(String url) {
+        TblArticlePicture articlePicture = new TblArticlePicture();
+        articlePicture.setArticleId(articlePictureMapper.selectList(new QueryWrapper<TblArticlePicture>().orderByDesc("id")).get(0).getArticleId() + 1);
+        articlePicture.setPictureUrl(url);
+
+        addPic(articlePicture);
     }
 
 }

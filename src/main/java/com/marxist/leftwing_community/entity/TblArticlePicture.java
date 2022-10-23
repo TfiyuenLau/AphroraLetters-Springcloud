@@ -40,4 +40,7 @@ public class TblArticlePicture implements Serializable {
 
     @ApiModelProperty("更新时间")
     private LocalDateTime modifiedBy;
+
+    @ApiModelProperty("是否有效")
+    private Boolean isEffective;
 }

@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.marxist.leftwing_community.entity.TblArticleContent;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -20,4 +22,5 @@ public interface ITblArticleContentService extends IService<TblArticleContent> {
 
     public IPage<TblArticleContent> searchContentByPage(String contentLike, Integer page);
 
+    Long addContent(File file) throws IOException;
 }

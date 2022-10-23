@@ -25,6 +25,16 @@
             obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
         }
     </script>
+
+    <script>
+        //删除文章
+        function delArticle(id) {
+            //判断与用户安全提示
+            if (confirm("您确定要删除吗?")) {
+                location.href = '/admin/del_article?id=' + id;
+            }
+        }
+    </script>
 </head>
 <body class="hold-transition sidebar-mini" onload="IFrameResize()">
 <!-- Content Header (Page header) -->
@@ -92,20 +102,32 @@
                             <h3 class="card-title">通过文件上传文章</h3>
                         </div>
                         <div class="container-fluid">
-                            <form action="#">
+                            <form action="#" th:action="@{/admin/upload_file}" method="post" enctype="multipart/form-data">
                                 <div class="mb-3 mt-3">
                                     <label class="form-label">文章标题：</label><br>
                                     <label style="width: 100%">
                                         <input type="text" class="form-control" placeholder="请输入文章标题"
-                                               name="title" required="required">
+                                               name="title">
                                     </label>
                                     <br>
-                                    <label class="form-label">文章文件：</label>
-                                    <label style="width: 100%">
-                                        <input type="file" class="form-control"
-                                               placeholder="请输入博客文章文件(*.md)"
-                                               name="file" required="required">
-                                    </label>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label">文章文件：</label>
+                                            <label style="width: 100%">
+                                                <input type="file" class="form-control"
+                                                       placeholder="请输入博客文章文件(*.md)"
+                                                       name="file" required="required">
+                                            </label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">文章题图：</label>
+                                            <label style="width: 100%">
+                                                <input type="file" class="form-control"
+                                                       placeholder="请输入博客文章题图(.jpg)"
+                                                       name="picture" required="required">
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">提交</button>
@@ -153,7 +175,14 @@
                     <td th:text="${info.getSummary()}">原文原载于《火星报》60号，1904年2月25日</td>
                     <td th:text="${info.getCreateBy()}">2022-09-27 22:42:55</td>
                     <td th:text="${info.getModifiedBy()}">2022-09-28 12:22:42</td>
-                    <td></td>
+                    <td>
+                        <div>
+                            <button type="button" class="btn btn-outline-danger">
+                                <a class="text-danger" href="javascript:delArticle(0)"
+                                   th:href="'javascript:delArticle(' + ${info.getId()} + ')'">删除</a>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

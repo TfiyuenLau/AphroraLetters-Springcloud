@@ -110,4 +110,21 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
         return infoIPage;
     }
 
+    @Override
+    public int addInfo(TblArticleInfo articleInfo) {
+
+        return articleInfoMapper.insert(articleInfo);
+    }
+
+    /**
+     * 逻辑删除文章
+     * @param id 文章id
+     * @return
+     */
+    @Override
+    public int delArticle(Long id) {
+
+        return articleInfoMapper.deleteById(id);
+    }
+
 }

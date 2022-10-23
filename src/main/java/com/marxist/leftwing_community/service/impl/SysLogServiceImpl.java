@@ -37,4 +37,15 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 
         return logPage;
     }
+
+    /**
+     * 按id删除日志
+     * @param id
+     * @return
+     */
+    @Override
+    public int delLog(Long id) {
+
+        return logMapper.deleteById(id);
+    }
 }

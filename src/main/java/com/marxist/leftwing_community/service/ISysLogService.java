@@ -15,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ISysLogService extends IService<SysLog> {
 
     IPage<SysLog> getLogByPage(Long page);
+
+    int delLog(Long id);
 }

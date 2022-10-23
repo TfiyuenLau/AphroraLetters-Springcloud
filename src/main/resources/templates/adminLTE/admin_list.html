@@ -27,71 +27,64 @@
     </script>
 </head>
 <body class="hold-transition sidebar-mini" onload="IFrameResize()">
-<div class="wrapper">
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Admin List</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">admin list</li>
-                        </ol>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">后台管理面板用户列表</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>User Account</th>
-                            <th>User Password</th>
-                            <th>Operation</th>
-                        </tr>
-                        </thead>
-                        <!-- 列表主体内容 -->
-                        <tbody>
-                        <tr th:each="user, status:${userList}">
-                            <td th:text="${user.getUserId()}">First</td>
-                            <td th:text="${user.getUserAccount()}">account</td>
-                            <td th:text="${user.getPassword()}">password</td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>User ID</th>
-                            <th>User Account</th>
-                            <th>User Password</th>
-                            <th>Operation</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Admin List</h1>
             </div>
-            <!-- /.card -->
-        </section>
-        <!-- /.content -->
-    </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">admin list</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-</div>
-<!-- ./wrapper -->
+<!-- Main content -->
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">后台管理面板用户列表</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>User Account</th>
+                    <th>User Password</th>
+                    <th>Operation</th>
+                </tr>
+                </thead>
+                <!-- 列表主体内容 -->
+                <tbody>
+                <tr th:each="user, status:${userList}">
+                    <td th:text="${user.getUserId()}">First</td>
+                    <td th:text="${user.getUserAccount()}">account</td>
+                    <td th:text="${user.getPassword()}">password</td>
+                    <td></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>User ID</th>
+                    <th>User Account</th>
+                    <th>User Password</th>
+                    <th>Operation</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
 
 <!-- jQuery -->
 <script src="../../static/adminLTE/plugins/jquery/jquery.min.js"></script>

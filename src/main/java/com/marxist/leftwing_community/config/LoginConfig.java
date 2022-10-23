@@ -16,6 +16,7 @@ public class LoginConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(@NotNull InterceptorRegistry registry) {
+        /*
         //注册登录拦截器
         InterceptorRegistration registration = registry.addInterceptor(new LoginInterceptor());
 
@@ -25,6 +26,8 @@ public class LoginConfig implements WebMvcConfigurer {
         //添加不拦截路径:登录访问页
         registration.excludePathPatterns("/admin/login_page","/admin/login");
 
+         */
+
     }
 
     /**
@@ -33,12 +36,7 @@ public class LoginConfig implements WebMvcConfigurer {
     @Component
     static
     class WebMvcConfigureAdapter extends WebMvcConfigurerAdapter {
-
-        /**
-         * 配置不拦截static下的静态资源
-         *
-         * @param registry
-         */
+        //不拦截标识为静态资源的请求
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler("/static/**")

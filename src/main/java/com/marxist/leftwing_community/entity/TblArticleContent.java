@@ -39,4 +39,7 @@ public class TblArticleContent implements Serializable {
 
     @ApiModelProperty("更新时间")
     private LocalDateTime modifieldBy;
+
+    @ApiModelProperty("是否有效")
+    private Boolean isEffective;
 }

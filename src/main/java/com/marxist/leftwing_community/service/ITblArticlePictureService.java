@@ -17,4 +17,7 @@ public interface ITblArticlePictureService extends IService<TblArticlePicture> {
     public List<String> getAllPictureUrl();
     public List<TblArticlePicture> getPictureUrl(Long id);
 
+    int addPic(TblArticlePicture articlePicture);
+
+    void addPicByUrl(String url);
 }

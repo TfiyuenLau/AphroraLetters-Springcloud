@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../../static/adminLTE/dist/css/adminlte.min.css">
 
     <script>
+        //父页面适应iframe子页面高度
         function IFrameResize() {
             //alert(this.document.body.scrollHeight); //弹出当前页面的高度
             var obj = parent.document.getElementById("childFrame"); //取得父页面IFrame对象
@@ -26,103 +27,121 @@
             obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
         }
     </script>
+
+    <script>
+        //删除日志记录
+        function delLog(id) {
+            //判断与用户安全提示
+            if (confirm("您确定要删除吗?")) {
+                location.href = '/admin/del_log?id=' + id;
+            }
+        }
+    </script>
 </head>
 <body class="hold-transition sidebar-mini" onload="IFrameResize()">
-<div class="wrapper">
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Log Tables</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Log Tables</li>
-                        </ol>
-                    </div>
-                </div>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Log Tables</h1>
             </div>
-            <!-- /.container-fluid -->
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">访客日志信息表格</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Log ID</th>
-                                        <th>User IP</th>
-                                        <th>Remark</th>
-                                        <th>Operate Param</th>
-                                        <th>Operate URL</th>
-                                        <th>Operate By</th>
-                                        <th>Create By</th>
-                                        <th>Operation</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="log, status:${logList}">
-                                            <td th:text="${log.getId()}">First</td>
-                                            <td th:text="${log.getIp()}">127.0.0.1</td>
-                                            <td th:text="${log.getRemark()}">后台查询</td>
-                                            <td th:text="${log.getOperateParam()}">{"id":"1"}</td>
-                                            <td th:text="${log.getOperateUrl()}">/admin/search</td>
-                                            <td th:text="${log.getOperateBy()}">Internet Explorer 4.0</td>
-                                            <td th:text="${log.getCreateBy()}">2022-10-14 22:48:38</td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Log ID</th>
-                                        <th>User IP</th>
-                                        <th>Remark</th>
-                                        <th>Operate Param</th>
-                                        <th>Operate URL</th>
-                                        <th>Operate By</th>
-                                        <th>Create By</th>
-                                        <th>Operation</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                            <!-- 分页导航栏 -->
-                            <ul class="pagination justify-content-end me-lg-4">
-                                <li class="page-item" th:classappend="${pageCurrent==1}?disabled"><a class="page-link" href="#" th:href="${'/admin/log_table?page=' + (pageCurrent - 1)}">上一页</a></li>
-                                <div th:each="page, status:${pageCount}">
-                                    <li class="page-item" th:classappend="${page==pageCurrent}?active"><a class="page-link text-black" th:text="${page}" th:href="${'/admin/log_table?page=' + page}" href="#">1</a></li>
-                                </div>
-                                <li class="page-item" th:classappend="${pageCurrent==pageCount.get(pageCount.size() - 1)}?disabled"><a class="page-link" href="#" th:href="${'/admin/log_table?page=' + (pageCurrent + 1)}">下一页</a></li>
-                            </ul>
-                            <!-- /.card-body -->
-                        </div>
-
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Log Tables</li>
+                </ol>
             </div>
-            <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        </div>
     </div>
+    <!-- /.container-fluid -->
+</section>
 
-</div>
-<!-- ./wrapper -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">访客日志信息表格</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Log ID</th>
+                                <th>User IP</th>
+                                <th>Remark</th>
+                                <th>Operate Param</th>
+                                <th>Operate URL</th>
+                                <th>Operate By</th>
+                                <th>Create By</th>
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="log, status:${logList}">
+                                <td th:text="${log.getId()}">First</td>
+                                <td th:text="${log.getIp()}">127.0.0.1</td>
+                                <td th:text="${log.getRemark()}">后台查询</td>
+                                <td th:text="${log.getOperateParam()}">{"id":"1"}</td>
+                                <td th:text="${log.getOperateUrl()}">/admin/search</td>
+                                <td th:text="${log.getOperateBy()}">Internet Explorer 4.0</td>
+                                <td th:text="${log.getCreateBy()}">2022-10-14 22:48:38</td>
+                                <td>
+                                    <div>
+                                        <button type="button" class="btn btn-outline-danger">
+                                            <a class="text-danger" href="javascript:delLog(0)"
+                                               th:href="'javascript:delLog(' + ${log.getId()} + ')'">删除</a>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Log ID</th>
+                                <th>User IP</th>
+                                <th>Remark</th>
+                                <th>Operate Param</th>
+                                <th>Operate URL</th>
+                                <th>Operate By</th>
+                                <th>Create By</th>
+                                <th>Operation</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- 分页导航栏 -->
+                    <ul class="pagination justify-content-end me-lg-4">
+                        <li class="page-item" th:classappend="${pageCurrent==1}?disabled">
+                            <a class="page-link" href="#"
+                               th:href="${'/admin/log_table?page=' + (pageCurrent - 1)}">上一页</a>
+                        </li>
+                        <div th:each="page, status:${pageCount}">
+                            <li class="page-item" th:classappend="${page==pageCurrent}?active"><a
+                                    class="page-link text-black" th:text="${page}"
+                                    th:href="${'/admin/log_table?page=' + page}" href="#">1</a></li>
+                        </div>
+                        <li class="page-item"
+                            th:classappend="${pageCurrent==pageCount.get(pageCount.size() - 1)}?disabled"><a
+                                class="page-link" href="#"
+                                th:href="${'/admin/log_table?page=' + (pageCurrent + 1)}">下一页</a></li>
+                    </ul>
+                    <!-- /.card-body -->
+                </div>
+
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
 
 <!-- jQuery -->
 <script src="../../static/adminLTE/plugins/jquery/jquery.min.js"></script>

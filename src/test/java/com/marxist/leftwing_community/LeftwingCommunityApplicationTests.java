@@ -8,6 +8,7 @@ import com.marxist.leftwing_community.entity.TblArticleComment;
 import com.marxist.leftwing_community.entity.TblArticleInfo;
 import com.marxist.leftwing_community.entity.TblArticlePicture;
 import com.marxist.leftwing_community.entity.User;
+import com.marxist.leftwing_community.service.ITblArticleContentService;
 import com.marxist.leftwing_community.service.IUserService;
 import com.marxist.leftwing_community.service.impl.TblArticleCommentServiceImpl;
 import com.marxist.leftwing_community.service.impl.TblArticleInfoServiceImpl;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,6 +26,9 @@ import java.util.List;
 class LeftwingCommunityApplicationTests {
     @Autowired
     private TblArticlePictureServiceImpl articlePictureService;
+
+    @Autowired
+    private ITblArticleContentService articleContentService;
 
     @Autowired
     private TblArticleInfoMapper articleInfoMapper;
@@ -165,6 +170,12 @@ class LeftwingCommunityApplicationTests {
         for (User user : listByPage.getRecords()) {
             System.err.println(user.getUserAccount() + ":" + user.getPassword());
         }
+    }
+
+    //测试转换为html的文件保存
+    @Test
+    public void testHtml() throws IOException {
+        articleContentService.toHtmlArticleContent(11L);
 
     }
 

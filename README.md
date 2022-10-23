@@ -13,7 +13,7 @@
 * 数据库框架：MyBatis、MybatisPlus
 * 数据库连接池：Alibaba Druid
 * 前端组件库：Bootstrap5
-* 后台模板：AdminLTE-3.1.0
+* 后台组件：AdminLTE-3.1.0
 * 页面模板引擎：Thymeleaf
 * MD2HTML工具：FlexMark
 * 接口文档工具：Swagger2
@@ -44,7 +44,9 @@ LeftwingCommunity-Springboot:
 │   │   └───resources  # 资源文件
 │   │       ├───mappers  # 存放mybatis映射文件
 │   │       ├───static  # 存放静态资源文件
-│   │       │   ├───adminLTE # adminLTE资源文件
+│   │       │   ├───adminLTE # adminLTE资源文件(存放AdminLTE-3.1.0-rc/dist与plugins下的资源文件)
+│   │       │   │   ├───dist
+│   │       │   │   └───plugins
 │   │       │   ├───bootstrap-5.1.3-dist  # bootstrap组件库
 │   │       │   │   ├───css
 │   │       │   │   └───js

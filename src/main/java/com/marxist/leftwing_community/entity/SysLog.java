@@ -47,4 +47,7 @@ public class SysLog implements Serializable {
 
     @ApiModelProperty("操作的浏览器")
     private String operateBy;
+
+    @ApiModelProperty("是否有效")
+    private Boolean isEffective;
 }
