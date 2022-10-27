@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -170,6 +167,21 @@ public class AdminController {
     public String toCalendar() {
 
         return "adminLTE/calendar";
+    }
+
+
+    //测试文章，解析得html静态资源上传至服务器
+    @ResponseBody
+    @RequestMapping(value = "/testArticle/{id}", method = RequestMethod.GET)
+    public String testArticle(@PathVariable Long id) throws IOException {
+        //转换为html保存在本地
+        articleContentService.toHtmlArticleContent(id);
+
+        String articleTitle = articleInfoService.getArticleTitle(id);
+        String url = "../static/page/" + articleTitle;
+        url += ".html";
+
+        return url + "测试完成!";
     }
 
 }

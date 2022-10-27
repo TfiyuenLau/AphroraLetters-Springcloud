@@ -16,7 +16,6 @@ public class LoginConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(@NotNull InterceptorRegistry registry) {
-        /*
         //注册登录拦截器
         InterceptorRegistration registration = registry.addInterceptor(new LoginInterceptor());
 
@@ -25,8 +24,6 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/admin/**");
         //添加不拦截路径:登录访问页
         registration.excludePathPatterns("/admin/login_page","/admin/login");
-
-         */
 
     }
 

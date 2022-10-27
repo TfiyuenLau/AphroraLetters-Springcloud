@@ -16,6 +16,7 @@
 * 后台组件：AdminLTE-3.1.0
 * 页面模板引擎：Thymeleaf
 * MD2HTML工具：FlexMark
+* PDF插件：PDF.js
 * 接口文档工具：Swagger2
 
 ### 项目文件结构

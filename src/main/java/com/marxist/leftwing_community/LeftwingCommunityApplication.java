@@ -19,7 +19,8 @@ public class LeftwingCommunityApplication extends SpringBootServletInitializer {
         String property = environment.getProperty("spring.application.name");
         System.out.println("current spring.application.name="+property);
         System.out.println("current server-address=http://localhost:8080/home");
-        System.out.println("current server-test-address=http://localhost:8080/admin/starter?url=home");
+        System.out.println("current server-management-address=http://localhost:8080/admin/starter?url=home");
+        System.out.println("current server-test-address=http://localhost:8080/library");
 //        System.out.println("Swagger2 generate RESTFul API html=http://localhost:8080/swagger-ui.html#/");
     }
 

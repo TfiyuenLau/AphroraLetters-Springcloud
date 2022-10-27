@@ -119,7 +119,7 @@
             <div class="card-body">
               <h4 class="card-title">马尔库塞</h4>
               <p class="card-text">马尔库塞是德裔美籍哲学家和社会理论家，法兰克福学派的一员。他一生在美国从事社会研究与教学工作，被西方誉为“新左派哲学家”。</p>
-              <a href="#" class="btn btn-danger">查看文集列表</a>
+              <a href="#" th:href="@{/marcuse}" class="btn btn-danger">查看文集列表</a>
             </div>
             <img class="img-fluid card-img-bottom rounded" src="../static/img/marcuse.jpg" th:src="@{/img/marcuse.jpg}" alt="Card image">
           </div>
@@ -146,7 +146,7 @@
 </div>
 
 <script>
-  //当设备为小型设备时隐藏列表
+  //当设备为小型设备时修改class
   let hid = function () {
     let array = document.querySelectorAll('.changeColum')
     for (let a of array) {
