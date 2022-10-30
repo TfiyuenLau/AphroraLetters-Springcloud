@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!-- 加载thymeleaf模板 -->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>关于我们</title>
+    <link rel="icon" th:href="@{/img/logo.png}" href="../static/img/logo.png" type="image/x-icon">
+
+    <!-- 加载Bootstrap V5，Springboot项目自动扫描resource资源目录 -->
+    <link th:href="@{/bootstrap-5.1.3-dist/css/bootstrap.min.css}"
+          href="../static/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js}"
+            src="../static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js" type="text/javascript"
+            charset="utf-8"></script>
+
+    <!-- 加载index.css -->
+    <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<!-- 顶部导航栏:灰色的水平导航栏在小型屏幕上变为垂直 -->
+<nav class="navbar navbar-expand-lg bg-danger navbar-dark sticky-top">
+
+    <div class="container-fluid">
+        <!-- 设置Logo -->
+        <div class="navbar-brand">
+            LeftwingBlog-Springboot
+        </div>
+
+        <!-- 设置小屏按钮折叠导航栏 -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- 后面的标签向右对齐 -->
+            <div class="me-auto"></div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/home}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/library}">文库</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/assistance}">支持我们</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/about}">关于</a>
+                </li>
+            </ul>
+
+            <!-- 搜索功能表单 -->
+            <form class="d-flex" action="#" th:action="@{/article_search}" method="get">
+                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words"
+                       required="required">
+                <input class="" type="hidden" name="page" value="1">
+
+                <button class="btn btn-dark" type="submit">Search</button>
+            </form>
+
+        </div>
+    </div>
+
+</nav>
+
+
+<!-- 网站内容 -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-9">
+            <!-- 正文 -->
+            <div class="container mt-lg-3 rounded" id="bg">
+                <br>
+                <p class="h2 text-danger text-center">关 于 我 们</p>
+                <hr class="text-danger">
+
+                <div class="row mt-3 rounded">
+                    <img class="img-thumbnail img-fluid mx-auto d-block" src="../static/img/封面图.jpg" alt="导师"
+                         th:src="@{/img/封面图.jpg}">
+                    <p class="h6 text-center text-muted">
+                        图中从左到右依次为——马克思、马赫诺、列宁、毛泽东、阿尔都塞、齐泽克.</p>
+                </div>
+
+                <!-- 问题集合 -->
+                <div class="mt-3">
+                    <div id="accordion">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+                                    一. Leftwing-Community社区为何开发？由谁开发？
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <p class="lead" style="text-indent: 2em">
+                                        本文库致力于左翼进步文化的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与经典著作。
+                                    </p>
+                                    <p class="lead" style="text-indent: 2em">网站由 <i>@<strong>MatikaneSpartakusbund</strong></i>
+                                        开发并开源至Github，同时感谢 <i>@钟用不钟看</i> 在JavaScript方面提供的部分技术支持。
+                                    </p>
+                                    <p class="lead"><strong>GitHub项目</strong>地址：<a href="#" class="h5 text-danger">点我进入</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+                                    二.投稿的文章应该符合哪些条件？如何投稿文章？
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <p class="lead" style="text-indent: 2em">投稿的作品需得是<strong>泛左翼</strong>(安那其、康米)相关的社会批判或文艺评论等文章，在立场上保持<strong>先进性、开放性、创新性、革命性</strong>。对于哲学类放开标准，允许除分析哲学以外的哲学论稿通过审核。</p>
+                                    <p class="lead" style="text-indent: 2em">为了减少审核的工作量，网站未开放自主上传稿件后审核的模块；若您有一篇合适的著作作品欲向我们投稿，请直接发送稿件与摘要至 <strong>tfiyuenlau@foxmail.com</strong> ，在审核通过后，它将出现在Blog文章与推荐板块。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
+                                    三.社区由谁管理？如何成为管理员？
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                                <div class="card-body">
+                                    <p class="lead" style="text-indent: 2em">网站由特定的管理员通过后台对各个模块进行管理。社区的前台页面所有的游客皆可以访问，而后台管理面板的进入则需要正确的账号与密码，用以操作数据库与网站内容。</p>
+                                    <p class="lead" style="text-indent: 2em">管理员需要进行对投稿的文章进行操作、整理相关文献、管理游客言论等工作，管理网站日常运维。若您对上述工作有兴趣，欢迎联系 <strong>tfiyuenlau@foxmail.com</strong> 。</p>
+                                    <p class="lead"><strong>后台管理面板</strong>地址：<a href="#" class="h5 text-danger">点我进入</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <br>
+                <br>
+                <br>
+            </div>
+            <!-- 底部留白 -->
+            <br>
+            <br>
+            <br>
+
+        </div>
+
+        <!-- 右侧悬浮列表组 -->
+        <div class="col-lg-3">
+            <div class="mt-lg-3 rounded hideList">
+                <!-- 固定在顶部 -->
+                <div class="list-group text-break" style="word-break: break-all;position: fixed;width: 310px">
+                    <a href="#"
+                       class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
+                    <div th:each="recommendArticle, status:${recommendArticles}">
+                        <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}"
+                           class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    //当设备为小型设备时隐藏div
+    let hid = function () {
+        let array = document.querySelectorAll('.hideList')
+        for (let a of array) {
+            a.style.display = document.documentElement.clientWidth > 768 ? 'block' : 'none'
+        }
+    }
+    window.onresize = hid()
+    window.addEventListener("beforeunload", hid())
+</script>
+</body>
+
+</html>

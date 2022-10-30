@@ -55,8 +55,13 @@ LeftwingCommunity-Springboot:
 │   │       │   ├───img  # 存放项目图片资源
 │   │       │   ├───js
 │   │       │   ├───md  # 存放markdown资源文件
-│   │       │   └───page  # 存放静态博客页面
+│   │       │   ├───page  # 存放静态博客页面
+│   │       │   ├───pdf # 存放文库阅读所需的pdf文件
+│   │       │   └───pdfjs # 存放开源插件pdf.js
+│   │       │       ├───bulid
+│   │       │       └───web
 │   │       └───templates  # 存放thymeleaf模板文件
+│   │           ├───library # 存放文库人物索引页面
 │   │           └───adminLTE # thymeleaf后台页面
 │   └───test  # 测试类
 │       ├───java

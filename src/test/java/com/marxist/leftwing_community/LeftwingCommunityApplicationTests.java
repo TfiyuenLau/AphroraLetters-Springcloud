@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.marxist.leftwing_community.dao.TblArticleInfoMapper;
 import com.marxist.leftwing_community.domain.MarkdownEntity;
-import com.marxist.leftwing_community.entity.TblArticleComment;
-import com.marxist.leftwing_community.entity.TblArticleInfo;
-import com.marxist.leftwing_community.entity.TblArticlePicture;
-import com.marxist.leftwing_community.entity.User;
+import com.marxist.leftwing_community.entity.*;
+import com.marxist.leftwing_community.service.IAuthorIndexService;
+import com.marxist.leftwing_community.service.ILibraryAuthorService;
 import com.marxist.leftwing_community.service.ITblArticleContentService;
 import com.marxist.leftwing_community.service.IUserService;
 import com.marxist.leftwing_community.service.impl.TblArticleCommentServiceImpl;
@@ -38,6 +37,12 @@ class LeftwingCommunityApplicationTests {
 
     @Autowired
     TblArticleCommentServiceImpl articleCommentService;
+
+    @Autowired
+    IAuthorIndexService authorIndexService;
+
+    @Autowired
+    ILibraryAuthorService libraryAuthorService;
 
     @Autowired
     IUserService userService;
@@ -172,11 +177,37 @@ class LeftwingCommunityApplicationTests {
         }
     }
 
-    //测试转换为html的文件保存
+    //测试按author_id查询文库作者作品索引
     @Test
-    public void testHtml() throws IOException {
-        articleContentService.toHtmlArticleContent(11L);
+    public void testGetByAuthorId() {
+        List<AuthorIndex> listByAuthorId = authorIndexService.getListByAuthorId(4L);
+        for (AuthorIndex authorIndex : listByAuthorId) {
+            System.out.println(authorIndex.getArticleId() + "." + authorIndex.getTitle() + ":\n" + authorIndex.getPdfUrl());
+        }
+    }
 
+    //测试按author_id查询文库作者作品索引并封装为LibraryAuthor对象
+    @Test
+    public void testGetAuthorByAuthorId() {
+        LibraryAuthor authorById = libraryAuthorService.getAuthorById(4L);
+
+        System.err.println(authorById.getId() + "." + authorById.getCharacterName() + ":" + authorById.getPicUrl());
+        for (AuthorIndex index : authorById.getAuthorIndices()) {
+            System.err.println(index.getArticleId() + ":" + index.getTitle());
+        }
+    }
+
+    //测试多表查询所有文库作者作品索引并封装为LibraryAuthor对象
+    @Test
+    public void testGetAllAuthor() {
+        List<LibraryAuthor> index = libraryAuthorService.getAllAuthorIndex();
+        for (LibraryAuthor libraryAuthor : index) {
+            System.err.println(libraryAuthor.getId() + "." + libraryAuthor.getCharacterName());
+            for (AuthorIndex authorIndex : libraryAuthor.getAuthorIndices()) {
+                System.err.println(authorIndex.getArticleId() + "." + authorIndex.getTitle() + ":\n" + authorIndex.getPdfUrl());
+            }
+
+        }
     }
 
 }

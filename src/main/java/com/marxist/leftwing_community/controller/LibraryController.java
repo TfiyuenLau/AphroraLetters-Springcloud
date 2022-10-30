@@ -1,7 +1,10 @@
 package com.marxist.leftwing_community.controller;
 
+import com.marxist.leftwing_community.entity.LibraryAuthor;
+import com.marxist.leftwing_community.service.ILibraryAuthorService;
 import com.marxist.leftwing_community.util.OperateLog;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,24 +13,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 @Controller
 public class LibraryController {
 
+    @Autowired
+    private ILibraryAuthorService libraryAuthorService;
+
     //访问文库全索引页面
     @OperateLog(operateDesc = "访问文库")
     @RequestMapping("/library")
-    public String toLibrary() {
+    public String toLibrary(Model model) {
+        //查询文库作者
+        List<LibraryAuthor> libraryAuthors = libraryAuthorService.getAllLibraryAuthor();
+        model.addAttribute("libraryAuthors", libraryAuthors);
 
         return "library";
     }
 
-    //访问文库人物索引页面:马尔库塞
+    //访问通用文库人物索引页面
     @OperateLog(operateDesc = "访问马尔库塞文库索引")
-    @RequestMapping("/marcuse")
-    public String toMarcuse() {
+    @RequestMapping("/author_index")
+    public String toAuthorIndex(Long author_id, Model model) {
+        //按id查询封装了AuthorIndex的LibraryAuthor对象
+        LibraryAuthor author = libraryAuthorService.getAuthorById(author_id);
+        model.addAttribute("author", author);
 
-        return "/library/marcuse";
+        return "/author_index";
     }
 
     //访问literature具体文献页

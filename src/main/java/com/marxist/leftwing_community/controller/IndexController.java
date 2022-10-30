@@ -34,6 +34,26 @@ public class IndexController {
         return "home";
     }
 
+    //访问assistance页面
+    @OperateLog(operateDesc = "访问支持我们页面")
+    @RequestMapping("/assistance")
+    public String assistance(Model model) {
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
+
+        return "assistance";
+    }
+
+    //访问about页面
+    @OperateLog(operateDesc = "访问关于")
+    @RequestMapping("/about")
+    public String about(Model model) {
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
+
+        return "about";
+    }
+
     //error页面
     @OperateLog(operateDesc = "发生错误")
     @RequestMapping("/error_page")

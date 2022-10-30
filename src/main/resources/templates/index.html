@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Leftwing-Community</title>
+    <title>Leftwing-Community索引页</title>
     <link rel="icon" th:href="@{/img/logo.png}" href="../static/img/logo.png" type="image/x-icon">
 
     <!-- 加载Bootstrap V5，Springboot项目自动扫描resource资源目录 -->
@@ -16,9 +16,6 @@
     <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js}"
             src="../static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js" type="text/javascript"
             charset="utf-8"></script>
-
-    <!-- 加载index.css -->
-    <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -53,10 +50,10 @@
                     <a class="nav-link" href="#" th:href="@{/library}">文库</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/error_page}">捐赠</a>
+                    <a class="nav-link" href="#" th:href="@{/assistance}">支持我们</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/error_page}">关于</a>
+                    <a class="nav-link" href="#" th:href="@{/about}">关于</a>
                 </li>
             </ul>
 
@@ -73,79 +70,48 @@
 
 </nav>
 
+<!-- 轮播 -->
+<div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-<!-- 网站内容 -->
-<div class="container">
-
-    <div class="row">
-        <div class="col-9">
-            <!-- 正文:背景透明 -->
-            <div class="container mt-3 rounded" id="bg">
-                <div class="row">
-                    <div class="col-4">
-                        <img class="rounded img-thumbnail m-lg-3" src="../static/img/1982古巴.jpg"
-                             th:src="@{/img/1982古巴.jpg}" alt="列宁领导革命">
-                    </div>
-                    <div class="col-8 mt-lg-2">
-                        <h2 class="text-center">瓦尔特·本雅明（1892-1940）</h2>
-
-                        <div style="text-indent:2em;">
-                            <p>1892年7月15日生于柏林，1940年9月27日在西班牙布港逝世。</p>
-                            <p class="text-wrap">
-                                本杰明可能是属于马克思主义传统的最重要的文化理论家，生前并不出名，他的影响是从第二次世界大战开始的时候广泛传播。可是，关于他的著述的确切含义是一直有争论的，有一些人把他看作是超脱凡世以至赋有堪称异才的悲剧性人物，另一些人则把他誉为马克思主义的坚定不移的支持者。</p>
-                            <p>
-                                本杰明的最早作品中贯穿着对神学的深刻的兴趣。从20世纪20年代中期开始，本杰明几乎把全部精力投入对马克思主义对文化的理解问题进行研究。从1925到1933年间，本杰明开始跟布莱希特以及当时其它一些左翼知识分子密切交往。尽管他决定不参加共产党，然而他在1926—1927年之交对莫斯科的访问，确立并加深了他对新苏维埃国家的文化生活的兴趣。这反映在他这个时期写的生动而带有论战性的文章（主要是评论）中。纳粹的上台迫使本杰明离开柏林。他从法兰克福社会研究所那里获得一些研究任务，依靠这项报酬以及其它小额的收入，得以在巴黎重新开始创作。他在研究所的杂志上发表的第一篇理论文章是《法国作家的目前社会状况》。他替研究所完成其它作品，则大都跟他以形象的方式、即所谓“连拱廊式”复合结构的方式来阐述的法国19世纪思想意识形态史有关。其中包括著名的《机械再生产时代的艺术作品》，它阐明了这样一种思想，即“艺术”是不能跟它的技术和社会阶级环境分割开来的。本杰明这篇文章和论爱德华·富克斯一文中对技术（Technik）理论所作的发展，对于了解他所理解的关于思想和文化没有独立的历史这一马克思主义观点，是很关键的。他所写的关于鲍德莱尔的两篇文章，则把他对阶级、技术和文化的理解融为一体，对法西斯主义和一般的反动意识形态进行比较广泛的批判。本杰明在他晚期创作的这些非常杰出的文章中，大量地引用了弗洛伊德和法西斯人类学家路德维希·克拉格斯的著述。</p>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div style="text-indent:2em;">
-                        <p>
-                            在他逝世以后，出现了一股很大的压力要把他从比较明确的马克思主义的和布莱希特的立场（这是他很容易被归并入的）中分离出来。本杰明的一些朋友，例如阿多尔诺和热尔肖姆·肖勒姆，主要利用《德国悲剧的起源》一文中的一些费解的地方，以及主要是他早期创作的未发表的作品的章节，来把他说成是一位犹太神秘哲学家，说他的政治始终从属于一种空想的弥赛亚主义。这种说法很难站住脚。不过，本杰明的最后一篇作品——《哲学史提纲》，确实很难把它解释为具有马克思主义的见解。这篇文章是他在1939年纳粹德国和苏联签订条约后在精神上受到打击的情况下写成，它对参加有组织的政治活动完全抱悲观的态度，把人的智力活动想象成为一种魔术般的回忆，并且把革命看作是在时间上的一种空想主义的停顿。然而，在本杰明的著作中出现的任何矛盾，都不能够排除在其成熟时期的主要著作中所确立的以马克思主义观点对文化进行分析的基本原则。</p>
-                        <p class="text-end">摘自《马克思主义思想辞典·Benjamin, Walter 本杰明, 瓦尔特》</p>
-                    </div>
-                </div>
-<!--                <div class="row rounded">-->
-<!--                    <div style="padding: 10px">-->
-<!--                        <div class="col-lg-10" style="background: url('../static/img/四大导师.jpg');height: 400px;width: 800px;border-radius: 10px">-->
-
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-                <br>
-                <br>
-                <br>
-            </div>
-            <!-- 底部留白 -->
-            <br>
-            <br>
-            <br>
-
-        </div>
-
-        <!-- 右侧悬浮列表组 -->
-        <div class="col-lg-3">
-            <div class="mt-lg-3 rounded">
-                <!-- 固定在顶部 -->
-                <div class="list-group text-break" style="word-break: break-all;position: fixed;width: 310px">
-                    <a href="#" class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
-                    <a href="#" class="list-group-item list-group-item-action">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
-                    <a href="#" class="list-group-item list-group-item-action">关于自决问题的争论总结 （1916年7月）</a>
-                    <a href="#" class="list-group-item list-group-item-action">评国民党十一中全会和三届二次国民参政会 </a>
-                    <a href="#" class="list-group-item list-group-item-action">台尔曼同志的结束语（共产国际执行委员会第十次全会第二十一次会议，1929年7月19日）</a>
-                    <a href="#" class="list-group-item list-group-item-action">巴枯宁“国家制度和无政府状态”一书摘要（1874年）</a>
-                    <a href="#" class="list-group-item list-group-item-action">马克思：数学手稿（复旦大学版）</a>
-                    <a href="#" class="list-group-item list-group-item-action">托洛茨基同志的演讲：苏维埃共和国-兄弟联盟！——世界上将有一个属于全人类的苏维埃共和国！（附录音。1919年 ）</a>
-                </div>
-
-            </div>
-        </div>
-
+    <!-- 指标/点 -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
     </div>
 
+    <!-- 幻灯片/轮播 -->
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="../static/img/CCCP02.jpg" alt="CCCP02" class="d-block w-100">
+            <div class="carousel-caption">
+                <h3>Leftwing Community</h3>
+                <p>为了大胆的疯狂，我们把歌颂唱。</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="../static/img/CCCP04.jpg" alt="CCCP04" class="d-block w-100">
+            <div class="carousel-caption">
+                <h3>Leftwing Community</h3>
+                <p>我们已经通过了！</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="../static/img/CCCP05.jpg" alt="CCCP05" class="d-block w-100">
+            <div class="carousel-caption">
+                <h3>Leftwing Community</h3>
+                <p>他们最后思念着的，是家，还有他们深爱的人民。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 左右控件/图标 -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
 </div>
 
 </body>

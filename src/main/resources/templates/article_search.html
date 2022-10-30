@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>文章列表</title>
+  <title th:text="${'“' + content_like + '”-搜索结果'}">文章列表</title>
   <link rel="icon" th:href="@{/img/logo.png}" href="../static/img/logo.png" type="image/x-icon">
 
   <!-- 加载Bootstrap V5，Springboot项目自动扫描resource资源目录 -->
@@ -52,10 +52,10 @@
           <a class="nav-link" href="#" th:href="@{/library}">文库</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" th:href="@{/error_page}">捐赠</a>
+          <a class="nav-link" href="#" th:href="@{/error_page}">支持我们</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" th:href="@{/error_page}">关于</a>
+          <a class="nav-link" href="#" th:href="@{/about}">关于</a>
         </li>
       </ul>
 
