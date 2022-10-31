@@ -5,7 +5,6 @@ import com.marxist.leftwing_community.service.ILibraryAuthorService;
 import com.marxist.leftwing_community.util.OperateLog;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +46,7 @@ public class LibraryController {
     @RequestMapping("/literature")
     public String literature(String url, Model model) {
 //        String url = "http://127.0.0.1:8080/pdf/DreamLogic实验指导3.1.pdf";
+//        InetAddress address = InetAddress.getLocalHost();
         model.addAttribute("url", url);
 
         return "literature";

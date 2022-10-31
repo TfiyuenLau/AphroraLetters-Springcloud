@@ -61,7 +61,6 @@ LeftwingCommunity-Springboot:
 │   │       │       ├───bulid
 │   │       │       └───web
 │   │       └───templates  # 存放thymeleaf模板文件
-│   │           ├───library # 存放文库人物索引页面
 │   │           └───adminLTE # thymeleaf后台页面
 │   └───test  # 测试类
 │       ├───java
@@ -75,5 +74,5 @@ LeftwingCommunity-Springboot:
 
 # 延伸阅读
 
-### [项目部署地址](http://127.0.0.1:8080/home)：http://127.0.0.1:8080/home
-### [项目后台地址](http://127.0.0.1:8080/admin/starter)：http://127.0.0.1:8080/admin/starter
+### 项目地址：[点我进入](http://127.0.0.1:8080/home)
+### 后台地址：[点我进入](http://127.0.0.1:8080/admin/starter)

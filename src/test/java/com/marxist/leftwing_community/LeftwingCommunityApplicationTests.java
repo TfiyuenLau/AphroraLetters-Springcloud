@@ -210,4 +210,26 @@ class LeftwingCommunityApplicationTests {
         }
     }
 
+    //测试查询封装了LibraryAuthor对象的authorIndex对象
+    @Test
+    public void testGetAllIndex() {
+        List<AuthorIndex> allAuthorIndex = authorIndexService.getAllAuthorIndex();
+        for (AuthorIndex authorIndex : allAuthorIndex) {
+            System.err.println(authorIndex.getArticleId() + "." + authorIndex.getTitle() + "：\nPDF地址:" + authorIndex.getPdfUrl() +
+                    "\t其所属的作者是 " + authorIndex.getLibraryAuthor().getCharacterName());
+        }
+
+    }
+
+    //测试分页查询封装了LibraryAuthor对象的authorIndex对象
+    @Test
+    public void testGetAllIndexByPage() {
+        IPage<AuthorIndex> allAuthorIndex = authorIndexService.getAllAuthorIndexByPage(1L);
+        for (AuthorIndex authorIndex : allAuthorIndex.getRecords()) {
+            System.err.println(authorIndex.getArticleId() + "." + authorIndex.getTitle() + "：\nPDF地址:" + authorIndex.getPdfUrl() +
+                    "\t其所属的作者是 " + authorIndex.getLibraryAuthor().getCharacterName());
+        }
+
+    }
+
 }

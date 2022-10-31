@@ -24,7 +24,7 @@ public interface LibraryAuthorMapper extends BaseMapper<LibraryAuthor> {
      *
      * @return 返回封装了AuthorIndex集合的LibraryAuthor对象集合
      */
-    @Select("SELECT * FROM library_author")
+    @Select("SELECT * FROM library_author WHERE is_effective = 1")//启用逻辑查询
     @Results({
             @Result(id = true,property = "id",column = "id"),
             @Result(property = "characterName",column = "character_name"),
@@ -56,5 +56,14 @@ public interface LibraryAuthorMapper extends BaseMapper<LibraryAuthor> {
                     many = @Many(select = "com.marxist.leftwing_community.dao.AuthorIndexMapper.getByAuthorId"))
     })
     LibraryAuthor getIndexByArticleId(@Param(value = "id") Long id);
+
+    /**
+     * 根据author_id查询author
+     *
+     * @param authorId
+     * @return
+     */
+    @Select("SELECT * FROM library_author WHERE id = #{author_id}")
+    LibraryAuthor getAuthorByAuthorId(@Param("author_id") Long authorId);
 
 }

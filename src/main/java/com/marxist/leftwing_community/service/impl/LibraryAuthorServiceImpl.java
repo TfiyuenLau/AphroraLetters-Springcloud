@@ -1,5 +1,6 @@
 package com.marxist.leftwing_community.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.marxist.leftwing_community.entity.LibraryAuthor;
 import com.marxist.leftwing_community.dao.LibraryAuthorMapper;
 import com.marxist.leftwing_community.service.ILibraryAuthorService;
@@ -11,7 +12,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author @MatikaneSpartakusbund
@@ -35,6 +36,7 @@ public class LibraryAuthorServiceImpl extends ServiceImpl<LibraryAuthorMapper, L
 
     /**
      * 通过id获取一个封装后的LibraryAuthor对象
+     *
      * @param id 主键，与AuthorIndex外键相等
      * @return 返回一个封装了AuthorIndex集合的LibraryAuthor对象
      */
@@ -45,13 +47,35 @@ public class LibraryAuthorServiceImpl extends ServiceImpl<LibraryAuthorMapper, L
     }
 
     /**
-     *
      * @return 返回LibraryAuthor集合
      */
     @Override
     public List<LibraryAuthor> getAllLibraryAuthor() {
 
         return libraryAuthorMapper.selectList(null);
+    }
+
+    /**
+     * 通过characterName查询一个LibraryAuthor对象
+     * @param characterName 作者名
+     * @return LibraryAuthor对象
+     */
+    @Override
+    public LibraryAuthor getAuthorByCharacterName(String characterName) {
+
+        return libraryAuthorMapper.selectOne(new QueryWrapper<LibraryAuthor>().eq("character_name", characterName));
+    }
+
+    /**
+     * 增加一个对象至数据库
+     *
+     * @param libraryAuthor 作者对象
+     * @return 1为成功
+     */
+    @Override
+    public int addLibraryAuthor(LibraryAuthor libraryAuthor) {
+
+        return libraryAuthorMapper.insert(libraryAuthor);
     }
 
 }

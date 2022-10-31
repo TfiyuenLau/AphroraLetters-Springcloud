@@ -20,4 +20,8 @@ public interface ILibraryAuthorService extends IService<LibraryAuthor> {
     LibraryAuthor getAuthorById(Long id);
 
     List<LibraryAuthor> getAllLibraryAuthor();
+
+    LibraryAuthor getAuthorByCharacterName(String characterName);
+
+    int addLibraryAuthor(LibraryAuthor libraryAuthor);
 }

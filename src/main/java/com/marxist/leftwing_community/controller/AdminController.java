@@ -1,9 +1,7 @@
 package com.marxist.leftwing_community.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.marxist.leftwing_community.entity.SysLog;
-import com.marxist.leftwing_community.entity.TblArticleInfo;
-import com.marxist.leftwing_community.entity.User;
+import com.marxist.leftwing_community.entity.*;
 import com.marxist.leftwing_community.service.*;
 import com.marxist.leftwing_community.util.OperateLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -37,6 +38,36 @@ public class AdminController {
 
     @Autowired
     private ITblArticlePictureService articlePictureService;
+
+    @Autowired
+    private ILibraryAuthorService libraryAuthorService;
+
+    @Autowired
+    private IAuthorIndexService authorIndexService;
+
+    /**
+     * 表单登录
+     * @param user 账户对象
+     * @param session Session对象
+     * @return 重定向
+     */
+    @OperateLog(operateDesc = "登录请求")
+    @RequestMapping(value = "/login", produces = "text/html;charset=UTF-8")
+    public String userLogin(User user, HttpSession session) {
+        System.err.println("表单发送的请求用户:\n账号:" + user.getUserAccount() + "\n密码:" + user.getPassword());
+        User account = userService.userLogin(user);
+        if (account!=null) {
+            session.setAttribute("adminName", account.getUserAccount());
+            String url = "home";
+
+            return "redirect:/admin/starter?url=" + url;
+        } else {
+            boolean flag = true;//登录反馈
+
+            return "redirect:/admin/login_page?flag=" + flag;
+        }
+
+    }
 
     //iframe跳转至管理面板的默认页面
     @OperateLog(operateDesc = "进入默认管理面板")
@@ -116,7 +147,7 @@ public class AdminController {
         String absolutePath = projectPath.getAbsolutePath();
         //文章文件放入/static/md/目录下
         String pathContent = absolutePath + "\\static\\md\\";
-        //图片文件放入/static/md/目录下
+        //图片文件放入/static/img/目录下
         String picContent = absolutePath + "\\static\\img\\";
 
         //不存在则创建文件夹
@@ -138,8 +169,12 @@ public class AdminController {
         }
 
         //复制target文件到/static/md&img/(仅idea开发时使用)
-        Files.copy(new File(targetContentFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\md\\" + file.getOriginalFilename()).toPath());
-        Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picture.getOriginalFilename()).toPath());
+        try {
+            Files.copy(new File(targetContentFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\md\\" + file.getOriginalFilename()).toPath());
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picture.getOriginalFilename()).toPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //将文件内容添加至数据库
         Long articleId = articleContentService.addContent(targetContentFile);
@@ -149,7 +184,7 @@ public class AdminController {
         //将数据库内容转换为html保存
         articleContentService.toHtmlArticleContent(articleId);
 
-        return "<h1 align='center'>文件上传成功,已放置于 " + targetContentFile.getAbsolutePath() + " !</h1>";
+        return "<h1 align='center'>文件上传成功,已放置于 " + targetContentFile.getAbsolutePath() + " !</h1>" + "<script>setTimeout(function(){window.history.go(-1);},3000);</script>";
     }
 
     //逻辑删除文章
@@ -161,6 +196,116 @@ public class AdminController {
         return "redirect:/admin/article_list";
     }
 
+    //进入文库管理页
+    @OperateLog(operateDesc = "进入文库管理页面")
+    @RequestMapping("/library_operation")
+    public String getLibraryOperation(@RequestParam("page") Long page, Model model) {
+        //文库文章列分页表
+//        List<AuthorIndex> authorIndices = authorIndexService.getAllAuthorIndex();
+        IPage<AuthorIndex> allAuthorIndexByPage = authorIndexService.getAllAuthorIndexByPage(page);
+        List<AuthorIndex> authorIndices = allAuthorIndexByPage.getRecords();
+        model.addAttribute("authorIndices", authorIndices);
+
+        //底部分页导航栏
+        ArrayList<Integer> pageCount = new ArrayList<>((int) allAuthorIndexByPage.getPages());//初始化集合
+        for (int i = 1; i <= allAuthorIndexByPage.getPages(); i++) {
+            pageCount.add(i);
+        }
+        model.addAttribute("pageCount", pageCount);//全部页码列表
+        model.addAttribute("pageCurrent", allAuthorIndexByPage.getCurrent());//当前页码
+
+        //为选择框传输内容
+        List<LibraryAuthor> libraryAuthors = libraryAuthorService.getAllLibraryAuthor();
+        model.addAttribute("libraryAuthors", libraryAuthors);
+
+        return "adminLTE/library_operation";
+    }
+
+    //添加人物至文库
+    @RequestMapping(value = "/add_library_author", method = RequestMethod.POST)
+    @ResponseBody
+    public String addLibraryAuthor(@RequestParam(value = "pic_file") MultipartFile picFile, LibraryAuthor libraryAuthor, Model model) throws IOException {
+        //设置头像路径
+        libraryAuthor.setPicUrl("img/" + picFile.getOriginalFilename());
+
+        //获取上传文件的地址
+        File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
+        //项目路径绝对mywebproject\target\classes
+        String absolutePath = projectPath.getAbsolutePath();
+        //图片文件放入/static/img/目录下
+        String picContent = absolutePath + "\\static\\img\\";
+        //不存在则创建文件夹
+        File targetPicFile = new File(picContent, Objects.requireNonNull(picFile.getOriginalFilename()));
+        if (!targetPicFile.exists()) {
+            targetPicFile.mkdirs();
+        }
+
+        //保存文件至target并上传至数据库
+        try {
+            picFile.transferTo(targetPicFile);
+            libraryAuthorService.addLibraryAuthor(libraryAuthor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //复制target文件到/static/img/(仅idea开发时使用)
+        try {
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picFile.getOriginalFilename()).toPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "<h1 align='center'>传入的作者名是：" + libraryAuthor.getCharacterName() + ",其简介为：\n" + libraryAuthor.getIntroduction() + "\n作者肖像路径为：" + libraryAuthor.getPicUrl() + "</h1><script>setTimeout(function(){window.history.go(-1);},3000);</script>";
+    }
+
+    //添加文章至数据库
+    @RequestMapping(value = "/add_author_index", method = RequestMethod.POST)
+    @ResponseBody
+    public String addAuthorIndex(AuthorIndex authorIndex, @RequestParam("pdf_file") MultipartFile pdfFile, @RequestParam(value = "character_name") String characterName, Model model) throws IOException {
+        //初始化authorId的值
+        LibraryAuthor author = libraryAuthorService.getAuthorByCharacterName(characterName);
+        authorIndex.setAuthorId(author.getId());
+        //初始化pdfUrl的值
+        authorIndex.setPdfUrl("/literature?url=" + "http://127.0.0.1:8080/" + "pdf/" + pdfFile.getOriginalFilename());
+
+        //获取上传文件的地址
+        File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
+        //项目路径绝对mywebproject\target\classes
+        String absolutePath = projectPath.getAbsolutePath();
+        //图片文件放入/static/img/目录下
+        String picContent = absolutePath + "\\static\\pdf\\";
+        //不存在则创建文件夹
+        File targetPicFile = new File(picContent, Objects.requireNonNull(pdfFile.getOriginalFilename()));
+        if (!targetPicFile.exists()) {
+            targetPicFile.mkdirs();
+        }
+
+        //保存文件至target并上传至数据库
+        try {
+            pdfFile.transferTo(targetPicFile);
+            authorIndexService.addAuthorIndex(authorIndex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //复制target文件到/static/pdf/(仅idea开发时使用)
+        try {
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdf\\" + pdfFile.getOriginalFilename()).toPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "<h1 align='center'>传入成功!\n文章为：" + authorIndex.getTitle() + "</h1><script>setTimeout(function(){window.history.go(-1);},5000);</script>";
+    }
+
+    //逻辑删除按article_id文章
+    @RequestMapping("/del_article_index")
+    public String deleteArticleIndex(@RequestParam("article_id") Long articleId) {
+        authorIndexService.deleteAuthorIndex(articleId);
+
+        return "redirect:/admin/library_operation";
+    }
+
     //访问日历
     @OperateLog(operateDesc = "访问日历")
     @RequestMapping(value = "/calendar")
@@ -168,7 +313,6 @@ public class AdminController {
 
         return "adminLTE/calendar";
     }
-
 
     //测试文章，解析得html静态资源上传至服务器
     @ResponseBody
@@ -181,7 +325,7 @@ public class AdminController {
         String url = "../static/page/" + articleTitle;
         url += ".html";
 
-        return url + "测试完成!";
+        return "<h1 align='center'>" + url + "测试成功!</h1>";
     }
 
 }

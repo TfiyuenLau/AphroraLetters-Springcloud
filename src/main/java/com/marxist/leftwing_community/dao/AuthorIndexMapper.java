@@ -1,5 +1,6 @@
 package com.marxist.leftwing_community.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.marxist.leftwing_community.entity.AuthorIndex;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.marxist.leftwing_community.entity.LibraryAuthor;
@@ -18,6 +19,42 @@ import java.util.List;
  */
 @Component
 public interface AuthorIndexMapper extends BaseMapper<AuthorIndex> {
+
+    /**
+     * 查询所有封装了LibraryAuthor对象的authorIndex对象
+     *
+     * @return
+     */
+    @Select("SELECT * FROM author_index WHERE is_effective = 1")//启用逻辑查询
+    @Results({
+            @Result(property = "articleId", column = "article_id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "pdfUrl", column = "pdf_url"),
+            @Result(property = "authorId", column = "author_id"),
+            @Result(property = "libraryAuthor",
+                    column = "author_id",
+                    javaType = LibraryAuthor.class,
+                    many = @Many(select = "com.marxist.leftwing_community.dao.LibraryAuthorMapper.getAuthorByAuthorId")),
+    })
+    List<AuthorIndex> getAllAuthorIndex();
+
+    /**
+     * 分页查询：查询所有封装了LibraryAuthor对象的authorIndex对象
+     *
+     * @return
+     */
+    @Select("SELECT * FROM author_index WHERE is_effective = 1")//启用逻辑查询
+    @Results({
+            @Result(property = "articleId", column = "article_id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "pdfUrl", column = "pdf_url"),
+            @Result(property = "authorId", column = "author_id"),
+            @Result(property = "libraryAuthor",
+                    column = "author_id",
+                    javaType = LibraryAuthor.class,
+                    many = @Many(select = "com.marxist.leftwing_community.dao.LibraryAuthorMapper.getAuthorByAuthorId")),
+    })
+    IPage<AuthorIndex> getAllAuthorIndexByPage(IPage<AuthorIndex> page);
 
     /**
      * 根据author_id查询所有索引作者对象
