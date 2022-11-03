@@ -66,7 +66,59 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="col-8">
+                <div class="col-5">
+                    <div class="card shadow mt-3">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title">通过文件上传文章</h3>
+                        </div>
+                        <div class="container-fluid">
+                            <form action="#" th:action="@{/admin/upload_article_file}" method="post"
+                                  enctype="multipart/form-data">
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label">文章标题：</label><br>
+                                    <label style="width: 100%">
+                                        <input type="text" class="form-control" placeholder="请输入文章标题"
+                                               name="title" required="required">
+                                    </label>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label">文章文件：(*.md)</label>
+                                            <label style="width: 100%">
+                                                <input type="file" class="form-control"
+                                                       placeholder="请输入博客文章文件(*.md)"
+                                                       name="file" required="required">
+                                            </label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">文章题图：(*.jpg)</label>
+                                            <label style="width: 100%">
+                                                <input type="file" class="form-control"
+                                                       placeholder="请输入博客文章题图(.jpg)"
+                                                       name="picture" required="required">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <label class="form-label">文章简介：</label><br>
+                                    <label style="width: 100%">
+                                            <textarea type="text" class="form-control" rows="5"
+                                                      placeholder="请输入文章摘要"
+                                                      name="summary" required="required"></textarea>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        上传博客？请选择上传<strong>Markdown格式文件</strong>或符合<strong>Markdown语法的内容</strong>
+                    </div>
+                </div>
+
+                <div class="col-7">
                     <div class="card shadow mt-3">
                         <div class="card-header bg-primary">
                             <h3 class="card-title">输入内容上传文章（未启用）</h3>
@@ -82,62 +134,23 @@
                                     <br>
                                     <label class="form-label">文章内容：</label>
                                     <label style="width: 100%">
-                                                <textarea class="form-control" rows="5" id="comment"
+                                                <textarea class="form-control" rows="7" id="comment"
                                                           placeholder="请输入文章内容"
                                                           name="text" required="required"></textarea>
                                     </label>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">提交</button>
-                            </form>
-                            <br>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-4">
-                    <div class="card shadow mt-3">
-                        <div class="card-header bg-primary">
-                            <h3 class="card-title">通过文件上传文章</h3>
-                        </div>
-                        <div class="container-fluid">
-                            <form action="#" th:action="@{/admin/upload_file}" method="post" enctype="multipart/form-data">
-                                <div class="mb-3 mt-3">
-                                    <label class="form-label">文章标题：</label><br>
+                                    <label class="form-label">文章简介：</label><br>
                                     <label style="width: 100%">
-                                        <input type="text" class="form-control" placeholder="请输入文章标题"
-                                               name="title">
+                                            <textarea type="text" class="form-control" rows="3"
+                                                      placeholder="请输入文章标题"
+                                                      name="summary"></textarea>
                                     </label>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="form-label">文章文件：</label>
-                                            <label style="width: 100%">
-                                                <input type="file" class="form-control"
-                                                       placeholder="请输入博客文章文件(*.md)"
-                                                       name="file" required="required">
-                                            </label>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label">文章题图：</label>
-                                            <label style="width: 100%">
-                                                <input type="file" class="form-control"
-                                                       placeholder="请输入博客文章题图(.jpg)"
-                                                       name="picture" required="required">
-                                            </label>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">提交</button>
                             </form>
                             <br>
-                        </div>
-                    </div>
 
-                    <div class="alert alert-info">
-                        上传博客？请选择上传<strong>Markdown格式文件</strong>或符合<strong>Markdown语法的内容</strong>
+                        </div>
                     </div>
                 </div>
 

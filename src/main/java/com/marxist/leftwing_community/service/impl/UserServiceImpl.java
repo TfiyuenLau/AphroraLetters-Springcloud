@@ -1,6 +1,7 @@
 package com.marxist.leftwing_community.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.marxist.leftwing_community.entity.User;
@@ -57,6 +58,45 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         IPage<User> iPage = new Page<>(page, 10);
 
         return userMapper.selectPage(iPage, null);
+    }
+
+    /**
+     * 向数据库添加一个管理员
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public int addAdmin(User user) {
+
+        return userMapper.insert(user);
+    }
+
+    /**
+     * 按user_id删除一个管理员
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public int delAdmin(Long userId) {
+
+        return userMapper.deleteById(userId);
+    }
+
+    /**
+     * 更新管理员密码
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public int updateAdminPassword(User user) {
+        //创建updateWrapper对象，实现条件修改数据
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("user_id", user.getUserId()).set("password", user.getPassword());
+
+        return userMapper.update(user, updateWrapper);
     }
 
 }

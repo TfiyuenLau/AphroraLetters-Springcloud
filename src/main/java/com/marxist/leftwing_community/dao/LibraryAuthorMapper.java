@@ -59,6 +59,7 @@ public interface LibraryAuthorMapper extends BaseMapper<LibraryAuthor> {
 
     /**
      * 根据author_id查询author
+     * (辅助getAllAuthorIndexByPage查询封装对象)
      *
      * @param authorId
      * @return

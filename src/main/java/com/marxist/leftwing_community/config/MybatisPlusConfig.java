@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 //配置类
 @Configuration
 @MapperScan("com.marxist.leftwing_community.dao")
-public class BlogConfig {
+public class MybatisPlusConfig {
 
     /**
      * MybatisPlus插件集合

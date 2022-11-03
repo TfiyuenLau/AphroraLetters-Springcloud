@@ -18,7 +18,7 @@
 @media (min-width: 768px) and (max-width: 992px) {
     /*小屏幕设备 平板*/
     body {
-        background-image: url("../img/PhoneBG (3).jpg");
+        background-image: url("../img/CCCP03.jpg");
         background-position: center 0;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -34,7 +34,7 @@
 @media (max-width: 768px) {
     /*超小屏幕设备 手机*/
     body {
-        background-image: url("../img/PhoneBG (2).jpg");
+        background-image: url("../img/20221030141215.jpg");
         background-position: center 0;
         background-repeat: no-repeat;
         background-attachment: fixed;

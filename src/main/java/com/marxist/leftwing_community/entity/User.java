@@ -34,4 +34,7 @@ public class User implements Serializable {
 
     @ApiModelProperty("密码")
     private String password;
+
+    @ApiModelProperty("是否有效")
+    private Boolean isEffective;
 }

@@ -11,12 +11,11 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +53,7 @@ public class AdminController {
     @OperateLog(operateDesc = "登录请求")
     @RequestMapping(value = "/login", produces = "text/html;charset=UTF-8")
     public String userLogin(User user, HttpSession session) {
-        System.err.println("表单发送的请求用户:\n账号:" + user.getUserAccount() + "\n密码:" + user.getPassword());
+//        System.err.println("表单发送的请求用户:\n账号:" + user.getUserAccount() + "\n密码:" + user.getPassword());
         User account = userService.userLogin(user);
         if (account!=null) {
             session.setAttribute("adminName", account.getUserAccount());
@@ -85,6 +84,33 @@ public class AdminController {
         model.addAttribute("userList", userList.getRecords());
 
         return "adminLTE/admin_list";
+    }
+
+    //添加账户至数据库
+    @OperateLog(operateDesc = "添加管理员")
+    @RequestMapping(value = "/add_admin", method = RequestMethod.POST)
+    public String addAdmin(User user) {
+        userService.addAdmin(user);
+
+        return "redirect:/admin/admin_list";
+    }
+
+    //逻辑删除管理员
+    @OperateLog(operateDesc = "删除管理员")
+    @RequestMapping("/del_admin")
+    public String delAdmin(@RequestParam("user_id") Long userId) {
+        userService.delAdmin(userId);
+
+        return "redirect:/adminLTE/admin_list";
+    }
+
+    //更新管理员密码
+    @RequestMapping(value = "/update_admin_password", method = RequestMethod.POST)
+    public String updateAdminPassword(User user) {
+        System.err.println(user.getUserId() + "." + user.getPassword());
+        userService.updateAdminPassword(user);
+
+        return "redirect:/admin/admin_list";
     }
 
     //iframe跳转至日志表单
@@ -138,9 +164,9 @@ public class AdminController {
 
     //实现文件上传文章
     @OperateLog(operateDesc = "文章文件上传")
-    @RequestMapping(value = "/upload_file", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload_article_file", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadArticle(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "picture", required = true) MultipartFile picture, @RequestParam() String title, HttpServletRequest request) throws IOException {
+    public String uploadArticle(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "picture", required = true) MultipartFile picture, @RequestParam() String title, String summary) throws IOException {
         //获取上传文件的地址
         File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
         //项目路径绝对mywebproject\target\classes
@@ -170,14 +196,14 @@ public class AdminController {
 
         //复制target文件到/static/md&img/(仅idea开发时使用)
         try {
-            Files.copy(new File(targetContentFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\md\\" + file.getOriginalFilename()).toPath());
-            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picture.getOriginalFilename()).toPath());
+            Files.copy(new File(targetContentFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\md\\" + file.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picture.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         //将文件内容添加至数据库
-        Long articleId = articleContentService.addContent(targetContentFile);
+        Long articleId = articleContentService.addContentByFile(targetContentFile, summary);
         //将图片地址添加至数据库
         articlePictureService.addPicByUrl("img/" + picture.getOriginalFilename());
 
@@ -222,6 +248,7 @@ public class AdminController {
     }
 
     //添加人物至文库
+    @OperateLog(operateDesc = "添加人物至文库")
     @RequestMapping(value = "/add_library_author", method = RequestMethod.POST)
     @ResponseBody
     public String addLibraryAuthor(@RequestParam(value = "pic_file") MultipartFile picFile, LibraryAuthor libraryAuthor, Model model) throws IOException {
@@ -250,7 +277,7 @@ public class AdminController {
 
         //复制target文件到/static/img/(仅idea开发时使用)
         try {
-            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picFile.getOriginalFilename()).toPath());
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picFile.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -259,6 +286,7 @@ public class AdminController {
     }
 
     //添加文章至数据库
+    @OperateLog(operateDesc = "添加文库文章至数据库")
     @RequestMapping(value = "/add_author_index", method = RequestMethod.POST)
     @ResponseBody
     public String addAuthorIndex(AuthorIndex authorIndex, @RequestParam("pdf_file") MultipartFile pdfFile, @RequestParam(value = "character_name") String characterName, Model model) throws IOException {
@@ -290,7 +318,7 @@ public class AdminController {
 
         //复制target文件到/static/pdf/(仅idea开发时使用)
         try {
-            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdf\\" + pdfFile.getOriginalFilename()).toPath());
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdf\\" + pdfFile.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -299,6 +327,7 @@ public class AdminController {
     }
 
     //逻辑删除按article_id文章
+    @OperateLog(operateDesc = "删除文库文章")
     @RequestMapping("/del_article_index")
     public String deleteArticleIndex(@RequestParam("article_id") Long articleId) {
         authorIndexService.deleteAuthorIndex(articleId);
@@ -315,6 +344,7 @@ public class AdminController {
     }
 
     //测试文章，解析得html静态资源上传至服务器
+    @OperateLog(operateDesc = "测试博客文章生成html")
     @ResponseBody
     @RequestMapping(value = "/testArticle/{id}", method = RequestMethod.GET)
     public String testArticle(@PathVariable Long id) throws IOException {

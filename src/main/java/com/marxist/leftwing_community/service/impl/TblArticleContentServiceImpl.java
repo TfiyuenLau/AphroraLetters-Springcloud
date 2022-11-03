@@ -16,6 +16,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 
@@ -92,7 +93,7 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         bw.close();
 
         //复制target文件到/static/page/(仅idea开发时使用)
-        Files.copy(new File(targetFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\page\\" + fileName).toPath());
+        Files.copy(new File(targetFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\page\\" + fileName).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
     }
 
     /**
@@ -116,33 +117,37 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
 
     /**
      * 添加内容至数据库
+     *
      * @param file
+     * @param summary
      * @return
      * @throws IOException
      */
     @Override
-    public Long addContent(File file) throws IOException {
+    public Long addContentByFile(File file, String summary) throws IOException {
         //读取获取的文件
         BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
-        StringBuffer content = new StringBuffer();
+        StringBuilder content = new StringBuilder();
         String line;
-        while((line = reader.readLine()) != null) {
-            content.append(line);
+        while ((line = reader.readLine()) != null) {
+            content.append(line).append('\n');
         }
 
         //添加Content到数据库
         TblArticleContent articleContent = new TblArticleContent();
-        articleContent.setArticleId(articleContentMapper.selectList(new QueryWrapper<TblArticleContent>().orderByDesc("id")).get(0).getArticleId() + 1);
+        //设置Id为上一个id+1
+        articleContent.setId(articleContentMapper.selectList(new QueryWrapper<TblArticleContent>().orderByDesc("id")).get(0).getId() + 1);
+        articleContent.setArticleId(articleContent.getId());//设置与id相等
         articleContent.setContent(content.toString());
         articleContentMapper.insert(articleContent);
 
         //添加Info到数据库
         TblArticleInfo articleInfo = new TblArticleInfo();
-        articleInfo.setTitle(file.getName().substring(0, file.getName().length()-3));//去除.md后缀
-        articleInfo.setSummary("null");
+        articleInfo.setTitle(file.getName().substring(0, file.getName().length() - 3));//去除.md后缀
+        articleInfo.setSummary(summary);
         articleInfoService.addInfo(articleInfo);
 
-        return articleContent.getArticleId();
+        return articleContent.getId();
     }
 
 }
