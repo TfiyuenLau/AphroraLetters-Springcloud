@@ -13,10 +13,10 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class RequestLimitInterceptor implements HandlerInterceptor {
+public class CommentLimitInterceptor implements HandlerInterceptor {
 
     /**
-     * 拦截器：限制ip对应的用户的单位时间最大访问次数
+     * 拦截器：限制ip对应的用户的单位时间最评论次数
      *
      * @param httpServletRequest
      * @param httpServletResponse
@@ -27,13 +27,12 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
     public boolean preHandle(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull Object object) throws IOException {
 
         try {
-            int limit_count = 25;//最大访问次数
+            int limit_count = 2;//最大评论次数
             int limit_time = 60 * 1000;//访问限制的单位时间（1min）
 
             String ip = RequestUtil.getRemoteIp(httpServletRequest);
             String url = httpServletRequest.getRequestURL().toString();
-//            String key = "req_limit_".concat(url).concat(ip);
-            String key = "req_limit_".concat(ip);//不检查访问的url是否一致
+            String key = "comment_limit_".concat(ip);
 
             String cache = (String) CacheUtil.get(key);
             if (null == cache) {
@@ -46,7 +45,7 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
 
                 if (count > limit_count) {
                     log.error("用户IP[{}], 访问地址[{}], 超过了限定的次数[{}]", ip, url, limit_count);
-                    throw new Exception("当前ip单位时间访问请求次数超过限制!");
+                    throw new Exception("当前ip单位时间评论次数超过限制!");
                 }
 
                 value = (count + 1) + "_" + s[1];
@@ -59,13 +58,11 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             //跳转至警告页面
             httpServletResponse.setContentType("text/html; charset=utf-8");
-            httpServletResponse.getWriter().write("<h3 align='center'>访问次数异常！请稍后再试...</h3><script>setTimeout(function(){window.history.go(-1);},5000);</script>");
+            httpServletResponse.getWriter().write("<h3 align='center'>评论次数异常！请一分钟后再试...</h3><script>setTimeout(function(){window.history.go(-1);},5000);</script>");
 
-            return false;//拦截请求
+            return false;
         }
 
-        return true;//放行
+        return true;
     }
-
 }
-

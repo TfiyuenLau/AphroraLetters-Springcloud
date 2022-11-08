@@ -25,7 +25,7 @@ public class CorsConfig {
     CorsFilter corsFilter() {
         //1.添加CORS配置信息
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://7debd8db.cpolar.top"));
+        configuration.setAllowedOrigins(Collections.singletonList("http://8.130.39.9:8080/"));
         configuration.setAllowedOrigins(Collections.singletonList("*"));//允许的域,写*时cookie可能无法使用了
         configuration.setAllowedMethods(Collections.singletonList("*"));//允许的请求方式
         configuration.setAllowedHeaders(Collections.singletonList("*"));//允许的头信息

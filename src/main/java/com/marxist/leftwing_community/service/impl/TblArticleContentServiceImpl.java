@@ -82,9 +82,9 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
         //项目路径绝对mywebproject\target\classes
         String absolutePath = projectPath.getAbsolutePath();
-        //放入/static/md/目录下
-        String path = absolutePath + "\\static\\page\\";
-        File targetFile = new File(path + fileName);
+        //放入/static/page/目录下
+        String path = absolutePath + "/static/page/";
+        File targetFile = new File(path, fileName);
 
         //写入文件至target
         BufferedWriter bw = new BufferedWriter(new FileWriter(targetFile));
@@ -93,7 +93,7 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         bw.close();
 
         //复制target文件到/static/page/(仅idea开发时使用)
-        Files.copy(new File(targetFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\page\\" + fileName).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+        //Files.copy(new File(targetFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\page\\" + fileName).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
     }
 
     /**

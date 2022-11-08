@@ -74,5 +74,5 @@ LeftwingCommunity-Springboot:
 
 # 延伸阅读
 
-### 项目地址：[点我进入](http://127.0.0.1:8080/home)
-### 后台地址：[点我进入](http://127.0.0.1:8080/admin/starter)
+### 项目地址：[点我进入](http://8.130.39.9:8080/home)
+### 后台地址：[点我进入](http://8.130.39.9:8080/admin/starter)

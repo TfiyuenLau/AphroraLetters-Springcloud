@@ -23,22 +23,6 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/admin/**");
         //添加不拦截路径:登录访问页
         registration.excludePathPatterns("/admin/login_page","/admin/login");
-
-    }
-
-    /**
-     * 配置静态访问资源
-     */
-    @Component
-    static
-    class WebMvcConfigureAdapter extends WebMvcConfigurerAdapter {
-        //不拦截标识为静态资源的请求
-        @Override
-        public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/static/**")
-                    .addResourceLocations("classpath:/static/");
-            super.addResourceHandlers(registry);
-        }
     }
 
 }

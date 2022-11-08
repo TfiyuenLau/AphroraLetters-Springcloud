@@ -105,6 +105,7 @@ public class AdminController {
     }
 
     //更新管理员密码
+    @OperateLog(operateDesc = "修改管理员密码")
     @RequestMapping(value = "/update_admin_password", method = RequestMethod.POST)
     public String updateAdminPassword(User user) {
         System.err.println(user.getUserId() + "." + user.getPassword());
@@ -172,16 +173,16 @@ public class AdminController {
         //项目路径绝对mywebproject\target\classes
         String absolutePath = projectPath.getAbsolutePath();
         //文章文件放入/static/md/目录下
-        String pathContent = absolutePath + "\\static\\md\\";
+        String pathContent = absolutePath + "/static/md/";
         //图片文件放入/static/img/目录下
-        String picContent = absolutePath + "\\static\\img\\";
+        String pathPic = absolutePath + "/static/img/";
 
-        //不存在则创建文件夹
+        //不存在则创建文件
         File targetContentFile = new File(pathContent, Objects.requireNonNull(file.getOriginalFilename()));
         if (!targetContentFile.exists()) {
             targetContentFile.mkdirs();
         }
-        File targetPicFile = new File(picContent, Objects.requireNonNull(picture.getOriginalFilename()));
+        File targetPicFile = new File(pathPic, Objects.requireNonNull(picture.getOriginalFilename()));
         if (!targetPicFile.exists()) {
             targetPicFile.mkdirs();
         }
@@ -195,6 +196,7 @@ public class AdminController {
         }
 
         //复制target文件到/static/md&img/(仅idea开发时使用)
+        /*
         try {
             Files.copy(new File(targetContentFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\md\\" + file.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
             Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picture.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
@@ -202,13 +204,20 @@ public class AdminController {
             e.printStackTrace();
         }
 
-        //将文件内容添加至数据库
-        Long articleId = articleContentService.addContentByFile(targetContentFile, summary);
-        //将图片地址添加至数据库
-        articlePictureService.addPicByUrl("img/" + picture.getOriginalFilename());
+         */
 
-        //将数据库内容转换为html保存
-        articleContentService.toHtmlArticleContent(articleId);
+        try {
+            //将文件内容添加至数据库
+            Long articleId = articleContentService.addContentByFile(targetContentFile, summary);
+            //将图片地址添加至数据库
+            articlePictureService.addPicByUrl("img/" + picture.getOriginalFilename());
+
+            //将数据库内容转换为html保存
+            articleContentService.toHtmlArticleContent(articleId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "上传失败" + e.toString();
+        }
 
         return "<h1 align='center'>文件上传成功,已放置于 " + targetContentFile.getAbsolutePath() + " !</h1>" + "<script>setTimeout(function(){window.history.go(-1);},3000);</script>";
     }
@@ -260,9 +269,9 @@ public class AdminController {
         //项目路径绝对mywebproject\target\classes
         String absolutePath = projectPath.getAbsolutePath();
         //图片文件放入/static/img/目录下
-        String picContent = absolutePath + "\\static\\img\\";
-        //不存在则创建文件夹
-        File targetPicFile = new File(picContent, Objects.requireNonNull(picFile.getOriginalFilename()));
+        String pathPic = absolutePath + "/static/img/";
+        //不存在则创建文件
+        File targetPicFile = new File(pathPic, Objects.requireNonNull(picFile.getOriginalFilename()));
         if (!targetPicFile.exists()) {
             targetPicFile.mkdirs();
         }
@@ -275,12 +284,15 @@ public class AdminController {
             e.printStackTrace();
         }
 
+        /*
         //复制target文件到/static/img/(仅idea开发时使用)
         try {
             Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\" + picFile.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+         */
 
         return "<h1 align='center'>传入的作者名是：" + libraryAuthor.getCharacterName() + ",其简介为：\n" + libraryAuthor.getIntroduction() + "\n作者肖像路径为：" + libraryAuthor.getPicUrl() + "</h1><script>setTimeout(function(){window.history.go(-1);},3000);</script>";
     }
@@ -300,10 +312,10 @@ public class AdminController {
         File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
         //项目路径绝对mywebproject\target\classes
         String absolutePath = projectPath.getAbsolutePath();
-        //图片文件放入/static/img/目录下
-        String picContent = absolutePath + "\\static\\pdf\\";
-        //不存在则创建文件夹
-        File targetPicFile = new File(picContent, Objects.requireNonNull(pdfFile.getOriginalFilename()));
+        //图片文件放入/static/pdf/目录下
+        String pathPdf = absolutePath + "/static/pdf/";
+        //不存在则创建文件
+        File targetPicFile = new File(pathPdf, Objects.requireNonNull(pdfFile.getOriginalFilename()));
         if (!targetPicFile.exists()) {
             targetPicFile.mkdirs();
         }
@@ -316,12 +328,15 @@ public class AdminController {
             e.printStackTrace();
         }
 
+        /*
         //复制target文件到/static/pdf/(仅idea开发时使用)
         try {
             Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(), new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static\\pdf\\" + pdfFile.getOriginalFilename()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+         */
 
         return "<h1 align='center'>传入成功!\n文章为：" + authorIndex.getTitle() + "</h1><script>setTimeout(function(){window.history.go(-1);},5000);</script>";
     }

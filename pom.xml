@@ -211,7 +211,7 @@
             </plugin>
         </plugins>
 
-        <finalName>Leftwing-Blog</finalName>
+        <finalName>LeftwingCommunity-Springboot</finalName>
     </build>
 
 </project>
