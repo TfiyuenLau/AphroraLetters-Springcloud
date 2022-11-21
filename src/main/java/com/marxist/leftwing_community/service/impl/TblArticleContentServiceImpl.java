@@ -3,7 +3,8 @@ package com.marxist.leftwing_community.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.marxist.leftwing_community.domain.MarkdownEntity;
+import com.marxist.leftwing_community.dao.TblArticleCategoryMapper;
+import com.marxist.leftwing_community.entity.MarkdownEntity;
 import com.marxist.leftwing_community.entity.TblArticleContent;
 import com.marxist.leftwing_community.dao.TblArticleContentMapper;
 import com.marxist.leftwing_community.entity.TblArticleInfo;
@@ -15,10 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -36,6 +33,9 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
 
     @Autowired
     private TblArticleInfoServiceImpl articleInfoService;
+
+    @Autowired
+    private TblArticleCategoryMapper articleCategoryMapper;
 
     /**
      * 将md文本转换为html并保存于本地
@@ -97,22 +97,22 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
     }
 
     /**
-     * 按字段搜索文章content并返回分页对象
+     * 按字段搜索文章content并返回列表对象
      *
      * @param contentLike
      * @return QueryWrapper
      */
     @Override
-    public IPage<TblArticleContent> searchContentByPage(String contentLike, Integer page) {
+    public IPage<TblArticleContent> searchContent(String contentLike, Integer page) {
         //模糊查询content内容
         QueryWrapper<TblArticleContent> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("content", contentLike);
 
         //分页查询
-        IPage<TblArticleContent> contentIPage = new Page<>(page, 10);
-        articleContentMapper.selectPage(contentIPage, queryWrapper);
+        Page<TblArticleContent> articleContentPage = new Page<>(page, 10);
+        articleContentMapper.selectPage(articleContentPage, queryWrapper);
 
-        return contentIPage;
+        return articleContentPage;
     }
 
     /**
@@ -148,6 +148,18 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         articleInfoService.addInfo(articleInfo);
 
         return articleContent.getId();
+    }
+
+    /**
+     * 逻辑删除内容
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public int delContent(Long id) {
+
+        return articleContentMapper.deleteById(id);
     }
 
 }

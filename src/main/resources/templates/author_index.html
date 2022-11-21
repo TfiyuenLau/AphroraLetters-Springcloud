@@ -101,9 +101,8 @@
                         <div class="card-body">
                             <p class="btn btn-danger">文集列表</p>
                             <div th:each="authorIndex, status:${author.getAuthorIndices()}">
-                                <a href="#"
-                                   th:href="${authorIndex.getPdfUrl()}"
-                                   style="text-decoration-line: none;"><p class="lead text-danger" th:text="${authorIndex.getTitle()}">
+                                <a href="#" th:href="${authorIndex.getPdfUrl()}"
+                                   style="text-decoration-line: none;" target="_blank"><p class="lead text-danger" th:text="${authorIndex.getTitle()}">
                                     【马尔库塞文集第二卷】走向社会批判理论.pdf</p></a>
                             </div>
                         </div>

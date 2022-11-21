@@ -18,7 +18,9 @@ import java.io.IOException;
 public interface ITblArticleContentService extends IService<TblArticleContent> {
     public void toHtmlArticleContent(Long id) throws IOException;
 
-    public IPage<TblArticleContent> searchContentByPage(String contentLike, Integer page);
+    public IPage<TblArticleContent> searchContent(String contentLike, Integer page);
 
     Long addContentByFile(File file, String summary) throws IOException;
+
+    int delContent(Long id);
 }

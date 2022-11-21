@@ -22,13 +22,15 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         HttpSession session = request.getSession();
+        String loginStatus = (String) session.getAttribute("login_status");//获取是否登录
         String adminName = (String)session.getAttribute("adminName");//获取储存的session
-        if(adminName==null){
+        if(loginStatus==null || adminName==null){
             //System.err.println("请先登陆!");
             response.sendRedirect(request.getContextPath() + "/admin/login_page");
 
             return false;
         }
+
         return true;
     }
 

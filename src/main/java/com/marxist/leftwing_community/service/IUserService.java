@@ -18,9 +18,11 @@ public interface IUserService extends IService<User> {
 
     IPage<User> getUserListByPage(Long page);
 
+    User getUserById(Long id);
+
     int addAdmin(User user);
 
     int delAdmin(Long userId);
 
-    int updateAdminPassword(User user);
+    int updateAdminPassword(User user, String oldPassword);
 }

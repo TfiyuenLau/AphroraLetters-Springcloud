@@ -61,6 +61,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     /**
+     * 通过id获取用户
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public User getUserById(Long id) {
+
+        return userMapper.selectById(id);
+    }
+
+    /**
      * 向数据库添加一个管理员
      *
      * @param user
@@ -91,12 +103,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return
      */
     @Override
-    public int updateAdminPassword(User user) {
-        //创建updateWrapper对象，实现条件修改数据
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("user_id", user.getUserId()).set("password", user.getPassword());
+    public int updateAdminPassword(User user, String oldPassword) {
+        //判断旧密码是否正确
+        User trueUser = userMapper.selectById(user.getUserId());
+        if (trueUser.getPassword().equals(oldPassword)) {
+            //创建updateWrapper对象，实现条件修改数据
+            UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("user_id", user.getUserId()).set("password", user.getPassword());
 
-        return userMapper.update(user, updateWrapper);
+            return userMapper.update(user, updateWrapper);
+        }
+
+        return -1;//旧密码错误
     }
 
 }

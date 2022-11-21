@@ -1,12 +1,8 @@
 package com.marxist.leftwing_community.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.marxist.leftwing_community.entity.TblArticleComment;
-import com.marxist.leftwing_community.entity.TblArticleInfo;
-import com.marxist.leftwing_community.entity.TblArticlePicture;
-import com.marxist.leftwing_community.service.impl.TblArticleCommentServiceImpl;
-import com.marxist.leftwing_community.service.impl.TblArticleInfoServiceImpl;
-import com.marxist.leftwing_community.service.impl.TblArticlePictureServiceImpl;
+import com.marxist.leftwing_community.entity.*;
+import com.marxist.leftwing_community.service.impl.*;
 import com.marxist.leftwing_community.util.OperateLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +23,13 @@ public class ArticleController {
     private TblArticlePictureServiceImpl articlePictureService;
 
     @Autowired
+    private TblArticleContentServiceImpl articleContentService;
+
+    @Autowired
     private TblArticleCommentServiceImpl articleCommentService;
+
+    @Autowired
+    private TblArticleCategoryServiceImpl articleCategoryService;
 
     /**
      * 获取所有文章传递后形成列表
@@ -41,7 +43,12 @@ public class ArticleController {
     public String getAllArticleInfo(@RequestParam(value = "page", required = false, defaultValue = "1") Long page, Model model) {
         //分页查询文章列表
         IPage<TblArticleInfo> infoPage = articleInfoService.getArticleByPage(page);
-        model.addAttribute("aPageArticleInfo", infoPage.getRecords());
+        List<TblArticleInfo> infoPageRecords = infoPage.getRecords();
+        //依次获取文章的标签列表并封装
+        for (TblArticleInfo infoPageRecord : infoPageRecords) {
+            infoPageRecord.setCategoryList(articleCategoryService.getCategoriesByArticleId(infoPageRecord.getId()));
+        }
+        model.addAttribute("aPageArticleInfo", infoPageRecords);
 
         //底部分页导航栏
         ArrayList<Integer> pageCount = new ArrayList<>((int) infoPage.getPages());//初始化集合
@@ -73,11 +80,13 @@ public class ArticleController {
     @OperateLog(operateDesc = "查询文章")
     @RequestMapping(value = "/article", method = RequestMethod.GET)
     public String getArticle(@RequestParam(value = "id", defaultValue = "1") Long id, String token, Model model) {
-        //获取文章信息
+        //获取文章部分信息
         TblArticleInfo article = articleInfoService.getArticleById(id);
+        List<TblArticleCategory> categories = articleCategoryService.getCategoriesByArticleId(id);//获取文章标签
         model.addAttribute("articleTitle", article.getTitle());
         model.addAttribute("url", article.getTitle() + ".html");
         model.addAttribute("article_id", id);
+        model.addAttribute("categories", categories);
 
         //获取文章评论对象集合
         List<TblArticleComment> articleComments = articleCommentService.getComment(id);
@@ -143,8 +152,11 @@ public class ArticleController {
     @OperateLog(operateDesc = "搜索文章")
     @RequestMapping(value = "/article_search", method = RequestMethod.GET)
     public String searchArticle(@RequestParam(value = "content_like", required = false) String contentLike, @RequestParam(value = "page", required = false) Integer page, Model model) {
+        //调用方法分页查询content
+        IPage<TblArticleContent> contentIPage = articleContentService.searchContent(contentLike, page);
+
         //获取分页后的检索内容
-        IPage<TblArticleInfo> infoPage = articleInfoService.searchArticleInfoByPage(contentLike, page);
+        IPage<TblArticleInfo> infoPage = articleInfoService.searchArticleInfoByPage(contentIPage, page);
         model.addAttribute("aInfoPage", infoPage.getRecords());
         model.addAttribute("content_like", contentLike);
 
@@ -154,8 +166,8 @@ public class ArticleController {
             pageCount = new ArrayList<>();
             pageCount.add(1L);
         } else {//非零则按长度初始化集合
-            pageCount = new ArrayList<>((int) infoPage.getPages());
-            for (long i = 1L; i <= infoPage.getPages(); i++) {
+            pageCount = new ArrayList<>((int) contentIPage.getPages());
+            for (long i = 1L; i <= contentIPage.getPages(); i++) {
                 pageCount.add(i);
             }
         }
@@ -163,7 +175,7 @@ public class ArticleController {
         model.addAttribute("pageCurrent", infoPage.getCurrent());//当前页码
 
         //获取相应的图片
-        IPage<TblArticlePicture> picturePage = articlePictureService.searchArticlePicByPage(contentLike, page);
+        IPage<TblArticlePicture> picturePage = articlePictureService.searchArticlePicByPage(contentIPage, page);
         model.addAttribute("pic", picturePage.getRecords());
 
         //获取推荐文章
@@ -171,6 +183,29 @@ public class ArticleController {
         model.addAttribute("recommendArticles", recommendArticles);
 
         return "article_search";
+    }
+
+    @OperateLog(operateDesc = "获取标签所属的文章列表")
+    @RequestMapping(value = "/article_category_list", method = RequestMethod.GET)
+    public String getArticleByCategory(@RequestParam(value = "category_name") String categoryName, @RequestParam(value = "page", required = false) Integer page, Model model) {
+        //调用方法查询info对象列表
+        List<TblArticleInfo> articleInfoList = articleCategoryService.getInfoByCategory(categoryName);
+        model.addAttribute("articleInfoList", articleInfoList);
+
+        //获取图片对象
+        ArrayList<String> articlePictures = new ArrayList<>();
+        for (TblArticleInfo articleInfo : articleInfoList) {
+            articlePictures.add(articlePictureService.getPictureUrl(articleInfo.getId()).getPictureUrl());
+        }
+        model.addAttribute("articlePictures", articlePictures);
+
+        model.addAttribute("categoryName", categoryName);
+
+        //获取推荐文章
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
+
+        return "article_category";
     }
 
 }

@@ -1,10 +1,13 @@
 package com.marxist.leftwing_community.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -50,4 +53,8 @@ public class TblArticleInfo implements Serializable {
 
     @ApiModelProperty("是否有效")
     private Boolean isEffective;
+
+    @TableField(exist = false)
+    @ApiModelProperty("代表当前文章所属的所有标签")
+    private List<TblArticleCategory> categoryList;
 }

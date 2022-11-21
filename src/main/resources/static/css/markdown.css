@@ -26,6 +26,8 @@ img {
     /*设置图片居中显示*/
     display: block;
     margin: 0 auto;
+    /*保持纵横比缩放图片,使图片的长边能完全显示出来*/
+    object-fit: contain;
 }
 
 #write {
@@ -60,7 +62,8 @@ body > *:last-child {
 }
 
 a {
-    color: #42b983;
+    /*a标签文本颜色*/
+    color: #8E354A;
     font-weight: 600;
     padding: 0px 2px;
     text-decoration: none;

@@ -76,14 +76,14 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     /**
      * 通过content查询返回分页的Info对象集合
      *
-     * @param contentLike
+     * @param contentIPage
      * @param page
      * @return
      */
     @Override
-    public IPage<TblArticleInfo> searchArticleInfoByPage(String contentLike, Integer page) {
-        //模糊查询获取Content对象集合
-        List<TblArticleContent> articleContents = articleContentService.searchContentByPage(contentLike, page).getRecords();
+    public IPage<TblArticleInfo> searchArticleInfoByPage(IPage<TblArticleContent> contentIPage, Integer page) {
+        //获取Content对象集合后封装id
+        List<TblArticleContent> articleContents = contentIPage.getRecords();
         List<Long> articleIds = new ArrayList<>();
         for (TblArticleContent articleContent : articleContents) {
             articleIds.add(articleContent.getArticleId());

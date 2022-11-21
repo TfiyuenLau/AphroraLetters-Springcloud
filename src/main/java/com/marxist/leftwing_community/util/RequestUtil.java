@@ -41,14 +41,14 @@ public class RequestUtil {
             if (LOCALHOST_IP.equalsIgnoreCase(ip) || LOCALHOST_IPV6.equalsIgnoreCase(ip)) {
                 // 根据网卡取本机配置的IP地址:用于将0:0:0:0:0:0:0:1转变为正常的本地IPV4
                 /* 当需要记录本机操作时启用 */
-//                InetAddress iNet = null;
-//                try {
-//                    iNet = InetAddress.getLocalHost();
-//                } catch (UnknownHostException e) {
-//                    e.printStackTrace();
-//                }
-//                if (iNet != null)
-//                    ip = iNet.getHostAddress();
+                InetAddress iNet = null;
+                try {
+                    iNet = InetAddress.getLocalHost();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                if (iNet != null)
+                    ip = iNet.getHostAddress();
             }
         }
         // 对于通过多个代理的情况，分割出第一个 IP

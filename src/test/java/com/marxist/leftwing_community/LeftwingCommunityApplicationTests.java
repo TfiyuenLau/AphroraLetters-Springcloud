@@ -2,8 +2,9 @@ package com.marxist.leftwing_community;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.marxist.leftwing_community.dao.TblArticleCategoryMapper;
 import com.marxist.leftwing_community.dao.TblArticleInfoMapper;
-import com.marxist.leftwing_community.domain.MarkdownEntity;
+import com.marxist.leftwing_community.entity.MarkdownEntity;
 import com.marxist.leftwing_community.entity.*;
 import com.marxist.leftwing_community.service.IAuthorIndexService;
 import com.marxist.leftwing_community.service.ILibraryAuthorService;
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,6 +46,10 @@ class LeftwingCommunityApplicationTests {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    TblArticleCategoryMapper articleCategoryMapper;
+
     @Test
     void contextLoads() {
     }
@@ -88,10 +92,7 @@ class LeftwingCommunityApplicationTests {
     //测试按id获取图片对象List集合
     @Test
     public void testGetPic() {
-        List<TblArticlePicture> pictureUrl = articlePictureService.getPictureUrl(7L);
 
-        System.out.println(pictureUrl.get(0).getPictureUrl());
-        System.out.println(pictureUrl.get(1).getPictureUrl());
     }
 
     //测试分页插件
@@ -116,17 +117,6 @@ class LeftwingCommunityApplicationTests {
     //测试Search检索与分页
     @Test
     public void testSearch() {
-        String contentLike = new String("");
-        IPage<TblArticleInfo> infoIPage = articleInfoService.searchArticleInfoByPage(contentLike, 2);
-        IPage<TblArticlePicture> pictureIPage = articlePictureService.searchArticlePicByPage(contentLike, 1);
-
-        for (TblArticleInfo infoIPageRecord : infoIPage.getRecords()) {
-            System.err.println(infoIPageRecord.getId() + "." + infoIPageRecord.getTitle() + "： \n" + infoIPageRecord.getSummary());
-        }
-
-        for (TblArticlePicture pictureIPageRecord : pictureIPage.getRecords()) {
-            System.err.println(pictureIPageRecord.getPictureUrl());
-        }
 
     }
 
@@ -228,6 +218,26 @@ class LeftwingCommunityApplicationTests {
         for (AuthorIndex authorIndex : allAuthorIndex.getRecords()) {
             System.err.println(authorIndex.getArticleId() + "." + authorIndex.getTitle() + "：\nPDF地址:" + authorIndex.getPdfUrl() +
                     "\t其所属的作者是 " + authorIndex.getLibraryAuthor().getCharacterName());
+        }
+
+    }
+
+    //测试通过文章id获取所有标签并封装
+    @Test
+    public void testGetCategories() {
+        List<TblArticleCategory> categories = articleCategoryMapper.getCategoriesByArticleId(4L);
+        for (TblArticleCategory category : categories) {
+            System.err.println(category.getId() + "." + category.getCategoryName());
+        }
+
+    }
+
+    //测试通过分类标签名字封装文章对象列表
+    @Test
+    public void textGetInfoByCategory() {
+        List<TblArticleInfo> tblArticleInfos = articleCategoryMapper.getInfoByCategory("马尔库塞");
+        for (TblArticleInfo articleInfo : tblArticleInfos) {
+            System.out.println(articleInfo.getId() + "." + articleInfo.getTitle());
         }
 
     }

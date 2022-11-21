@@ -1,10 +1,13 @@
-package com.marxist.leftwing_community.domain;
+package com.marxist.leftwing_community.entity;
 
 import lombok.Data;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 存放md对象实体类
+ */
 @Data
 public class MarkdownEntity {
 

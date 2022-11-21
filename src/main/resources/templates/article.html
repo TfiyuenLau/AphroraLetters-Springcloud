@@ -39,7 +39,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse"  id="collapsibleNavbar">
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <!-- 后面的标签向右对齐 -->
             <div class="me-auto"></div>
 
@@ -63,7 +63,8 @@
 
             <!-- 搜索功能表单 -->
             <form class="d-flex" action="#" th:action="@{/article_search}" method="get">
-                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words" required="required">
+                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words"
+                       required="required">
                 <input class="" type="hidden" name="page" value="1">
 
                 <button class="btn btn-dark" type="submit">Search</button>
@@ -81,12 +82,13 @@
         <div class="col-lg-9">
             <!-- 正文 -->
             <div class="container mt-lg-3 rounded" id="bg">
-<!--                <span th:utext="${articleContent}">Default!</span>-->
-<!--                <iframe th:src="test_Иванович.html" src="test_Иванович.html" scrolling="auto" width="100%" height="500px"></iframe>-->
-<!--                <object style="border:0px" type="text/x-scriptlet" data="test_Иванович.html" width=100% height=512px></object>-->
+                <!--                <span th:utext="${articleContent}">Default!</span>-->
+                <!--                <iframe th:src="test_Иванович.html" src="test_Иванович.html" scrolling="auto" width="100%" height="500px"></iframe>-->
+                <!--                <object style="border:0px" type="text/x-scriptlet" data="test_Иванович.html" width=100% height=512px></object>-->
 
                 <!-- 使用iframe标签嵌套网页 id="childFrame"使父网页应用子网页的height -->
-                <iframe th:src="@{/page/{url}(url=${url})}" src="../static/page/test_Иванович.html" scrolling="no" width=100% height=100% id="childFrame"></iframe>
+                <iframe th:src="@{/page/{url}(url=${url})}" src="../static/page/test_Иванович.html" scrolling="no"
+                        width=100% height=100% id="childFrame"></iframe>
                 <br>
                 <br>
                 <br>
@@ -97,11 +99,14 @@
                         <input type="hidden" name="article_id" value="1" th:value="${article_id}">
                         <div class="mb-3">
                             <label for="email" class="form-label"><strong>电子邮件</strong>：</label>
-                            <input type="email" class="form-control" id="email" placeholder="想匿名?试试我们的工作邮箱~(tfiquenlau@foxmail.com)" required="required" name="email">
+                            <input type="email" class="form-control" id="email"
+                                   placeholder="想匿名?试试我们的工作邮箱~(tfiquenlau@foxmail.com)" required="required"
+                                   name="email">
                         </div>
                         <div class="mb-3">
                             <label for="comment" class="form-label"><strong>评论</strong>：</label>
-                            <textarea class="form-control" rows="5" id="comment" name="comment" placeholder="请友好交流哦~" required="required" maxlength="512"></textarea>
+                            <textarea class="form-control" rows="5" id="comment" name="comment"
+                                      placeholder="请友好交流哦~" required="required" maxlength="512"></textarea>
                         </div>
                         <button id="create" type="submit" class="btn btn-danger">提交</button>
                     </form>
@@ -125,20 +130,29 @@
                 <br>
                 <!-- 评论区展示 -->
                 <div class="container bg-light rounded shadow p-4 mb-4 bg-white">
-                    <p class="h3 text-center">评论区</p><hr>
+                    <p class="h3 text-center">评论区</p>
+                    <hr>
                     <!-- 单条评论 -->
                     <div class="m-3" th:each="articleComment, status:${articleComments}">
                         <div class="container border border-danger rounded" style="height: auto">
                             <div class="row">
                                 <!-- 头像 -->
                                 <div class="col-2 mt-2 displayNone">
-                                    <img class="img-thumbnail img-fluid mx-auto d-block" style="max-width: 88px;max-height: 120px" src="../static/img/portrait/10.jpg" alt="头像" th:src="${portraitList.get(status.index)}">
+                                    <img class="img-thumbnail img-fluid mx-auto d-block"
+                                         style="max-width: 88px;max-height: 120px" src="../static/img/portrait/10.jpg"
+                                         alt="头像" th:src="${portraitList.get(status.index)}">
                                 </div>
                                 <!-- 评论内容 -->
-                                <div  class="col-10 mt-1">
-                                    <p class="h5" style="overflow: hidden;white-space:nowrap;text-overflow: ellipsis;" th:text="${'游客[' + articleComment.getEmail() + ']说'}">游客[1391301@aspotgmail.org]说:</p>
-                                    <p class="lead" style="text-indent: 2em"><small th:text="${articleComment.getComment()}">一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.</small></p>
-                                    <p class="h6 text-end text-muted" th:text="${'发布时间:' + articleComment.getCreateBy()}">发布时间:2022/10/1 下午6:08</p>
+                                <div class="col-10 mt-1">
+                                    <p class="h5" style="overflow: hidden;white-space:nowrap;text-overflow: ellipsis;"
+                                       th:text="${'游客[' + articleComment.getEmail() + ']说'}">
+                                        游客[1391301@aspotgmail.org]说:</p>
+                                    <p class="lead" style="text-indent: 2em"><small
+                                            th:text="${articleComment.getComment()}">一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.一些演示文本.</small>
+                                    </p>
+                                    <p class="h6 text-end text-muted"
+                                       th:text="${'发布时间:' + articleComment.getCreateBy()}">发布时间:2022/10/1
+                                        下午6:08</p>
                                 </div>
                             </div>
                         </div>
@@ -162,13 +176,39 @@
             <div class="mt-lg-3 rounded">
                 <!-- 固定在顶部 -->
                 <div class="list-group text-break" style="word-break: break-all;position: fixed;width: 310px">
-                    <a href="#" class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
+                    <!-- 推荐文章 -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
                     <div th:each="recommendArticle, status:${recommendArticles}">
-                        <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+                        <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}"
+                           class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
                     </div>
-                </div>
 
+                    <!-- 文章分类标签 -->
+                    <a href="#"
+                       class="list-group-item list-group-item-action active list-group-item-danger mt-lg-3 rounded">分类标签</a>
+                    <div class="card">
+                        <div class="card-body">
+                            <span th:each="categorie, status:${categories}">
+                                <a href="#"
+                                   th:href="${'/article_category_list?category_name=' + categorie.getCategoryName()}"
+                                   target="_blank" class="btn btn-danger m-1" th:text="${categorie.getCategoryName()}"
+                                   th:if="${status.index % 3 == 0}">标签01</a>
+                                <a href="#"
+                                   th:href="${'/article_category_list?category_name=' + categorie.getCategoryName()}"
+                                   target="_blank" class="btn border-warning text-warning m-1"
+                                   th:text="${categorie.getCategoryName()}" th:if="${status.index % 3 == 1}">标签02</a>
+                                <a href="#"
+                                   th:href="${'/article_category_list?category_name=' + categorie.getCategoryName()}"
+                                   target="_blank" class="btn border-danger text-danger m-1"
+                                   th:text="${categorie.getCategoryName()}" th:if="${status.index % 3 == 2}">标签03</a>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
         </div>
 
     </div>
@@ -177,15 +217,17 @@
 
 <script>
     //当设备为小型设备时隐藏评论头像
-    let hid=function (){
-        let array=document.querySelectorAll('.displayNone')
-        for ( let a of array) {
-            a.style.display= document.documentElement.clientWidth>768?'block':'none'
-            if (document.documentElement.clientWidth<768){ a.nextElementSibling.className="col-12 mt-1"}
+    let hid = function () {
+        let array = document.querySelectorAll('.displayNone')
+        for (let a of array) {
+            a.style.display = document.documentElement.clientWidth > 768 ? 'block' : 'none'
+            if (document.documentElement.clientWidth < 768) {
+                a.nextElementSibling.className = "col-12 mt-1"
+            }
 
         }
     }
-    window.onresize=hid()
+    window.onresize = hid()
     window.addEventListener("beforeunload", hid())
 
 </script>

@@ -1,6 +1,7 @@
 package com.marxist.leftwing_community.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.marxist.leftwing_community.entity.TblArticleContent;
 import com.marxist.leftwing_community.entity.TblArticleInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -24,7 +25,7 @@ public interface ITblArticleInfoService extends IService<TblArticleInfo> {
 
     public IPage<TblArticleInfo> getArticleByPage(Long page);
 
-    IPage<TblArticleInfo> searchArticleInfoByPage(String contentLike, Integer page);
+    IPage<TblArticleInfo> searchArticleInfoByPage(IPage<TblArticleContent> contentIPage, Integer page);
 
     int addInfo(TblArticleInfo articleInfo);
 

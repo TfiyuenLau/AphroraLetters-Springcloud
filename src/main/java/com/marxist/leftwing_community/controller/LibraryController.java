@@ -39,10 +39,11 @@ public class LibraryController {
         LibraryAuthor author = libraryAuthorService.getAuthorById(author_id);
         model.addAttribute("author", author);
 
-        return "/author_index";
+        return "author_index";
     }
 
     //访问literature具体文献页
+    @OperateLog(operateDesc = "访问文库PDF文章")
     @RequestMapping("/literature")
     public String literature(String url, Model model) {
 //        String url = "http://127.0.0.1:8080/pdf/DreamLogic实验指导3.1.pdf";

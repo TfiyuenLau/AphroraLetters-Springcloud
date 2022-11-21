@@ -54,24 +54,25 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
      * @return
      */
     @Override
-    public List<TblArticlePicture> getPictureUrl(Long id) {
+    public TblArticlePicture getPictureUrl(Long id) {
         //按id查询文章图片返回列表
         QueryWrapper<TblArticlePicture> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("article_id", id);
 
-        return articlePictureMapper.selectList(queryWrapper);
+        return articlePictureMapper.selectOne(queryWrapper);
     }
 
     /**
      * 通过content查询返回分页的Picture对象集合
      *
-     * @param contentLike 搜索字段
-     * @param page 页码
+     * @param contentIPage 搜索后的字段页码
+     * @param page        页码
      * @return
      */
-    public IPage<TblArticlePicture> searchArticlePicByPage(String contentLike, Integer page) {
+    @Override
+    public IPage<TblArticlePicture> searchArticlePicByPage(IPage<TblArticleContent> contentIPage, Integer page) {
         //模糊查询获取Content对象集合
-        List<TblArticleContent> articleContents = articleContentService.searchContentByPage(contentLike, page).getRecords();
+        List<TblArticleContent> articleContents = contentIPage.getRecords();
         List<Long> articleIds = new ArrayList<>();
         for (TblArticleContent articleContent : articleContents) {
             articleIds.add(articleContent.getArticleId());
@@ -122,6 +123,18 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
         articlePicture.setPictureUrl(url);
 
         addPic(articlePicture);
+    }
+
+    /**
+     * 通过id删除图片
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public int delPic(Long id) {
+
+        return articlePictureMapper.deleteById(id);
     }
 
 }

@@ -209,7 +209,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 添加Spring boot编译插件  -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
         </plugins>
+
+        <!-- 打包时手动排除下列文件 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <!-- 排除的目录相对路径 -->
+                    <exclude>static/img/**</exclude>
+                    <exclude>static/md/**</exclude>
+                    <exclude>static/page/**</exclude>
+                    <exclude>static/pdf/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
 
         <finalName>LeftwingCommunity-Springboot</finalName>
     </build>

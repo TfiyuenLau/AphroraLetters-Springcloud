@@ -100,7 +100,7 @@
                             <!-- 删除管理员 -->
                             <button type="button" class="btn btn-outline-danger">
                                 <a class="text-danger" href="#"
-                                   th:href="'javascript:deflAdmin(' + ${user.getUserId()} + ')'">删除</a>
+                                   th:href="'javascript:delAdmin(' + ${user.getUserId()} + ')'">删除</a>
                             </button>
                         </div>
                     </td>
@@ -167,6 +167,10 @@
                 <div class="modal-body">
                     <form action="#" th:action="@{/admin/update_admin_password}" method="post">
                         <input type="hidden" name="userId" id="updatePasswordId">
+                        <div class="form-group">
+                            <label for="inputUpdatePassword">旧密码：</label>
+                            <input type="text" class="form-control" name="oldPassword" required="required">
+                        </div>
                         <div class="form-group">
                             <label for="inputUpdatePassword">新密码：</label>
                             <input type="text" class="form-control" id="inputUpdatePassword" name="password"

@@ -60,7 +60,7 @@
     <!-- 上传文章 -->
     <div class="card">
         <div class="card-header bg-light">
-            <h3 class="card-title">上传Blog文章</h3>
+            <h3 class="card-title">编辑Blog文章</h3>
         </div>
         <!-- /.card-header -->
         <div class="container-fluid">
@@ -99,9 +99,15 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div>
+                                        <label class="form-label">文章素材图片：(*.jpg)</label><br>
+                                        <label style="width: 100%">
+                                            <input type="file" class="form-control" name="articleImages" multiple>
+                                        </label>
+                                    </div>
                                     <label class="form-label">文章简介：</label><br>
                                     <label style="width: 100%">
-                                            <textarea type="text" class="form-control" rows="5"
+                                            <textarea type="text" class="form-control" rows="3"
                                                       placeholder="请输入文章摘要"
                                                       name="summary" required="required"></textarea>
                                     </label>
@@ -112,45 +118,64 @@
                             <br>
                         </div>
                     </div>
-
-                    <div class="alert alert-info">
-                        上传博客？请选择上传<strong>Markdown格式文件</strong>或符合<strong>Markdown语法的内容</strong>
-                    </div>
                 </div>
 
                 <div class="col-7">
                     <div class="card shadow mt-3">
                         <div class="card-header bg-primary">
-                            <h3 class="card-title">输入内容上传文章（未启用）</h3>
+                            <h3 class="card-title">文章分类标签管理</h3>
                         </div>
                         <div class="container-fluid">
-                            <form action="#">
-                                <div class="mb-3 mt-3">
-                                    <label class="form-label">文章标题：</label>
-                                    <label style="width: 100%">
-                                        <input type="text" class="form-control" placeholder="请输入文章标题"
-                                               name="title" required="required">
+                            <!-- 添加类型标签名称 -->
+                            <form action="#" th:action="@{/admin/add_category}" class="mb-3 mt-3" method="post">
+                                <label class="form-label">添加文章类型标签：</label>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <label style="width: 100%">
+                                            <input type="text" class="form-control" placeholder="请输入标签名称"
+                                                   name="categoryName" required="required">
+                                        </label>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-primary" style="width: 100%">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            <!-- 为文章添加文章标签 -->
+                            <form action="#" th:action="@{/admin/add_category_to_article}" class="mb-3 mt-3" method="post">
+                                <div class="form-group">
+                                    <label class="form-label">选择文章添加指定分类标签：</label><br>
+                                    <label class="form-label">选择文章：</label>
+                                    <label>
+                                        <select class="form-control" name="articleId">
+                                            <div th:each="oneArticleInfo, status:${allArticleInfo}">
+                                                <option th:value="${oneArticleInfo.getId()}" th:text="${oneArticleInfo.getTitle()}">主奴冲突与劳动异化——在反抗资本主义文化规制中拒斥消费主义</option>
+                                            </div>
+                                        </select>
                                     </label>
                                     <br>
-                                    <label class="form-label">文章内容：</label>
-                                    <label style="width: 100%">
-                                                <textarea class="form-control" rows="7" id="comment"
-                                                          placeholder="请输入文章内容"
-                                                          name="text" required="required"></textarea>
-                                    </label>
-                                    <label class="form-label">文章简介：</label><br>
-                                    <label style="width: 100%">
-                                            <textarea type="text" class="form-control" rows="3"
-                                                      placeholder="请输入文章标题"
-                                                      name="summary"></textarea>
+                                    <label class="form-label">指定标签：</label>
+                                    <label>
+                                        <select class="form-control" name="categoryId">
+                                            <div th:each="category, status:${allCategory}">
+                                                <option th:value="${category.getId()}" th:text="${category.getCategoryName()}">分类标签</option>
+                                            </div>
+                                        </select>
                                     </label>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">提交</button>
                             </form>
-                            <br>
 
                         </div>
+                    </div>
+
+                    <div class="alert alert-default-primary">
+                        若<strong>未发现合适</strong>的分类标签，请<strong>先添加类型标签</strong>，再指定文章与分类标签。
+                    </div>
+                    <div class="alert alert-info">
+                        上传博客？请选择上传<strong>Markdown格式文件</strong>并符合<strong>Markdown语法</strong>的内容。
                     </div>
                 </div>
 

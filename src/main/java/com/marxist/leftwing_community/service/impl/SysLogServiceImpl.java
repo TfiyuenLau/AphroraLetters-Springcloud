@@ -30,9 +30,17 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
      */
     @Override
     public IPage<SysLog> getLogByPage(Long page) {
-        Page<SysLog> logPage = new Page<>(page, 10);
+        //分页查询日志信息
+        Page<SysLog> logPage = new Page<>(page, 20);
         QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
+
+        //当总页数>200时限制最大查询id大于等于(总页数-200)的日志
+        Long logCount = logMapper.selectCount(null);
+        if (logCount > 200) {
+            queryWrapper.orderByDesc("id").gt("id", logCount - 200);
+        } else {
+            queryWrapper.orderByDesc("id");
+        }
         logMapper.selectPage(logPage, queryWrapper);
 
         return logPage;

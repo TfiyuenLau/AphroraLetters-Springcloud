@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
 
-                                <div class="container-fluid">
+                                <div>
                                     <label class="form-label">作者介绍：</label>
                                     <label style="width: 100%">
                                         <textarea type="text" class="form-control" rows="5" name="introduction"
@@ -139,7 +139,7 @@
                                     <label class="form-label">请选择添加文章的作者：</label>
                                     <label>
                                         <!-- 选择框 -->
-                                        <select class="form-select form-select-lg" name="character_name">
+                                        <select class="form-control" name="character_name">
                                             <div th:each="libraryAuthor, status:${libraryAuthors}">
                                                 <option th:text="${libraryAuthor.getCharacterName()}">本雅明</option>
                                             </div>

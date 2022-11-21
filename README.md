@@ -35,7 +35,6 @@ LeftwingCommunity-Springboot:
 │   │   │               ├───config  # 各配置类
 │   │   │               ├───controller  # 前端控制器
 │   │   │               ├───dao  # 数据持久层Mapper接口
-│   │   │               ├───domain  # 部分实体类
 │   │   │               ├───entity  # 实体类
 │   │   │               ├───generator  # 生成器
 │   │   │               ├───interceptor # 拦截器
@@ -75,4 +74,4 @@ LeftwingCommunity-Springboot:
 # 延伸阅读
 
 ### 项目地址：[点我进入](http://8.130.39.9:8080/home)
-### 后台地址：[点我进入](http://8.130.39.9:8080/admin/starter)
+### 后台地址：[点我进入](http://8.130.39.9:8080/admin/starter?url=home)

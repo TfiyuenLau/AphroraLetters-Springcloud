@@ -1,5 +1,7 @@
 package com.marxist.leftwing_community.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.marxist.leftwing_community.entity.TblArticleContent;
 import com.marxist.leftwing_community.entity.TblArticlePicture;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,9 +17,13 @@ import java.util.List;
  */
 public interface ITblArticlePictureService extends IService<TblArticlePicture> {
     public List<String> getAllPictureUrl();
-    public List<TblArticlePicture> getPictureUrl(Long id);
+    public TblArticlePicture getPictureUrl(Long id);
+
+    IPage<TblArticlePicture> searchArticlePicByPage(IPage<TblArticleContent> contentIPage, Integer page);
 
     int addPic(TblArticlePicture articlePicture);
 
     void addPicByUrl(String url);
+
+    int delPic(Long id);
 }

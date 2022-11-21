@@ -56,7 +56,8 @@ public class CodeGenerator {
         // 设置需要映射的表名
 //        strategyConfigBuilder.addInclude("sys_log", "tbl_article_category", "tbl_article_comment", "tbl_article_info", "tbl_article_content", "tbl_article_picture");//字符串数组，可以生成多个表
 //        strategyConfigBuilder.addInclude("user");
-        strategyConfigBuilder.addInclude("library_author", "author_index");//字符串数组，可以生成多个表
+//        strategyConfigBuilder.addInclude("library_author", "author_index");
+        strategyConfigBuilder.addInclude("classification");//字符串数组，可以生成多个表
 
         // 下划线转驼峰
         strategyConfigBuilder.entityBuilder().naming(NamingStrategy.underline_to_camel);

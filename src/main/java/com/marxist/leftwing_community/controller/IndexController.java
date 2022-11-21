@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -65,7 +66,7 @@ public class IndexController {
     }
 
     //登录界面
-    @OperateLog(operateDesc = "进入后台登录网页")
+    @OperateLog(operateDesc = "进入后台登录页面")
     @RequestMapping("/admin/login_page")
     public String enterLogin(boolean flag, Model model) {
         //默认为false,登录错误后传参为true
@@ -75,10 +76,12 @@ public class IndexController {
     }
 
     //后台管理面板
-    @OperateLog(operateDesc = "进入后台管理面板")
+    //@OperateLog(operateDesc = "进入后台管理面板")//多余记录
     @RequestMapping(value = "/admin/starter")
-    public String starter(String url, Model model) {
-        //添加Controller请求地址/admin/${url}
+    public String starter(String url, HttpSession session, Model model) {
+        //添加后台当前账户名
+        model.addAttribute("adminName", (String)session.getAttribute("adminName"));
+        //添加Controller请求地址/admin/starter?url=${url}
         model.addAttribute("url", url);
 
         return "adminLTE/starter";

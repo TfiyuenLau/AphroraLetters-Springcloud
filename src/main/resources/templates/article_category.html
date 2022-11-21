@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title th:text="${'“' + content_like + '”-搜索结果'}">文章列表</title>
+  <title th:text="${'“' + categoryName + '”-分类标签'}">文章分类标签列表</title>
   <link rel="icon" th:href="@{/img/logo.png}" href="../static/img/logo.png" type="image/x-icon">
 
   <!-- 加载Bootstrap V5，Springboot项目自动扫描resource资源目录 -->
@@ -82,14 +82,14 @@
       <div class="container-fluid mt-lg-3 rounded">
         <ul class="list-group rounded">
           <!-- 列表表头 -->
-          <li class="list-group-item active list-group-item-action list-group-item-danger rounded" th:text="${'文章查询列表：已查找出与“'+ content_like + '”相关的所有文章'}">文章查询列表</li>
+          <li class="list-group-item active list-group-item-action list-group-item-danger rounded" th:text="${'文章查询列表：已查找出与“'+ categoryName + '”相关的所有文章'}">文章查询列表</li>
           <!-- 迭代生成文章列表 -->
-          <div th:each="articleInfo, status:${aInfoPage}">
+          <div th:each="articleInfo, status:${articleInfoList}">
             <li style="height: 100px;width: 100%;overflow: hidden;padding: 0!important;" class="list-group-item rounded">
               <div class="row">
                 <!-- 文章题图 -->
                 <div class="col-3" style="height: 100px;">
-                  <img style="height: 100%;width: 100%;object-fit: cover" class="img-thumbnail img-fluid mx-auto d-block" th:src="@{/{pic_url}(pic_url=${pic.get(status.index + ((pageCurrent - 1) * 10)).getPictureUrl()})}" src="../static/img/CCCP01.jpg" alt="文章题图"/>
+                  <img style="height: 100%;width: 100%;object-fit: cover" class="img-thumbnail img-fluid mx-auto d-block" th:src="@{/{pic_url}(pic_url=${articlePictures.get(status.index)})}" src="../static/img/CCCP01.jpg" alt="文章题图"/>
                 </div>
                 <!-- 文章标题与地址索引 -->
                 <div class="col-9" style="position: relative">
@@ -103,17 +103,6 @@
         </ul>
 
       </div>
-      <br>
-      <br>
-      <!-- 分页导航栏 -->
-      <ul class="pagination justify-content-end me-lg-4">
-        <li class="page-item" th:classappend="${pageCurrent==1}?disabled"><a class="page-link text-danger" href="#" th:href="${'/article_search?content_like'+ content_like + '&page=' + (pageCurrent - 1)}">上一页</a></li>
-        <!-- 迭代生成页码 -->
-        <div th:each="page, status:${pageCount}">
-          <li class="page-item" th:classappend="${page==pageCurrent}?active"><a class="page-link text-black" th:text="${page}" th:href="${'/article_list?page=' + page}" href="#">1</a></li>
-        </div>
-        <li class="page-item" th:classappend="${pageCurrent==pageCount.get(pageCount.size() - 1)}?disabled"><a class="page-link text-danger" href="#" th:href="${'/article_search?content_like=' + content_like + '&page=' + (pageCurrent + 1)}">下一页</a></li>
-      </ul>
       <br>
       <br>
 

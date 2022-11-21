@@ -73,12 +73,12 @@
 
 
 <!-- 网站内容 -->
-<div class="container">
+<div class="container" id="mobile_device">
 
     <div class="row">
         <div class="col-lg-9">
             <!-- 正文 -->
-            <div class="container-fluid mt-lg-3 rounded">
+            <div class="container-fluid mt-3 rounded">
                 <ul class="list-group rounded">
                     <!-- 列表表头 -->
                     <li class="list-group-item active list-group-item-action list-group-item-danger rounded">文章列表</li>
@@ -88,13 +88,13 @@
                             <div class="row">
                                 <!-- 文章题图 -->
                                 <div class="col-3" style="height: 100px;">
-                                    <img style="height: 100%;width: auto;object-fit: cover" class="img-thumbnail img-fluid mx-auto d-block" th:src="@{/{pic_url}(pic_url=${allPictureUrl.get(status.index + ((pageCurrent - 1) * 10))})}" src="../static/img/CCCP01.jpg" alt="文章题图"/>
+                                    <img style="height: 100%;width: 100%;object-fit: cover" class="img-thumbnail img-fluid mx-auto d-block" th:src="@{/{pic_url}(pic_url=${allPictureUrl.get(status.index + ((pageCurrent - 1) * 10))})}" src="../static/img/PhoneBG%20(3).jpg" alt="文章题图"/>
                                 </div>
                                 <!-- 文章标题与地址索引 -->
                                 <div class="col-9" style="position: relative">
-                                    <a class="btn btn-default btn-lg active" style="overflow: hidden;white-space:nowrap;text-overflow: ellipsis;" href="#" th:href="${'/article?id=' + articleInfo.getId()}" th:text="${articleInfo.getTitle()}">《自由和历史的绝对律令》马尔库塞</a>
+                                    <div style="white-space: nowrap;overflow: hidden"> <a class="btn btn-default btn-lg active" href="#" th:href="${'/article?id=' + articleInfo.getId()}" target="_blank" th:text="${articleInfo.getTitle()}">《自由和历史的绝对律令》马尔库塞</a><span style="margin-left: 3px" class="badge bg-danger" th:each="category, status:${articleInfo.getCategoryList()}" th:text="${category.getCategoryName()}">分类标签</span></div>
                                     <p class="h6 text-muted" style="text-indent:2em;overflow: hidden;white-space:nowrap;text-overflow: ellipsis;" th:text="${articleInfo.getSummary()}">原载马尔库塞《批判哲学研究》（Studies in critical philosophy, 1972）文本超出一行时将折叠文本，以省略号结尾！</p>
-                                    <span style="position: absolute;bottom: 0;right: 0;color: #BC9F77" class="h6 text-lg-end" th:text="${'发布时间:' + articleInfo.getModifiedBy() + ' >'}">发布时间:2022/10/1 下午6:08 ></span>
+                                    <span style="position: absolute;bottom: 0;right: 0;color: #BC9F77" class="h6 text-end" th:text="${'发布时间:' + articleInfo.getModifiedBy() + ' >'}">发布时间:2022/10/1 下午6:08 ></span>
                                 </div>
                             </div>
                         </li>
@@ -105,7 +105,7 @@
             <br>
             <br>
             <!-- 分页导航栏 -->
-            <ul class="pagination justify-content-end me-lg-4">
+            <ul class="pagination justify-content-end me-4">
                 <li class="page-item" th:classappend="${pageCurrent==1}?disabled"><a class="page-link text-danger" href="#" th:href="${'/article_list?page=' + (pageCurrent - 1)}">上一页</a></li>
                 <div th:each="page, status:${pageCount}">
                     <li class="page-item" th:classappend="${page==pageCurrent}?active"><a class="page-link text-black" th:text="${page}" th:href="${'/article_list?page=' + page}" href="#">1</a></li>
@@ -135,6 +135,21 @@
 
 </div>
 
+<style>
+    /* 取消移动端右划白边 */
+    .row{margin:0;}
+</style>
+
+<script>
+    let change = function () {
+        let div = document.getElementById("mobile_device")
+        if (document.documentElement.clientWidth < 768) {
+            div.className = ""
+        }
+    }
+    window.onresize=change()
+
+</script>
 </body>
 
 </html>

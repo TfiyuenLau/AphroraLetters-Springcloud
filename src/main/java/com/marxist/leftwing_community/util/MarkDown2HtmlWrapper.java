@@ -1,7 +1,7 @@
 package com.marxist.leftwing_community.util;
 
 import com.google.common.base.Joiner;
-import com.marxist.leftwing_community.domain.MarkdownEntity;
+import com.marxist.leftwing_community.entity.MarkdownEntity;
 import com.vladsch.flexmark.ast.Node;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
@@ -14,7 +14,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
