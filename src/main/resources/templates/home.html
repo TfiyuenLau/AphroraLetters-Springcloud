@@ -89,9 +89,12 @@
                     <div class="row mt-4 p-5 bg-danger text-white rounded">
                         <h1>欢迎访问 Leftwing Community ！</h1>
                         <p>
-                            本文库致力于左翼进步文化的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与经典著作。</p>
-                        <p>注：本项目处于测试阶段，WEB应用的Java后端基于SpringBoot与MyBatisPlus框架进行开发，使用MySql数据库与Alibaba
-                            Druid开源的连接池技术；前端则使用了Bootstrap开源组件，logo与图片素材等均来源于网络。网站仍在测试阶段，未部署域名解析与Https协议；网站积极依照《网络安全法》《网络安全管理条例》相关法律条例进行运营，若存在黄赌毒、政治敏感言论请向网站管理员举报，谢谢配合。</p>
+                            本文库致力于<strong>左翼进步文化</strong>的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与，<strong>经典著作</strong>。
+                        </p>
+                        <p>注：本项目处于<strong>测试阶段</strong>，WEB应用内部的Logo、图片素材和部分转载文章内容等均来源于网络，<strong>仅用于个人学习用途</strong>，若侵犯了您的著作权请即使联系
+                            <strong>tfiyuenlau@foxmail.com</strong>
+                            进行删除。网站仍在测试阶段，未部署域名解析与Https协议；网站积极依照《网络安全法》《网络安全管理条例》相关法律条例进行运营，若存在黄赌毒、政治敏感言论请向网站管理员举报，谢谢配合。
+                        </p>
                     </div>
 
                     <div class="row mt-3 rounded">
@@ -131,7 +134,9 @@
                                 <a href="#"
                                    class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
                                 <div th:each="recommendArticle, status:${recommendArticles}">
-                                    <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+                                    <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}"
+                                       class="list-group-item list-group-item-action"
+                                       th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +159,9 @@
 
 <style>
     /* 取消移动端右划白边 */
-    .row{margin:0;}
+    .row {
+        margin: 0;
+    }
 </style>
 
 <script>

@@ -3,7 +3,6 @@ package com.marxist.leftwing_community.config;
 import com.marxist.leftwing_community.interceptor.LoginInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration

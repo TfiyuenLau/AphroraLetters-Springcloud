@@ -8,7 +8,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//配置类
+//MyBatis-Plus配置类
 @Configuration
 @MapperScan("com.marxist.leftwing_community.dao")
 public class MybatisPlusConfig {
@@ -22,8 +22,6 @@ public class MybatisPlusConfig {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         //添加分页插件
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-        //添加乐观锁插件
-        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
 
         return mybatisPlusInterceptor;
     }

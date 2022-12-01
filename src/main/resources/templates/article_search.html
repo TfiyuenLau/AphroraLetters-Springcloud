@@ -74,12 +74,12 @@
 
 
 <!-- 网站内容 -->
-<div class="container">
+<div class="container" id="mobile_device">
 
   <div class="row">
     <div class="col-lg-9">
       <!-- 正文 -->
-      <div class="container-fluid mt-lg-3 rounded">
+      <div class="container-fluid mt-3 rounded">
         <ul class="list-group rounded">
           <!-- 列表表头 -->
           <li class="list-group-item active list-group-item-action list-group-item-danger rounded" th:text="${'文章查询列表：已查找出与“'+ content_like + '”相关的所有文章'}">文章查询列表</li>
@@ -92,10 +92,13 @@
                   <img style="height: 100%;width: 100%;object-fit: cover" class="img-thumbnail img-fluid mx-auto d-block" th:src="@{/{pic_url}(pic_url=${pic.get(status.index + ((pageCurrent - 1) * 10)).getPictureUrl()})}" src="../static/img/CCCP01.jpg" alt="文章题图"/>
                 </div>
                 <!-- 文章标题与地址索引 -->
-                <div class="col-9" style="position: relative">
-                  <a class="btn btn-default btn-lg active" target="_blank" href="#" th:href="${'/article?id=' + articleInfo.getId()}" th:text="${articleInfo.getTitle()}">《自由和历史的绝对律令》马尔库塞</a>
-                  <p class="h6 text-muted" style="text-indent:2em;overflow: hidden;white-space:nowrap;text-overflow: ellipsis;" th:text="${articleInfo.getSummary()}">原载马尔库塞《批判哲学研究》（Studies in critical philosophy, 1972）文本超出一行时将折叠文本，以省略号结尾！</p>
-                  <span style="position: absolute;bottom: 0;right: 0;color: #BC9F77" class="h6 text-lg-end" th:text="${'发布时间:' + articleInfo.getModifiedBy() + ' >'}">发布时间:2022/10/1 下午6:08 ></span>
+                <div class="col-9" style="position: relative;padding-left: 0;">
+                  <div class="noScroll" style="width: 100%;overflow-x: scroll;">
+                    <!-- 滚动条 -->
+                    <div style="white-space: nowrap;"> <a class="btn btn-default btn-lg active" style="padding-left: 0.2rem" href="#" th:href="${'/article?id=' + articleInfo.getId()}" target="_blank" th:text="${articleInfo.getTitle()}">《自由和历史的绝对律令》马尔库塞</a><span style="margin-left: 3px" class="badge bg-danger" th:each="category, status:${articleInfo.getCategoryList()}" th:text="${category.getCategoryName()}">分类标签</span></div>
+                  </div>
+                  <p class="h6 text-muted" style="text-indent:1em;overflow: hidden;white-space:nowrap;text-overflow: ellipsis;" th:text="${articleInfo.getSummary()}">原载马尔库塞《批判哲学研究》（Studies in critical philosophy, 1972）文本超出一行时将折叠文本，以省略号结尾！</p>
+                  <span style="position: absolute;bottom: 0;right: 6px;color: #BC9F77" class="h6 text-end" th:text="${'发布时间:' + articleInfo.getModifiedBy()}">发布时间:2022/10/1 下午6:08</span>
                 </div>
               </div>
             </li>
@@ -121,7 +124,7 @@
 
     <!-- 右侧悬浮列表组 -->
     <div class="col-lg-3">
-      <div class="mt-lg-3 rounded">
+      <div class="mt-3 rounded">
         <!-- 固定在顶部 -->
         <div class="list-group text-break" style="word-break: break-all;position: fixed;width: 310px">
           <a href="#" class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
@@ -136,6 +139,27 @@
   </div>
 
 </div>
+
+<style>
+    /* 取消移动端右划白边 */
+    .row{margin:0;}
+    /* 隐藏滚动条 */
+    .noScroll::-webkit-scrollbar{
+        width: 0 !important;
+        height: 0!important;
+    }
+</style>
+
+<script>
+    let change = function () {
+        let div = document.getElementById("mobile_device")
+        if (document.documentElement.clientWidth < 768) {
+            div.className = ""
+        }
+    }
+    window.onresize=change()
+
+</script>
 
 </body>
 

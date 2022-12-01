@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 /**
  * 工具类：处理客户端请求
  */
-public class RequestUtil {
+public class RequestUtils {
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST_IP = "127.0.0.1";
     // 客户端与服务器同为一台机器，获取的 ip 有时候是 ipv6 格式
@@ -66,27 +66,26 @@ public class RequestUtil {
      * @return
      */
     public static String getOsAndBrowserInfo(HttpServletRequest request){
-        String  browserDetails  =   request.getHeader("User-Agent");
-        String  userAgent       =   browserDetails;
+        String  userAgent       = request.getHeader("User-Agent");
         String  user            =   userAgent.toLowerCase();
 
         String os = "";
         String browser = "";
 
         //=================OS Info=======================
-        if (userAgent.toLowerCase().indexOf("windows") >= 0 )
+        if (userAgent.toLowerCase().contains("windows"))
         {
             os = "Windows";
-        } else if(userAgent.toLowerCase().indexOf("mac") >= 0)
+        } else if(userAgent.toLowerCase().contains("mac"))
         {
             os = "Mac";
-        } else if(userAgent.toLowerCase().indexOf("x11") >= 0)
+        } else if(userAgent.toLowerCase().contains("x11"))
         {
             os = "Unix";
-        } else if(userAgent.toLowerCase().indexOf("android") >= 0)
+        } else if(userAgent.toLowerCase().contains("android"))
         {
             os = "Android";
-        } else if(userAgent.toLowerCase().indexOf("iphone") >= 0)
+        } else if(userAgent.toLowerCase().contains("iphone"))
         {
             os = "IPhone";
         }else{
@@ -117,9 +116,9 @@ public class RequestUtil {
         } else if (user.contains("chrome"))
         {
             browser=(userAgent.substring(userAgent.indexOf("Chrome")).split(" ")[0]).replace("/", "-");
-        } else if ((user.indexOf("mozilla/7.0") > -1) || (user.indexOf("netscape6") != -1)  ||
-                (user.indexOf("mozilla/4.7") != -1) || (user.indexOf("mozilla/4.78") != -1) ||
-                (user.indexOf("mozilla/4.08") != -1) || (user.indexOf("mozilla/3") != -1) )
+        } else if ((user.contains("mozilla/7.0")) || (user.contains("netscape6"))  ||
+                (user.contains("mozilla/4.7")) || (user.contains("mozilla/4.78")) ||
+                (user.contains("mozilla/4.08")) || (user.contains("mozilla/3")) )
         {
             browser = "Netscape-?";
 

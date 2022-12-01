@@ -90,7 +90,7 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
         }
 
         //按Content对象的article_id查询获取Info分页对象集合并返回
-        IPage<TblArticleInfo> infoIPage = new Page<>(page, 10);
+        IPage<TblArticleInfo> infoIPage = new Page<>(1, 10);//查询时已经设定了当前页码page，故固定为1
         QueryWrapper<TblArticleInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", articleIds);
         try {

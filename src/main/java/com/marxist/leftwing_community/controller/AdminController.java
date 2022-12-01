@@ -386,7 +386,7 @@ public class AdminController {
             return "<h1 align='center'>标签添加失败!</h1>\n" + e.getMessage() + "<script>setTimeout(function(){window.history.go(-1);},3000);</script>";
         }
 
-        return "<h1 align='center'>标签添加成功!</h1><script>setTimeout(function(){window.history.go(-1);},3000);</script>";
+        return "<h1 align='center'>标签添加成功!</h1><script>setTimeout(function(){window.history.go(-1);}, 2000);</script>";
     }
 
     /**
@@ -402,7 +402,7 @@ public class AdminController {
         try {
             articleInfoService.delArticle(id);//逻辑删除文章信息
             articlePictureService.delPic(id);//逻辑删除题图数据以解决删除文章后题图不对应bug
-            articleContentService.delContent(id);//逻辑删除文章内容
+//            articleContentService.delContent(id);//逻辑删除文章内容
         } catch (Exception e) {
             response.setCharacterEncoding("utf-8");
             response.getWriter().write("<h1 align='center'>删除出现问题！</h1>\n" + e.getMessage() + "<script>setTimeout(function(){window.history.go(-1);},3000);</script>");

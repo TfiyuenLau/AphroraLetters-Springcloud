@@ -157,7 +157,11 @@ public class ArticleController {
 
         //获取分页后的检索内容
         IPage<TblArticleInfo> infoPage = articleInfoService.searchArticleInfoByPage(contentIPage, page);
-        model.addAttribute("aInfoPage", infoPage.getRecords());
+        List<TblArticleInfo> articleInfos = infoPage.getRecords();
+        for (TblArticleInfo articleInfo : articleInfos) {
+            articleInfo.setCategoryList(articleCategoryService.getCategoriesByArticleId(articleInfo.getId()));
+        }
+        model.addAttribute("aInfoPage", articleInfos);
         model.addAttribute("content_like", contentLike);
 
         //底部分页导航栏

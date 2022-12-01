@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 /**
  * 缓存处理工具类
  */
-public class CacheUtil {
+public class CacheUtils {
 
     // 键值对集合
     private final static Map<String, Entity> map = new ConcurrentHashMap<>();
@@ -17,7 +17,7 @@ public class CacheUtil {
      * 添加缓存
      */
     public synchronized static void put(String key, Object data) {
-        CacheUtil.put(key, data, 0);
+        CacheUtils.put(key, data, 0);
     }
 
     /**
@@ -26,12 +26,12 @@ public class CacheUtil {
      */
     public synchronized static void put(String key, Object data, long expire) {
         // 清除原键值对
-        CacheUtil.remove(key);
+        CacheUtils.remove(key);
         // 设置过期时间
         if (expire > 0) {
             Future future = executor.schedule(() -> {
                 // 过期后清除该键值对
-                synchronized (CacheUtil.class) {
+                synchronized (CacheUtils.class) {
                     map.remove(key);
                 }
             }, expire, TimeUnit.MILLISECONDS);
@@ -55,7 +55,7 @@ public class CacheUtil {
      * clazz 值类型
      */
     public synchronized static <T> T get(String key, Class<T> clazz) {
-        return clazz.cast(CacheUtil.get(key));
+        return clazz.cast(CacheUtils.get(key));
     }
 
     /**

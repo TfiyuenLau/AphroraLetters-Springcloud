@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 //跨域配置类
@@ -25,8 +22,8 @@ public class CorsConfig {
     CorsFilter corsFilter() {
         //1.添加CORS配置信息
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://8.130.39.9:8080/"));
-        configuration.setAllowedOrigins(Collections.singletonList("*"));//允许的域,写*时cookie可能无法使用了
+        configuration.setAllowedOrigins(Collections.singletonList("http://8.130.39.9:8080/"));//允许的域,写*时cookie可能无法使用
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Collections.singletonList("*"));//允许的请求方式
         configuration.setAllowedHeaders(Collections.singletonList("*"));//允许的头信息
         configuration.setAllowCredentials(true);//是否允许请求带有验证信息

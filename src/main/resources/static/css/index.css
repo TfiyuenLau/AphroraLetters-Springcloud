@@ -1,6 +1,6 @@
-/*设置自适应背景图*/
+/*大型屏幕设备 桌面*/
 @media (min-width: 1200px) {
-    /*大型屏幕设备 桌面*/
+    /*设置自适应背景图*/
     body {
         background-image: url("../img/CCCP03.jpg");
         background-position: center 0;
@@ -12,11 +12,15 @@
         -moz-background-size: cover;
         -ms-background-size: cover;
     }
+    /*移动端文章推荐的显示与隐藏*/
+    .rightIsShow{
+        display: none;
+    }
 }
 
 
-@media (min-width: 768px) and (max-width: 992px) {
-    /*小屏幕设备 平板*/
+/*小屏幕设备 平板*/
+@media (min-width: 768px) and (max-width: 1200px) {
     body {
         background-image: url("../img/CCCP03.jpg");
         background-position: center 0;
@@ -28,11 +32,14 @@
         -moz-background-size: cover;
         -ms-background-size: cover;
     }
+    .rightIsShow{
+        display: block;
+    }
 }
 
 
+/*超小屏幕设备 手机*/
 @media (max-width: 768px) {
-    /*超小屏幕设备 手机*/
     body {
         background-image: url("../img/20221030141215.jpg");
         background-position: center 0;
@@ -44,11 +51,15 @@
         -moz-background-size: cover;
         -ms-background-size: cover;
     }
+    .rightIsShow{
+        display: block;
+    }
 }
+
 
 /*设置正文容器背景*/
 #bg {
-    background: rgba(255, 255, 255, 0.75) no-repeat fixed center 0;
+    background: rgba(255, 255, 255, 0.80) no-repeat fixed center 0;
     background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;

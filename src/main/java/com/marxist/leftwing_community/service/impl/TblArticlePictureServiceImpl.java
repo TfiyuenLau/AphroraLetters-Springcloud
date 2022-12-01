@@ -79,7 +79,7 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
         }
 
         //按Content对象的article_id查询获取Picture分页对象集合并返回
-        IPage<TblArticlePicture> pictureIPage = new Page<>(page, 10);
+        IPage<TblArticlePicture> pictureIPage = new Page<>(1, 10);
         QueryWrapper<TblArticlePicture> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", articleIds);
         try {

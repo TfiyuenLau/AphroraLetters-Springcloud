@@ -1,7 +1,7 @@
 package com.marxist.leftwing_community.interceptor;
 
-import com.marxist.leftwing_community.util.CacheUtil;
-import com.marxist.leftwing_community.util.RequestUtil;
+import com.marxist.leftwing_community.util.CacheUtils;
+import com.marxist.leftwing_community.util.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -30,15 +30,15 @@ public class VisitLimitInterceptor implements HandlerInterceptor {
             int limit_count = 25;//最大访问次数
             int limit_time = 60 * 1000;//访问限制的单位时间（1min）
 
-            String ip = RequestUtil.getRemoteIp(httpServletRequest);
+            String ip = RequestUtils.getRemoteIp(httpServletRequest);
             String url = httpServletRequest.getRequestURL().toString();
 //            String key = "req_limit_".concat(url).concat(ip);
             String key = "req_limit_".concat(ip);//不检查访问的url是否一致
 
-            String cache = (String) CacheUtil.get(key);
+            String cache = (String) CacheUtils.get(key);
             if (null == cache) {
                 String value = "1_" + System.currentTimeMillis();
-                CacheUtil.put(key, value, limit_time);
+                CacheUtils.put(key, value, limit_time);
             } else {
                 String value = (String) cache;
                 String[] s = value.split("_");
@@ -52,7 +52,7 @@ public class VisitLimitInterceptor implements HandlerInterceptor {
                 value = (count + 1) + "_" + s[1];
                 long last = limit_time - (System.currentTimeMillis() - Long.parseLong(s[1]));
                 if (last > 0) {
-                    CacheUtil.put(key, value, limit_time);
+                    CacheUtils.put(key, value, limit_time);
                 }
             }
 

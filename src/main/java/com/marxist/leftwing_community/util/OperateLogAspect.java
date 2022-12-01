@@ -49,7 +49,7 @@ public class OperateLogAspect {
         // 从获取RequestAttributes中获取HttpServletRequest的信息
         assert requestAttributes != null;
         HttpServletRequest request = (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
-        String requestIp = RequestUtil.getRemoteIp(request);
+        String requestIp = RequestUtils.getRemoteIp(request);
 
         // 本机访问的不记录日志
         if (!"0:0:0:0:0:0:0:1".equals(requestIp) && !"127.0.0.1".equals(requestIp)) {
@@ -66,7 +66,7 @@ public class OperateLogAspect {
                     operateLog.setRemark(operateDesc); // 操作描述
                 }
                 // 请求IP
-                operateLog.setIp(RequestUtil.getRemoteIp(request));
+                operateLog.setIp(RequestUtils.getRemoteIp(request));
                 // 请求的参数
                 assert request != null;
                 Map<String, String> rtnMap = converMap(request.getParameterMap());
@@ -75,7 +75,7 @@ public class OperateLogAspect {
                 // 请求URI
                 operateLog.setOperateUrl(request.getRequestURI());
                 // 请求的浏览器标识
-                operateLog.setOperateBy(RequestUtil.getOsAndBrowserInfo(request));
+                operateLog.setOperateBy(RequestUtils.getOsAndBrowserInfo(request));
 
                 //保存至数据库
                 sysLogService.save(operateLog);

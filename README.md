@@ -37,14 +37,14 @@ LeftwingCommunity-Springboot:
 │   │   │               ├───dao  # 数据持久层Mapper接口
 │   │   │               ├───entity  # 实体类
 │   │   │               ├───generator  # 生成器
-│   │   │               ├───interceptor # 拦截器
+│   │   │               ├───interceptor  # 拦截器
 │   │   │               ├───service  # Web服务层接口
 │   │   │               │   └───impl  # 实现类
 │   │   │               └───util  #工具类
 │   │   └───resources  # 资源文件
 │   │       ├───mappers  # 存放mybatis映射文件
 │   │       ├───static  # 存放静态资源文件
-│   │       │   ├───adminLTE # adminLTE资源文件(存放AdminLTE-3.1.0-rc/dist与plugins下的资源文件)
+│   │       │   ├───adminLTE  # adminLTE资源文件(存放AdminLTE-3.1.0-rc/dist与/plugins下的资源文件)
 │   │       │   │   ├───dist
 │   │       │   │   └───plugins
 │   │       │   ├───bootstrap-5.1.3-dist  # bootstrap组件库
@@ -55,12 +55,12 @@ LeftwingCommunity-Springboot:
 │   │       │   ├───js
 │   │       │   ├───md  # 存放markdown资源文件
 │   │       │   ├───page  # 存放静态博客页面
-│   │       │   ├───pdf # 存放文库阅读所需的pdf文件
-│   │       │   └───pdfjs # 存放开源插件pdf.js
+│   │       │   ├───pdf  # 存放文库阅读所需的pdf文件
+│   │       │   └───pdfjs  # 存放开源插件pdf.js
 │   │       │       ├───bulid
 │   │       │       └───web
 │   │       └───templates  # 存放thymeleaf模板文件
-│   │           └───adminLTE # thymeleaf后台页面
+│   │           └───adminLTE  # thymeleaf后台页面
 │   └───test  # 测试类
 │       ├───java
 │       │   └───com
@@ -75,3 +75,4 @@ LeftwingCommunity-Springboot:
 
 ### 项目地址：[点我进入](http://8.130.39.9:8080/home)
 ### 后台地址：[点我进入](http://8.130.39.9:8080/admin/starter?url=home)
+### 博客地址：[点我进入](https://www.cnblogs.com/MatikaneSpartakusbund/articles/16927271.html)

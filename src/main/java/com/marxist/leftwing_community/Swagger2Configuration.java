@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Deprecated//本项目弃用RESTFul请求文档风格
 @Configuration//配置类
-@EnableSwagger2//开启使用swagger
+//@EnableSwagger2//开启使用swagger
 public class Swagger2Configuration {
 
     @Bean(name = "swagger")
