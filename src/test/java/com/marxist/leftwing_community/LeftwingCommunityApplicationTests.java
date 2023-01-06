@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -57,13 +59,13 @@ class LeftwingCommunityApplicationTests {
     //测试MarkDown2HtmlWrapper工具类
     @Test
     public void markdown2html() throws IOException {
-        String file = "D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\md\\test_Иванович.md";
-        MarkdownEntity html = MarkDown2HtmlWrapper.ofFile(file);
+        //测试文件地址
+        String file = "D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\md\\《一九一八年的日本“米骚动”》片山潜.md";
+        MarkdownEntity markdownEntity = MarkDown2HtmlWrapper.ofFile(file);
 
         String html_content = new String();
         String head = "<!DOCTYPE html>\n" +
-                "<!-- 加载thymeleaf模板 -->\n" +
-                "<html lang=\"zh-CN\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
+                "<html lang=\"zh-CN\">\n" +
                 "\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
@@ -74,19 +76,23 @@ class LeftwingCommunityApplicationTests {
                 "\n" +
                 "    <script>\n" +
                 "        function IFrameResize() {\n" +
-                "            //alert(this.document.body.scrollHeight); //弹出当前页面的高度\n" +
                 "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
-                "            //alert(obj.height); //弹出父页面中IFrame中设置的高度\n" +
                 "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
                 "        }\n" +
                 "    </script>\n" +
                 "</head>\n" +
                 "\n" +
-                "<body onload=\"IFrameResize()\">";
+                "<body onload=\"IFrameResize()\">\n\n";
         html_content += head;//拼接head标签与js语法
-        html_content += html.getHtml();//拼接html
+        html_content += markdownEntity.getHtml();//拼接html
+        html_content += "\n</body>\n" + "</html>";//拼接尾部
 
         System.out.println(html_content);
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\page\\《一九一八年的日本“米骚动”》片山潜.html"));
+        bw.write(html_content);
+        bw.flush();
+        bw.close();
     }
 
     //测试按id获取图片对象List集合

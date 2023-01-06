@@ -259,7 +259,7 @@ ol:last-child {
 blockquote {
     border-left: 4px solid #CB1B45;
     padding: 10px 0px 10px 15px;
-    color: #777;
+    color: #34495e;
     background-color: rgba(245, 150, 170, .1);
 }
 

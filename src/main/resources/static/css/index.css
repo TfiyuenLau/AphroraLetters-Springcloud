@@ -14,7 +14,7 @@
     }
     /*移动端文章推荐的显示与隐藏*/
     .rightIsShow{
-        display: none;
+        display: block;
     }
 }
 
@@ -52,7 +52,7 @@
         -ms-background-size: cover;
     }
     .rightIsShow{
-        display: block;
+        display: none;
     }
 }
 

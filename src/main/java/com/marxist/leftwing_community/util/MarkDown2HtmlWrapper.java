@@ -2,24 +2,35 @@ package com.marxist.leftwing_community.util;
 
 import com.google.common.base.Joiner;
 import com.marxist.leftwing_community.entity.MarkdownEntity;
-import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.ast.Heading;
+import com.vladsch.flexmark.ast.Link;
+import com.vladsch.flexmark.ext.emoji.EmojiExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.html.AttributeProvider;
+import com.vladsch.flexmark.html.AttributeProviderFactory;
 import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.html.IndependentAttributeProviderFactory;
+import com.vladsch.flexmark.html.renderer.AttributablePart;
+import com.vladsch.flexmark.html.renderer.LinkResolverContext;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
-import com.vladsch.flexmark.util.options.MutableDataSet;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.data.MutableDataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
+import com.vladsch.flexmark.util.html.MutableAttributes;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Markdown转Html包装器
+ * 使用flexmark-java库（v0.64.0）实现markdown2html
  *
  * @Author:MatikaneSpartakusbund
  */
@@ -41,8 +52,8 @@ public class MarkDown2HtmlWrapper {
      * 将本地的markdown文件，转为html文档输出
      *
      * @param path 相对地址or绝对地址 ("/" 开头)
-     * @return
-     * @throws IOException
+     * @return MarkdownEntity
+     * @throws IOException IO异常
      */
     public static MarkdownEntity ofFile(String path) throws IOException {
         return ofStream(FileReadUtil.getStreamByFileName(path));
@@ -53,8 +64,8 @@ public class MarkDown2HtmlWrapper {
      * 将网络的markdown文件，转为html文档输出
      *
      * @param url http开头的url格式
-     * @return
-     * @throws IOException
+     * @return MarkdownEntity
+     * @throws IOException IO异常
      */
     public static MarkdownEntity ofUrl(String url) throws IOException {
         return ofStream(FileReadUtil.getStreamByFileName(url));
@@ -64,12 +75,11 @@ public class MarkDown2HtmlWrapper {
     /**
      * 将流转为html文档输出
      *
-     * @param stream
-     * @return
+     * @param stream InputStream对象
+     * @return MarkdownEntity
      */
     public static MarkdownEntity ofStream(InputStream stream) {
-        BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(stream, Charset.forName("UTF-8")));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         List<String> lines = bufferedReader.lines().collect(Collectors.toList());
         String content = Joiner.on("\n").join(lines);
         return ofContent(content);
@@ -83,7 +93,7 @@ public class MarkDown2HtmlWrapper {
      * @return
      */
     public static MarkdownEntity ofContent(String content) {
-        String html = parse(content);
+        String html = parse(content);//转换为html文本
         MarkdownEntity entity = new MarkdownEntity();
         entity.setCss(MD_CSS);
         entity.setHtml(html);
@@ -93,27 +103,124 @@ public class MarkDown2HtmlWrapper {
 
 
     /**
-     * markdown to image
+     * 将markdown文本转换为html文本
+     * （flexmark的基本使用）
      *
      * @param content markdown contents
      * @return parse html contents
      */
     public static String parse(String content) {
+        //配置转换器的相关参数
         MutableDataSet options = new MutableDataSet();
         options.setFrom(ParserEmulationProfile.MARKDOWN);
+        options.set(Parser.EXTENSIONS, Arrays.asList(
+                EmojiExtension.create(),//表情转换扩展
+                TablesExtension.create(),//表格转换扩展
+                LinkTargetExtension.create(),//为<a>标签属性target添加_blank
+                HeadingIdExtension.create()//为<h>标签添加id
+        ));
 
-        // enable table parse!
-        options.set(Parser.EXTENSIONS, Collections.singletonList(TablesExtension.create()));
-
-
+        //创建转换器
         Parser parser = Parser.builder(options).build();
-        HtmlRenderer renderer = HtmlRenderer.builder(options).build();
-
+        HtmlRenderer renderer = HtmlRenderer.builder(options).build();//markdown2html渲染器
         Node document = parser.parse(content);
         return renderer.render(document);
     }
 
-    //FileReadUtil内部工具类
+
+    /**
+     * 为元素添加属性：为<a></a>标签的target属性添加_blank
+     * 自定义解析扩展——通过实现AttributeProvider来修改元素是flexmark-java常用的扩展方式之一
+     */
+    static class LinkTargetAttributeProvider implements AttributeProvider {
+        @Override
+        public void setAttributes(@NotNull Node node, @NotNull AttributablePart part, @NotNull MutableAttributes attributes) {
+            // 定位到<a>标签元素进行修改
+            if (node instanceof Link && part == AttributablePart.LINK) {
+                attributes.addValue("target", "_blank");
+            }
+        }
+
+        static AttributeProviderFactory Factory() {
+            return new IndependentAttributeProviderFactory() {
+                @NotNull
+                @Override
+                public AttributeProvider apply(@NotNull LinkResolverContext context) {
+                    return new LinkTargetAttributeProvider();
+                }
+            };
+        }
+    }
+
+
+    /**
+     * 为标题标签<a></a>添加统一的class属性
+     */
+    static class HeadingIdAttributeProvider implements AttributeProvider {
+        @Override
+        public void setAttributes(@NotNull Node node, @NotNull AttributablePart part, @NotNull MutableAttributes attributes) {
+            // 定位到<h>元素进行修改
+            if (node instanceof Heading && part == AttributablePart.NODE) {
+                attributes.addValue("class", "heading");
+            }
+        }
+
+        static AttributeProviderFactory Factory() {
+            return new IndependentAttributeProviderFactory() {
+                @Override
+                public @NotNull AttributeProvider apply(@NotNull LinkResolverContext linkResolverContext) {
+                    return new HeadingIdAttributeProvider();
+                }
+            };
+        }
+    }
+
+
+    /**
+     * 注册LinkTargetExtension
+     * 使用前须通过HtmlRenderer.Builder.attributeProviderFactory的方式注册自定义的扩展
+     */
+    static class LinkTargetExtension implements HtmlRenderer.HtmlRendererExtension {
+        @Override
+        public void rendererOptions(@NotNull MutableDataHolder options) {
+            // add any configuration settings to options you want to apply to everything, here
+        }
+
+        @Override
+        public void extend(@NotNull HtmlRenderer.Builder htmlRendererBuilder, @NotNull String rendererType) {
+            htmlRendererBuilder.attributeProviderFactory(LinkTargetAttributeProvider.Factory());
+        }
+
+        static LinkTargetExtension create() {
+            return new LinkTargetExtension();
+        }
+    }
+
+
+    /**
+     * 注册LinkTargetExtension
+     * 使用前须通过HtmlRenderer.Builder.attributeProviderFactory的方式注册自定义的扩展
+     */
+    static class HeadingIdExtension implements HtmlRenderer.HtmlRendererExtension {
+        @Override
+        public void rendererOptions(@NotNull MutableDataHolder options) {
+            // add any configuration settings to options you want to apply to everything, here
+        }
+
+        @Override
+        public void extend(@NotNull HtmlRenderer.Builder htmlRendererBuilder, @NotNull String rendererType) {
+            htmlRendererBuilder.attributeProviderFactory(HeadingIdAttributeProvider.Factory());
+        }
+
+        static HeadingIdExtension create() {
+            return new HeadingIdExtension();
+        }
+    }
+
+
+    /**
+     * 内部工具类——FileReadUtil
+     */
     private static class FileReadUtil {
         public static String readAll(String fileName) throws IOException {
             BufferedReader reader = createLineRead(fileName);
@@ -135,4 +242,5 @@ public class MarkDown2HtmlWrapper {
         }
 
     }
+
 }

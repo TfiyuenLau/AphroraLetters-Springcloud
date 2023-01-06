@@ -37,9 +37,10 @@
 
     <div class="container-fluid">
         <!-- 设置Logo -->
-        <div class="navbar-brand">
-            LeftwingBlog-Springboot
-        </div>
+        <a class="navbar-brand" href="#" th:href="@{/home}">
+            <img src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
+            Leftwing Community
+        </a>
 
         <!-- 设置小屏按钮折叠导航栏 -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -55,7 +56,7 @@
                     <a class="nav-link" href="#" th:href="@{/home}">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blog</a>
+                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blogs</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/library}">文库</a>
@@ -118,10 +119,10 @@
         </div>
 
         <!-- 右侧悬浮列表组 -->
-        <div class="col-lg-3">
+        <div class="col-lg-3 rightIsShow">
             <div class="mt-lg-3 rounded">
                 <!-- 固定在顶部 -->
-                <div class="list-group text-break" style="word-break: break-all;position: fixed;width: 310px">
+                <div class="list-group text-break" style="word-break: break-all;width: 100%">
                     <a href="#" class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
                     <div th:each="recommendArticle, status:${recommendArticles}">
                         <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
@@ -134,6 +135,40 @@
     </div>
 
 </div>
+
+<!-- 页脚 -->
+<footer class="bg-danger mt-3" style="position: absolute;bottom: 0;width: 100%;">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12">
+                <!-- logo图片 -->
+                <div style="float: left;" id="displayImg">
+                    <img src="../static/img/左翼社区logo02.png" th:src="@{/img/左翼社区logo02.png}" alt="网站logo" style="max-width: 83px">
+                </div>
+                <!-- 底部页脚文字 -->
+                <div class="text-warning" style="font-size: 0.9rem">
+                    <strong>友情链接</strong>：<a class="btn" style="color: #FC8C23" href="https://www.marxists.org/" target="_blank"><strong>马克思主义中文网</strong></a><span style="margin: 0 3px;">/</span><a class="btn" style="color: #FC8C23" href="https://github.com/TfiyuenLau/LeftwingCommunity-Springboot" target="_blank"><strong>GitHub项目地址</strong></a>
+                    <br>
+                    <strong>Copyright &copy; 2022 <a class="btn btn-lg" style="color: #FC8C23" href="https://www.cnblogs.com/MatikaneSpartakusbund/" target="_blank"><strong>@Matikane Spartakusbund</strong></a>.</strong> All rights reserved.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+    //检测媒体屏幕，当为小型屏幕时隐藏部分标签
+    let hid = function () {
+        //隐藏logo
+        let img = document.getElementById('displayImg');
+        img.style.display = document.documentElement.clientWidth > 768 ? 'block' : 'none'
+    }
+    window.onresize = hid()
+    window.addEventListener("beforeunload", hid())
+
+</script>
+
 </body>
 
 </html>

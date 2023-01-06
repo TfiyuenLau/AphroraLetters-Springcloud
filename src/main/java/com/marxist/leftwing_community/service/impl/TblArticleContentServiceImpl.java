@@ -48,12 +48,11 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
         TblArticleContent content = articleContentMapper.selectById(id);
 
         //使用工具类将md转为html格式
-        MarkdownEntity html = MarkDown2HtmlWrapper.ofContent(content.getContent());
+        MarkdownEntity markdownEntity = MarkDown2HtmlWrapper.ofContent(content.getContent());
 
         String html_content = new String();
         String head = "<!DOCTYPE html>\n" +
-                "<!-- 加载thymeleaf模板 -->\n" +
-                "<html lang=\"zh-CN\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
+                "<html lang=\"zh-CN\">\n" +
                 "\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
@@ -64,23 +63,22 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
                 "\n" +
                 "    <script>\n" +
                 "        function IFrameResize() {\n" +
-                "            //alert(this.document.body.scrollHeight); //弹出当前页面的高度\n" +
                 "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
-                "            //alert(obj.height); //弹出父页面中IFrame中设置的高度\n" +
                 "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
                 "        }\n" +
                 "    </script>\n" +
                 "</head>\n" +
                 "\n" +
-                "<body onload=\"IFrameResize()\">";
+                "<body onload=\"IFrameResize()\">\n\n";
         html_content += head;//拼接head标签与js语法
-        html_content += html.getHtml();//拼接html
+        html_content += markdownEntity.getHtml();//拼接html
+        html_content += "\n</body>\n" + "</html>";//拼接尾部
 
         //获取文件名
         String fileName = articleInfoService.getArticleTitle(id) + ".html";
         //获取上传文件的地址
         File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
-        //项目路径绝对mywebproject\target\classes
+        //项目路径绝对my-web-project\target\classes
         String absolutePath = projectPath.getAbsolutePath();
         //放入/static/page/目录下
         String path = absolutePath + "/static/page/";
