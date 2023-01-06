@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -59,40 +60,44 @@ class LeftwingCommunityApplicationTests {
     //测试MarkDown2HtmlWrapper工具类
     @Test
     public void markdown2html() throws IOException {
-        //测试文件地址
-        String file = "D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\md\\《一九一八年的日本“米骚动”》片山潜.md";
-        MarkdownEntity markdownEntity = MarkDown2HtmlWrapper.ofFile(file);
+        File file = new File("D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\md"); //需要获取的文件的路径
+        String[] fileNameLists = file.list();//存储文件名的String数组
+        File[] fileLists = file.listFiles();//存储文件路径的File数组
+        assert fileNameLists != null;
+        for (int i = 0; i < fileNameLists.length; i++) {
+            assert fileLists != null;
+            MarkdownEntity markdownEntity = MarkDown2HtmlWrapper.ofFile(fileLists[i].getPath());
 
-        String html_content = new String();
-        String head = "<!DOCTYPE html>\n" +
-                "<html lang=\"zh-CN\">\n" +
-                "\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Default</title>\n" +
-                "\n" +
-                "    <link rel=\"icon\" href=\"../img/logo.png\" type=\"image/x-icon\">\n" +
-                "    <link href=\"../css/markdown.css\" rel=\"stylesheet\" type=\"text/css\">\n" +
-                "\n" +
-                "    <script>\n" +
-                "        function IFrameResize() {\n" +
-                "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
-                "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
-                "        }\n" +
-                "    </script>\n" +
-                "</head>\n" +
-                "\n" +
-                "<body onload=\"IFrameResize()\">\n\n";
-        html_content += head;//拼接head标签与js语法
-        html_content += markdownEntity.getHtml();//拼接html
-        html_content += "\n</body>\n" + "</html>";//拼接尾部
+            String htmlContent = new String();
+            String head = "<!DOCTYPE html>\n" +
+                    "<html lang=\"zh-CN\">\n" +
+                    "\n" +
+                    "<head>\n" +
+                    "    <meta charset=\"UTF-8\">\n" +
+                    "    <title>Default</title>\n" +
+                    "\n" +
+                    "    <link rel=\"icon\" href=\"../img/logo.png\" type=\"image/x-icon\">\n" +
+                    "    <link href=\"../css/markdown.css\" rel=\"stylesheet\" type=\"text/css\">\n" +
+                    "\n" +
+                    "    <script>\n" +
+                    "        function IFrameResize() {\n" +
+                    "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
+                    "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
+                    "        }\n" +
+                    "    </script>\n" +
+                    "</head>\n" +
+                    "\n" +
+                    "<body onload=\"IFrameResize()\">\n\n";
+            htmlContent += head;//拼接head标签与js语法
+            htmlContent += markdownEntity.getHtml();//拼接html
+            htmlContent += "\n</body>\n" + "</html>";//拼接尾部
 
-        System.out.println(html_content);
+            BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\page\\" + fileLists[i].getName().substring(0, fileLists[i].getName().length()-3) + ".html"));
+            bw.write(htmlContent);
+            bw.flush();
+            bw.close();
+        }
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\page\\《一九一八年的日本“米骚动”》片山潜.html"));
-        bw.write(html_content);
-        bw.flush();
-        bw.close();
     }
 
     //测试按id获取图片对象List集合

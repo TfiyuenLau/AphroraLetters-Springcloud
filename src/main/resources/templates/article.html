@@ -31,7 +31,7 @@
     <div class="container-fluid">
         <!-- 设置Logo -->
         <a class="navbar-brand" href="#" th:href="@{/home}">
-            <img src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
+            <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
             Leftwing Community
         </a>
 
@@ -84,7 +84,7 @@
             <!-- 正文 -->
             <div class="container mt-3 rounded" id="bg">
                 <!-- 使用iframe标签嵌套网页 id="childFrame"使父网页应用子网页的height -->
-                <iframe th:src="@{/page/{url}(url=${url})}" src="../static/page/《一九一八年的日本“米骚动”》片山潜.html"
+                <iframe th:src="@{/page/{url}(url=${url})}" src="../static/page/女权主义有道理吗？谈论它的哲学根基.html"
                         scrolling="no" width=100% height=100% id="childFrame" name="childFrame"></iframe>
                 <br>
                 <br>
@@ -239,14 +239,13 @@
         <div class="collapse show" id="indexCollapse">
             <div class="card card-body lead">
                 <!-- 树状结构 -->
-                <ul class="domtree">
+                <ul class="domtree" style="cursor: pointer">
                     <li>
                         <!-- 文章标题索引 -->
                         <span id="articleTitle"></span>
                         <!-- 文章二级标题索引 -->
                         <ul id="articleHeading">
                             <!-- 待插入子列表元素  -->
-
                         </ul>
                     </li>
                 </ul>
