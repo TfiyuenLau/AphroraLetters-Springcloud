@@ -1,13 +1,17 @@
 package com.marxist.leftwing_community.controller;
 
+import com.marxist.leftwing_community.entity.Announcement;
 import com.marxist.leftwing_community.entity.TblArticleInfo;
+import com.marxist.leftwing_community.entity.VersionLog;
+import com.marxist.leftwing_community.service.IAnnouncementService;
 import com.marxist.leftwing_community.service.ITblArticleInfoService;
+import com.marxist.leftwing_community.service.IVersionLogService;
 import com.marxist.leftwing_community.util.OperateLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -17,8 +21,12 @@ public class IndexController {
     @Autowired
     private ITblArticleInfoService articleInfoService;
 
+    @Autowired private IAnnouncementService announcementService;
+
+    @Autowired private IVersionLogService versionLogService;
+
     //访问导航页面
-    @OperateLog(operateDesc = "废弃的导航页")
+    @OperateLog(operateDesc = "导航页")
     @RequestMapping("/index")
     public String index(){
 
@@ -29,10 +37,38 @@ public class IndexController {
     @OperateLog(operateDesc = "访问首页")
     @RequestMapping("/home")
     public String home(Model model) {
+        //获取推荐文章列表
         List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
         model.addAttribute("recommendArticles", recommendArticles);
 
+        //获取公告栏中的最新消息列表
+        List<Announcement> announcements = announcementService.getAnnouncements();
+        model.addAttribute("announcements", announcements);
+
+        //获取公告侧边栏全部消息列表
+        List<Announcement> announcementList = announcementService.getAnnouncementList();
+        model.addAttribute("announcementList", announcementList);
+
+        //获取公告栏中最新的版本日志
+        List<VersionLog> versionLogs = versionLogService.getVersionLogs();
+        model.addAttribute("versionLogs", versionLogs);
+
+        //获取公告侧边栏全部版本日志
+        List<VersionLog> versionLogList = versionLogService.getVersionLogList();
+        model.addAttribute("versionLogList", versionLogList);
+
         return "home";
+    }
+
+    //访问公告消息
+    @OperateLog(operateDesc = "访问公告消息")
+    @RequestMapping("/announcement")
+    public String announcement(@RequestParam(value = "id", required = false, defaultValue = "1") Long id, Model model) {
+        //获取announcement对象
+        Announcement announcement = announcementService.getAnnouncementById(id);
+        model.addAttribute("announcement", announcement);
+
+        return "announcement";
     }
 
     //访问assistance页面

@@ -49,30 +49,7 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
 
         //使用工具类将md转为html格式
         MarkdownEntity markdownEntity = MarkDown2HtmlWrapper.ofContent(content.getContent());
-
-        String html_content = new String();
-        String head = "<!DOCTYPE html>\n" +
-                "<html lang=\"zh-CN\">\n" +
-                "\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Default</title>\n" +
-                "\n" +
-                "    <link rel=\"icon\" href=\"../img/logo.png\" type=\"image/x-icon\">\n" +
-                "    <link href=\"../css/markdown.css\" rel=\"stylesheet\" type=\"text/css\">\n" +
-                "\n" +
-                "    <script>\n" +
-                "        function IFrameResize() {\n" +
-                "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
-                "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
-                "        }\n" +
-                "    </script>\n" +
-                "</head>\n" +
-                "\n" +
-                "<body onload=\"IFrameResize()\">\n\n";
-        html_content += head;//拼接head标签与js语法
-        html_content += markdownEntity.getHtml();//拼接html
-        html_content += "\n</body>\n" + "</html>";//拼接尾部
+        String htmlContent = MarkDown2HtmlWrapper.htmlAppend(markdownEntity);
 
         //获取文件名
         String fileName = articleInfoService.getArticleTitle(id) + ".html";
@@ -86,7 +63,7 @@ public class TblArticleContentServiceImpl extends ServiceImpl<TblArticleContentM
 
         //写入文件至target
         BufferedWriter bw = new BufferedWriter(new FileWriter(targetFile));
-        bw.write(html_content);
+        bw.write(htmlContent);
         bw.flush();
         bw.close();
 

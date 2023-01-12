@@ -11,13 +11,12 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +51,12 @@ public class AdminController {
 
     @Autowired
     private IClassificationService classificationService;
+
+    @Autowired
+    private IAnnouncementService announcementService;
+
+    @Autowired
+    private IVersionLogService versionLogService;
 
     /**
      * 表单登录
@@ -282,9 +287,11 @@ public class AdminController {
         IPage<TblArticleInfo> articleByPage = articleInfoService.getArticleByPage(page);
         model.addAttribute("articleInfo", articleByPage.getRecords());
 
-        //传输文章与分类标签
-        List<TblArticleCategory> allCategory = articleCategoryService.getAllCategory();
+        //传输文章、分类标签与图片列表
         List<TblArticleInfo> allArticleInfo = articleInfoService.getAllArticleInfo();
+        List<TblArticleCategory> allCategory = articleCategoryService.getAllCategory();
+        List<String> allPictureUrl = articlePictureService.getAllPictureUrl();
+        model.addAttribute("allPictureUrl", allPictureUrl);
         model.addAttribute("allArticleInfo", allArticleInfo);
         model.addAttribute("allCategory", allCategory);
 
@@ -312,7 +319,11 @@ public class AdminController {
      */
     @OperateLog(operateDesc = "添加文章数据")
     @RequestMapping(value = "/upload_article_file", method = RequestMethod.POST)
-    public String uploadArticle(@RequestParam("file") MultipartFile contentFile, @RequestParam("picture") MultipartFile picture, MultipartFile[] articleImages, String summary, Model model) throws IOException {
+    public String uploadArticle(@RequestParam("file") MultipartFile contentFile,
+                                @RequestParam("picture") MultipartFile picture,
+                                MultipartFile[] articleImages,
+                                String summary,
+                                Model model) throws IOException {
         File targetContentFile;
         File targetPictureFile;
         try {
@@ -447,6 +458,69 @@ public class AdminController {
     }
 
     /**
+     * 修改文章信息
+     *
+     * @param articlePic
+     * @param articleId
+     * @param articleTitle
+     * @param articleSummary
+     * @param model
+     * @return
+     */
+    @OperateLog(operateDesc = "修改文章信息")
+    @RequestMapping(value = "/updateArticle", method = RequestMethod.POST)
+    public String updateArticle(MultipartFile articlePic,
+                                Long articleId,
+                                String articleTitle,
+                                String articleSummary,
+                                Model model) {
+        //创建反馈图
+        HashMap<String, Object> feedbackMap = new HashMap<>();
+
+        //判断是否需要修改该部分数据
+        if (!Objects.equals(articlePic.getOriginalFilename(), "")) {
+            try {
+                //上传新图片
+                File uploadImg = uploadFile(articlePic, "img");
+                //更新数据库
+                articlePictureService.updatePicById(articleId, "img/" + uploadImg.getName());
+            } catch (FileNotFoundException e) {
+                feedbackMap.put("flag", false);
+                feedbackMap.put("title", "文章修改失败！");
+                feedbackMap.put("info", "文章题图信息修改时出现错误....详细请见：\n" + new RuntimeException(e).getMessage());
+                model.addAttribute("feedbackMap", feedbackMap);
+
+                return "adminLTE/feedback";
+            }
+        }
+
+        //不为空则部分更新数据
+        try {
+            if (!articleTitle.equals("")) {
+                articleInfoService.updateArticleInfo(articleId, articleTitle, null);
+            }
+            if (!articleSummary.equals("")) {
+                articleInfoService.updateArticleInfo(articleId, null, articleSummary);
+            }
+        } catch(Exception e){
+            feedbackMap.put("flag", false);
+            feedbackMap.put("title", "文章修改失败！");
+            feedbackMap.put("info", "文章部分信息修改时出现错误....详细请见：\n" + new RuntimeException(e).getMessage());
+            model.addAttribute("feedbackMap", feedbackMap);
+
+            return "adminLTE/feedback";
+        }
+
+        //修改成功
+        feedbackMap.put("flag", true);
+        feedbackMap.put("title", "文章修改成功！");
+        feedbackMap.put("info", "文章的部分信息已完成修改，请查看...");
+        model.addAttribute("feedbackMap", feedbackMap);
+
+        return "adminLTE/feedback";
+    }
+
+    /**
      * 进入文库管理页
      *
      * @param page
@@ -457,7 +531,6 @@ public class AdminController {
     @RequestMapping("/library_operation")
     public String getLibraryOperation(@RequestParam("page") Long page, Model model) {
         //文库文章列分页表
-//        List<AuthorIndex> authorIndices = authorIndexService.getAllAuthorIndex();
         IPage<AuthorIndex> allAuthorIndexByPage = authorIndexService.getAllAuthorIndexByPage(page);
         List<AuthorIndex> authorIndices = allAuthorIndexByPage.getRecords();
         model.addAttribute("authorIndices", authorIndices);
@@ -527,7 +600,6 @@ public class AdminController {
 
         //保存文件至target并上传至数据库
         try {
-            //pdfFile.transferTo(targetPicFile);
             uploadFile(pdfFile, "pdf");//上传文件至/static/pdf/目录
             authorIndexService.addAuthorIndex(authorIndex);
         } catch (Exception e) {
@@ -559,6 +631,146 @@ public class AdminController {
         feedbackMap.put("flag", true);
         feedbackMap.put("title", "文库文章删除成功！");
         feedbackMap.put("info", "现在这篇文库文章已无法被查看。若该删除操作是一个意外，请立刻联系管理员！");
+        model.addAttribute("feedbackMap", feedbackMap);
+
+        return "adminLTE/feedback";
+    }
+
+    @OperateLog(operateDesc = "查询公告栏")
+    @RequestMapping("/announcement_admin")
+    public String announcement(Long page, Model model) {
+        //获取分页对象
+        IPage<Announcement> announcementIPage = announcementService.getAnnouncementByPage(page);
+        model.addAttribute("announcementList", announcementIPage.getRecords());
+
+        //底部分页导航栏
+        ArrayList<Integer> pageCount = new ArrayList<>((int) announcementIPage.getPages());//初始化集合
+        for (int i = 1; i <= announcementIPage.getPages(); i++) {
+            pageCount.add(i);
+        }
+        model.addAttribute("pageCount", pageCount);//全部页码列表
+        model.addAttribute("pageCurrent", announcementIPage.getCurrent());//当前页码
+
+        return "adminLTE/announcement_admin";
+    }
+
+    /**
+     * 添加公告栏通知消息
+     *
+     * @param publisher
+     * @param title
+     * @param content
+     * @param imgFiles
+     * @param model
+     * @return
+     */
+    @RequestMapping("/addAnnouncement")
+    public String addAnnouncement(@RequestParam(value = "publisher", required = false, defaultValue = "Leftwing Community") String publisher,
+                                  @RequestParam("title") String title,
+                                  @RequestParam("content") String content,
+                                  @RequestParam(value = "imgFile", required = false) MultipartFile[] imgFiles,
+                                  Model model) {
+        //创建反馈图
+        HashMap<String, Object> feedbackMap = new HashMap<>();
+
+        //判断是否需要上传题图
+        if (imgFiles.length != 0) {
+            try {
+                for (MultipartFile file : imgFiles) {
+                    uploadFile(file, "img");
+                }
+            } catch (FileNotFoundException e) {
+                feedbackMap.put("flag", false);
+                feedbackMap.put("title", "题图上传失败！");
+                feedbackMap.put("info", "文章题图上传时出现错误，可能超出了最大16mb的限制....详细请见：\n" + new RuntimeException(e).getMessage());
+                model.addAttribute("feedbackMap", feedbackMap);
+
+                return "adminLTE/feedback";
+            }
+        }
+
+        try {
+            //封装公告对象并添加至数据库
+            Announcement announcement = new Announcement();
+            announcement.setTitle(title);
+            announcement.setPublisher(publisher);
+            announcement.setContent(content);
+            announcementService.insertAnnouncement(announcement);
+        } catch (Exception e) {
+            feedbackMap.put("flag", false);
+            feedbackMap.put("title", "公告添加失败！");
+            feedbackMap.put("info", "这篇公告在添加的过程中出现了意料之外的错误，详细信息请见：\n" + new RuntimeException(e).getMessage());
+            model.addAttribute("feedbackMap", feedbackMap);
+
+            return "adminLTE/feedback";
+        }
+
+        feedbackMap.put("flag", true);
+        feedbackMap.put("title", "公告添加成功！");
+        feedbackMap.put("info", "现在这篇公告已被添加至了数据库！");
+        model.addAttribute("feedbackMap", feedbackMap);
+
+        return "adminLTE/feedback";
+    }
+
+    /**
+     * 删除一则公告
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/delAnnouncement")
+    public String delAnnouncement(Long id, Model model) {
+        announcementService.delAnnouncement(id);
+
+        HashMap<String, Object> feedbackMap = new HashMap<>();
+        feedbackMap.put("flag", true);
+        feedbackMap.put("title", "公告删除成功！");
+        feedbackMap.put("info", "现在这篇公告消息已无法被查看。若该删除操作是一个意外，请立刻联系管理员！");
+        model.addAttribute("feedbackMap", feedbackMap);
+
+        return "adminLTE/feedback";
+    }
+
+    /**
+     * 添加版本日志
+     *
+     * @param version
+     * @param content
+     * @param time
+     * @param model
+     * @return
+     */
+    @OperateLog(operateDesc = "添加版本日志")
+    @RequestMapping("/addVersionLog")
+    public String addVersionLog(String version, String content, String time, Model model) {
+        //创建反馈图
+        HashMap<String, Object> feedbackMap = new HashMap<>();
+        //创建VersionLog对象
+        VersionLog versionLog = new VersionLog();
+
+        //封装对象
+        try {
+            if (time != null && !"".equals(time)) {
+                versionLog.setCreateBy(LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")));
+            }
+            versionLog.setVersion(version);
+            versionLog.setLog(content);
+
+            versionLogService.insertVersionLog(versionLog);
+        } catch (Exception e) {
+            feedbackMap.put("flag", false);
+            feedbackMap.put("title", "版本日志添加失败！");
+            feedbackMap.put("info", "现在这篇日志未记载在了数据库中！详情请见：\n" + new RuntimeException(e).getMessage());
+            model.addAttribute("feedbackMap", feedbackMap);
+
+            return "adminLTE/feedback";
+        }
+
+        feedbackMap.put("flag", true);
+        feedbackMap.put("title", "版本日志添加成功！");
+        feedbackMap.put("info", "现在这篇日志已记载在了数据库中！");
         model.addAttribute("feedbackMap", feedbackMap);
 
         return "adminLTE/feedback";

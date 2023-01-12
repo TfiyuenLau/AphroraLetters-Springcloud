@@ -97,8 +97,43 @@ public class MarkDown2HtmlWrapper {
         MarkdownEntity entity = new MarkdownEntity();
         entity.setCss(MD_CSS);
         entity.setHtml(html);
-        entity.addDivStyle("class", "markdown-body ");
+        entity.addDivStyle("class", "markdown-body");
         return entity;
+    }
+
+
+    /**
+     * 拼接html的首尾
+     *
+     * @param entity MarkdownEntity
+     * @return htmlContent
+     */
+    public static String htmlAppend(MarkdownEntity entity) {
+        String htmlContent = new String();
+        String head = "<!DOCTYPE html>\n" +
+                "<html lang=\"zh-CN\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Default</title>\n" +
+                "\n" +
+                "    <link rel=\"icon\" href=\"../img/logo.png\" type=\"image/x-icon\">\n" +
+                "    <link href=\"../css/markdown.css\" rel=\"stylesheet\" type=\"text/css\">\n" +
+                "\n" +
+                "    <script>\n" +
+                "        function IFrameResize() {\n" +
+                "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
+                "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
+                "        }\n" +
+                "    </script>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body onload=\"IFrameResize()\">\n\n";
+        htmlContent += head;//拼接head标签与js语法
+        htmlContent += entity.getHtml();//拼接html
+        htmlContent += "\n</body>\n" + "</html>";//拼接尾部
+
+        return htmlContent;
     }
 
 

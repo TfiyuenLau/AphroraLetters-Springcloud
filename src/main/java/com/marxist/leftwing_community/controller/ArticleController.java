@@ -34,13 +34,14 @@ public class ArticleController {
     /**
      * 获取所有文章传递后形成列表
      *
-     * @param page 文章列表页码
+     * @param page  文章列表页码
      * @param model
      * @return Template
      */
     @OperateLog(operateDesc = "查询文章列表")
     @RequestMapping("/article_list")
-    public String getAllArticleInfo(@RequestParam(value = "page", required = false, defaultValue = "1") Long page, Model model) {
+    public String getAllArticleInfo(@RequestParam(value = "page", required = false, defaultValue = "1") Long page,
+                                    Model model) {
         //分页查询文章列表
         IPage<TblArticleInfo> infoPage = articleInfoService.getArticleByPage(page);
         List<TblArticleInfo> infoPageRecords = infoPage.getRecords();
@@ -72,21 +73,25 @@ public class ArticleController {
     /**
      * 按id获取文章并返回页面
      *
-     * @param id 文章id
+     * @param id    文章id
      * @param token 标识是否发送评论及其是否成功
-     * @param model
+     * @param model 反馈对象
      * @return Template
      */
     @OperateLog(operateDesc = "查询文章")
     @RequestMapping(value = "/article", method = RequestMethod.GET)
-    public String getArticle(@RequestParam(value = "id", defaultValue = "1") Long id, String token, Model model) {
+    public String getArticle(@RequestParam(value = "id", defaultValue = "1") Long id,
+                             String token,
+                             Model model) {
         //获取文章部分信息
-        TblArticleInfo article = articleInfoService.getArticleById(id);
+        TblArticleInfo article = articleInfoService.getArticleById(id);//依id获取文章信息
+        TblArticlePicture pictureUrl = articlePictureService.getPictureUrl(id);
         List<TblArticleCategory> categories = articleCategoryService.getCategoriesByArticleId(id);//获取文章标签
         model.addAttribute("articleTitle", article.getTitle());
         model.addAttribute("url", article.getTitle() + ".html");
-        model.addAttribute("article_id", id);
+        model.addAttribute("articleId", id);
         model.addAttribute("categories", categories);
+        model.addAttribute("pictureUrl", pictureUrl);
 
         //获取文章评论对象集合
         List<TblArticleComment> articleComments = articleCommentService.getComment(id);
@@ -114,14 +119,15 @@ public class ArticleController {
      * 在特定文章添加评论
      *
      * @param articleId 评论的文章Id
-     * @param email 评论者的邮箱
-     * @param comment 评论体
-     * @param model
+     * @param email     评论者的邮箱
+     * @param comment   评论体
      * @return
      */
     @OperateLog(operateDesc = "添加评论")
     @RequestMapping(value = "/article/insert", method = RequestMethod.GET)
-    public String addComment(@RequestParam(value = "article_id") Long articleId, @RequestParam(value = "email", defaultValue = "") String email, @RequestParam(value = "comment", defaultValue = "") String comment, Model model) {
+    public String addComment(@RequestParam(value = "article_id") Long articleId,
+                             @RequestParam(value = "email", defaultValue = "") String email,
+                             @RequestParam(value = "comment", defaultValue = "") String comment) {
         //将传入的表单数据封装成comment对象
         TblArticleComment articleComment = new TblArticleComment();
         articleComment.setArticleId(articleId);
@@ -131,7 +137,7 @@ public class ArticleController {
         //添加至数据库,传送token
         boolean flag = articleCommentService.insertComment(articleComment);
         String token;
-        if (flag){
+        if (flag) {
             token = new String("true");
         } else {
             token = new String("false");
@@ -145,13 +151,15 @@ public class ArticleController {
      * 按字段搜索获取文章并返回页面
      *
      * @param contentLike 搜索的词汇
-     * @param page 页码
+     * @param page        页码
      * @param model
      * @return Template
      */
     @OperateLog(operateDesc = "搜索文章")
     @RequestMapping(value = "/article_search", method = RequestMethod.GET)
-    public String searchArticle(@RequestParam(value = "content_like", required = false) String contentLike, @RequestParam(value = "page", required = false) Integer page, Model model) {
+    public String searchArticle(@RequestParam(value = "content_like", required = false) String contentLike,
+                                @RequestParam(value = "page", required = false) Integer page,
+                                Model model) {
         //调用方法分页查询content
         IPage<TblArticleContent> contentIPage = articleContentService.searchContent(contentLike, page);
 

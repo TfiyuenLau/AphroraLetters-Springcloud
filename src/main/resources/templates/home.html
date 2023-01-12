@@ -30,7 +30,8 @@
     <div class="container-fluid">
         <!-- 设置Logo -->
         <a class="navbar-brand" href="#" th:href="@{/home}">
-            <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
+            <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32"
+                 class="d-inline-block align-text-top">
             Leftwing Community
         </a>
 
@@ -146,8 +147,123 @@
                 </div>
             </div>
         </div>
-        <br>
 
+        <!-- 第三行-->
+        <div class="container row">
+            <div class="card border-warning shadow mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div style="float: left;">
+                                <img class="img-fluid" style="max-width: 48px"
+                                     th:src="@{/img/公告栏.png}" src="../static/img/公告栏.png" alt="公告栏">
+                            </div>
+                            <div class="h1 text-center"
+                                 style="font-family: 楷体,serif;color: #494D55;font-weight: 600;word-spacing: 8px">
+                                公 告 栏
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <!-- 最新消息 -->
+                        <div class="col-lg-8">
+                            <h3 class="border-start border-warning text-danger"
+                                style="font-family: 楷体,serif;font-weight: 600;">最新消息</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" th:each="announcement, status:${announcements}">
+                                    <a class="text-black text-decoration-none lead" target="_blank"
+                                       href="announcement.html" th:href="${'/announcement?id=' + announcement.getId()}"
+                                       th:text="${announcement.getTitle()}">
+                                        游客须知 | 左翼社区将用于收录各重要文章与网络资源
+                                    </a>
+                                    <span class="badge bg-secondary" th:text="${'发布时间：' + announcement.getTime()}">
+                                        发布时间：2023年01月11日
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="text-end">
+                                <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="offcanvas"
+                                        data-bs-target="#announcementOffcanvas" aria-controls="offcanvasExample">
+                                    显示更多
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 版本日志 -->
+                        <div class="col-lg-4">
+                            <h3 class="border-start border-warning text-danger"
+                                style="font-family: 楷体,serif;font-weight: 600;">版本日志</h3>
+                            <div th:each="versionLog, status:${versionLogs}">
+                                <div class="box" th:classappend="${status.first}?firstOne">
+                                    <span class="badge bg-danger" th:text="${versionLog.getVersion()}">version</span>：
+                                    <div>
+                                        <span th:text="${versionLog.getLog()}">页面大量更新并增加了后台管理面板</span>
+                                        <span class="badge bg-secondary" th:text="${versionLog.getTime()}">
+                                            2022-10-11
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="offcanvas"
+                                        data-bs-target="#versionOffcanvas" aria-controls="offcanvasExample">
+                                    显示更多
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 公告栏消息的滑动侧边栏 -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="announcementOffcanvas"
+             data-bs-scroll="true" aria-labelledby="offcanvasExampleLabel1">
+            <div class="offcanvas-header">
+                <h3 class="offcanvas-title border-start border-warning text-danger"
+                    id="offcanvasExampleLabel1" style="font-family: 楷体,serif;font-weight: 600;">最新消息</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="announcement, status:${announcementList}">
+                        <a class="text-black text-decoration-none lead" target="_blank" href="announcement.html"
+                           th:href="${'/announcement?' + announcement.getId()}" th:text="${announcement.getTitle()}">
+                            游客须知 | 左翼社区将用于收录各重要文章与网络资源
+                        </a>
+                        <span class="badge bg-secondary" th:text="${'发布时间：' + announcement.getTime()}">
+                            发布时间：2023年01月11日
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 公告栏版本日志的滑动侧边栏 -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="versionOffcanvas"
+             data-bs-scroll="true" aria-labelledby="offcanvasExampleLabel2">
+            <div class="offcanvas-header">
+                <h3 class="offcanvas-title border-start border-warning text-danger"
+                    id="offcanvasExampleLabel2" style="font-family: 楷体,serif;font-weight: 600;">版本日志</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div th:each="versionLog, status:${versionLogList}">
+                    <div class="box" th:classappend="${status.first}?firstOne">
+                        <span class="badge bg-danger" th:text="${versionLog.getVersion()}">version</span>：
+                        <div>
+                            <span th:text="${versionLog.getLog()}">页面大量更新并增加了后台管理面板</span>
+                            <span class="badge bg-secondary" th:text="${versionLog.getTime()}">
+                                2022-10-11
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
     </div>
     <!-- 底部留白 -->
     <br>
@@ -166,9 +282,19 @@
                 </div>
                 <!-- 底部页脚文字 -->
                 <div class="text-warning" style="font-size: 0.9rem">
-                    <strong>友情链接</strong>：<a class="btn" style="color: #FC8C23" href="https://www.marxists.org/" target="_blank"><strong>马克思主义中文网</strong></a><span style="margin: 0 3px;">/</span><a class="btn" style="color: #FC8C23" href="https://github.com/TfiyuenLau/LeftwingCommunity-Springboot" target="_blank"><strong>GitHub项目地址</strong></a>
+                    <strong>友情链接</strong>：
+                    <a class="btn" style="color: #FC8C23"
+                       href="https://www.marxists.org/" target="_blank"><strong>马克思主义中文网</strong></a>
+                    <span style="margin: 0 3px;">/</span>
+                    <a class="btn" style="color: #FC8C23"
+                       href="https://github.com/TfiyuenLau/LeftwingCommunity-Springboot"
+                       target="_blank"><strong>GitHub项目地址</strong></a>
                     <br>
-                    <strong>Copyright &copy; 2022 <a class="btn btn-lg" style="color: #FC8C23" href="https://www.cnblogs.com/MatikaneSpartakusbund/" target="_blank"><strong>@Matikane Spartakusbund</strong></a>.</strong> All rights reserved.
+                    <strong>Copyright &copy; 2022
+                        <a class="btn btn-lg" style="color: #FC8C23"
+                           href="https://www.cnblogs.com/MatikaneSpartakusbund/" target="_blank">
+                            <strong>@Matikane Spartakusbund</strong>
+                        </a>.</strong> All rights reserved.
                 </div>
             </div>
         </div>
@@ -176,26 +302,77 @@
     </div>
 </footer>
 
-<style>
-    /* 取消bootstrap边距，解决移动端右划白边 */
-    .row {
-        margin: 0;
-    }
-</style>
-
 <script>
     /**
      * 检测媒体屏幕，当为小型屏幕时隐藏部分标签
      */
-    let hid = function () {
+    let hidDiv = function () {
         //隐藏logo
         let img = document.getElementById('displayImg');
         img.style.display = document.documentElement.clientWidth > 768 ? 'block' : 'none'
     }
 
     //添加事件监听，触发hid()函数
-    window.onresize = hid()
-    window.addEventListener("beforeunload", hid())
+    window.onresize = hidDiv()
+    window.addEventListener("beforeunload", hidDiv())
+</script>
+
+<!-- 取消bootstrap边距，解决移动端右划白边 -->
+<style>
+    /**/
+    .row {
+        margin: 0;
+    }
+</style>
+<!-- 版本日志css样式-->
+<style>
+    .box {
+        border-left: 2px solid #d1d7de;
+        padding: 0 0 10px 15px;
+        position: relative;
+        pointer-events: none;
+    }
+
+    .box::before {
+        position: absolute;
+        left: -8px;
+        content: '';
+        width: 12px;
+        height: 12px;
+        border-radius: 50ch;
+        background-color: #d1d7de;
+    }
+
+    .box:nth-child(1)::before {
+        width: 16px;
+        height: 16px;
+        left: -9px;
+        cursor: pointer;
+        pointer-events: all;
+    }
+</style>
+<!-- 版本日志js -->
+<script>
+    let boxes = document.querySelectorAll('.box')
+    let firstOne = document.querySelector('.firstOne')
+    let before = window.getComputedStyle(firstOne, '::before'); //获取伪元素
+    let hid = false
+    firstOne.addEventListener('click', () => {
+        if (hid == false) {
+            document.querySelectorAll('.box').forEach((e) => {
+                e.style.display = 'none'
+            })
+            document.querySelector('.firstOne').style.display = "block"
+            hid = true
+        } else {
+            document.querySelectorAll('.box').forEach((e) => {
+                e.style.display = 'block'
+            })
+            hid = false
+        }
+
+    })
+
 </script>
 
 </body>

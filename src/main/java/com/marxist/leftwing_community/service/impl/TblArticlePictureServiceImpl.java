@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.marxist.leftwing_community.entity.TblArticleContent;
+import com.marxist.leftwing_community.entity.TblArticleInfo;
 import com.marxist.leftwing_community.entity.TblArticlePicture;
 import com.marxist.leftwing_community.dao.TblArticlePictureMapper;
 import com.marxist.leftwing_community.service.ITblArticlePictureService;
@@ -37,7 +38,10 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
      */
     @Override
     public List<String> getAllPictureUrl() {
-        List<TblArticlePicture> articlePictures = articlePictureMapper.selectList(null);
+        List<TblArticlePicture> articlePictures = articlePictureMapper.selectList(
+                //倒叙查询
+                new QueryWrapper<TblArticlePicture>().orderByDesc("id")
+        );
 
         ArrayList<String> urlList = new ArrayList<>();
         for (TblArticlePicture articlePicture : articlePictures) {
@@ -135,6 +139,22 @@ public class TblArticlePictureServiceImpl extends ServiceImpl<TblArticlePictureM
     public int delPic(Long id) {
 
         return articlePictureMapper.deleteById(id);
+    }
+
+    /**
+     * 通过id修改文章图片
+     *
+     * @param id
+     * @param url
+     * @return
+     */
+    @Override
+    public int updatePicById(Long id, String url) {
+        TblArticlePicture articlePicture = new TblArticlePicture();
+        articlePicture.setId(id);
+        articlePicture.setPictureUrl(url);
+
+        return articlePictureMapper.updateById(articlePicture);
     }
 
 }

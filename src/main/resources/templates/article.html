@@ -22,59 +22,10 @@
 
 </head>
 
-<!-- 使用iframe标签实现文章主体页面 -->
 <body>
 
-<!-- 顶部导航栏:灰色的水平导航栏在小型屏幕上变为垂直 -->
-<nav class="navbar navbar-expand-lg bg-danger navbar-dark sticky-top">
-
-    <div class="container-fluid">
-        <!-- 设置Logo -->
-        <a class="navbar-brand" href="#" th:href="@{/home}">
-            <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
-            Leftwing Community
-        </a>
-
-        <!-- 设置小屏按钮折叠导航栏 -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <!-- 后面的标签向右对齐 -->
-            <div class="me-auto"></div>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/home}">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blogs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/library}">文库</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/assistance}">支持我们</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/about}">关于</a>
-                </li>
-            </ul>
-
-            <!-- 搜索功能表单 -->
-            <form class="d-flex" action="#" th:action="@{/article_search}" method="get">
-                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words"
-                       required="required">
-                <input class="" type="hidden" name="page" value="1">
-
-                <button class="btn btn-dark" type="submit">Search</button>
-            </form>
-
-        </div>
-    </div>
-
-</nav>
+<!-- 引入顶部导航栏 -->
+<div th:replace="home::home_nav"></div>
 
 <!-- 网站内容 -->
 <div class="container">
@@ -83,6 +34,14 @@
         <div class="col-lg-9">
             <!-- 正文 -->
             <div class="container mt-3 rounded" id="bg">
+                <!-- 文章题图 -->
+                <div class="mt-1">
+                    <img class="img-thumbnail img-fluid mx-auto d-block"
+                         style="max-height: 256px;width: 100%;object-fit: cover"
+                         th:src="@{/{pic_url}(pic_url=${pictureUrl.getPictureUrl()})}"
+                         src="../static/img/谈论女权主义01.jpg" alt="文章题图"/>
+                </div>
+
                 <!-- 使用iframe标签嵌套网页 id="childFrame"使父网页应用子网页的height -->
                 <iframe th:src="@{/page/{url}(url=${url})}" src="../static/page/女权主义有道理吗？谈论它的哲学根基.html"
                         scrolling="no" width=100% height=100% id="childFrame" name="childFrame"></iframe>
@@ -93,11 +52,11 @@
                 <!-- 发表评论的表单 -->
                 <div class="container bg-light rounded shadow p-4 mb-4 bg-white" id="success">
                     <form action="#" th:action="@{/article/insert}" method="get">
-                        <input type="hidden" name="article_id" value="1" th:value="${article_id}">
+                        <input type="hidden" name="article_id" value="1" th:value="${articleId}">
                         <div class="mb-3">
                             <label for="email" class="form-label"><strong>电子邮件</strong>：</label>
-                            <input type="email" class="form-control" id="email"
-                                   placeholder="想匿名?试试我们的工作邮箱~(tfiquenlau@foxmail.com)" required="required"
+                            <input type="email" class="form-control" id="email" required="required"
+                                   placeholder="想匿名?试试我们的工作邮箱~(tfiquenlau@foxmail.com)"
                                    name="email">
                         </div>
                         <div class="mb-3">
@@ -277,9 +236,10 @@
         }
 
         //当设备为小型设备时隐藏文章目录索引列表
-        let indexCollapse = document.querySelector('.indexCollapse');
+        let indexCollapse = document.querySelector('#indexCollapse');
         if (document.documentElement.clientWidth < 768) {
-            indexCollapse.className = 'collapse';
+            console.log(indexCollapse.className);
+            indexCollapse.classList.remove('show');
         }
     }
     window.onresize = hid()
@@ -288,9 +248,8 @@
 </script>
 
 <!-- 文章索引js实现 -->
-<script th:src="@{/js/articleIndex.js}" src="../static/js/articleIndex.js" type="text/javascript"
-        charset="utf-8"></script>
-
+<script th:src="@{/js/articleIndex.js}" src="../static/js/articleIndex.js"
+        type="text/javascript" charset="utf-8"></script>
 <!-- 树状结构css实现 -->
 <style>
     ul.domtree,

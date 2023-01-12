@@ -26,4 +26,6 @@ public interface ITblArticlePictureService extends IService<TblArticlePicture> {
     void addPicByUrl(String url);
 
     int delPic(Long id);
+
+    int updatePicById(Long id, String url);
 }

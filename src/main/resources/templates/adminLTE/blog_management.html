@@ -25,16 +25,6 @@
             obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
         }
     </script>
-
-    <script>
-        //删除文章
-        function delArticle(id) {
-            //判断与用户安全提示
-            if (confirm("您确定要删除吗?")) {
-                location.href = '/admin/del_article?id=' + id;
-            }
-        }
-    </script>
 </head>
 <body class="hold-transition sidebar-mini" onload="IFrameResize()">
 <!-- Content Header (Page header) -->
@@ -66,7 +56,7 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="col-5">
+                <div class="col-lg-5">
                     <div class="card shadow mt-3">
                         <div class="card-header bg-primary">
                             <h3 class="card-title">通过文件上传文章</h3>
@@ -82,7 +72,7 @@
                                     </label>
                                     <br>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-lg-6">
                                             <label class="form-label">文章文件：(*.md)</label>
                                             <label style="width: 100%">
                                                 <input type="file" class="form-control"
@@ -90,7 +80,7 @@
                                                        name="file" required="required">
                                             </label>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-lg-6">
                                             <label class="form-label">文章题图：(*.jpg)</label>
                                             <label style="width: 100%">
                                                 <input type="file" class="form-control"
@@ -120,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="col-7">
+                <div class="col-lg-7">
                     <div class="card shadow mt-3">
                         <div class="card-header bg-primary">
                             <h3 class="card-title">文章分类标签管理</h3>
@@ -130,13 +120,13 @@
                             <form action="#" th:action="@{/admin/add_category}" class="mb-3 mt-3" method="post">
                                 <label class="form-label">添加文章类型标签：</label>
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-lg-10">
                                         <label style="width: 100%">
                                             <input type="text" class="form-control" placeholder="请输入标签名称"
                                                    name="categoryName" required="required">
                                         </label>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-lg-2">
                                         <button type="submit" class="btn btn-primary" style="width: 100%">提交</button>
                                     </div>
                                 </div>
@@ -199,27 +189,37 @@
                 <thead>
                 <tr>
                     <th>Article ID</th>
+                    <th>Article Picture</th>
                     <th>Article Title</th>
                     <th>Article Summary</th>
                     <th>Create Time</th>
-                    <th>Modified Time</th>
                     <th>Operation</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="info, status:${articleInfo}">
-                    <td th:text="${info.getId()}">First</td>
-                    <td th:text="${info.getTitle()}">Title</td>
+                    <td th:text="${info.getId()}">1</td>
+                    <td>
+                        <img class="img-thumbnail" src="../../static/img/俄国对清战争.jpg"
+                             th:src="@{/{pic_url}(pic_url=${allPictureUrl.get(status.index + ((pageCurrent - 1) * 10))})}"
+                             style="max-height: 96px;max-width: 169px" alt="文章题图">
+                    </td>
+                    <td th:text="${info.getTitle()}">《受照顾的大学生》托洛茨基</td>
                     <td th:text="${info.getSummary()}">原文原载于《火星报》60号，1904年2月25日</td>
                     <td th:text="${info.getCreateBy()}">2022-09-27 22:42:55</td>
-                    <td th:text="${info.getModifiedBy()}">2022-09-28 12:22:42</td>
                     <td>
-                        <div>
-                            <button type="button" class="btn btn-outline-danger">
-                                <a class="text-danger" href="javascript:delArticle(0)"
-                                   th:href="'javascript:delArticle(' + ${info.getId()} + ')'">删除</a>
-                            </button>
-                        </div>
+                        <!-- 修改模态框按钮 -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#updateModal" onclick="showDialog(this)">
+                            修改
+                        </button>
+                        <!-- 删除按钮 -->
+                        <button type="button" class="btn btn-outline-danger">
+                            <a class="text-danger" href="javascript:delArticle(0)"
+                               th:href="'javascript:delArticle(' + ${info.getId()} + ')'">
+                                删除
+                            </a>
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -244,6 +244,89 @@
     </div>
 </div>
 
-</body>
+<!-- 修改文章模态框 -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="position: absolute;top: calc(75% - 350px);left: calc(50% - 250px);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">修改文章部分信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 内容修改表单 -->
+                <form th:action="@{/admin/updateArticle}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="articleId" id="articleId">
+                    <div class="form-group">
+                        <label for="articlePic">文章题图</label>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img class="img-thumbnail" id="oldPic" src="" style="max-height: 128px;max-width: 225px" alt="旧的图片">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="file" class="form-control" id="articlePic" name="articlePic">
+                                <small class="form-text text-muted">请上传新的题图...若不修改则无需选择。</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleTitle">文章标题</label>
+                        <input type="text" class="form-control" name="articleTitle" id="articleTitle" aria-describedby="emailHelp" placeholder="请填写新的文章标题...若不修改则无需填写。">
+                        <small class="form-text text-muted">
+                            其中原标题为 <strong id="oldTitle">Title</strong>。
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleInfo">文章简介</label>
+                        <textarea type="text" class="form-control" name="articleSummary" rows="4" id="articleInfo" placeholder="请输入新的文章简介...若不修改则无需填写。"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- js表格操作函数 -->
+<script>
+    /**
+     * 删除文章
+     *
+     * @param id 需要删除的文章id
+     */
+    function delArticle(id) {
+        //判断与用户安全提示
+        if (confirm("您确定要删除所选的文章吗?")) {
+            location.href = '/admin/del_article?id=' + id;
+        }
+    }
+
+    /**
+     * 修改文章传参至模态框
+     *
+     * @param obj 按钮元素对象
+     */
+    function showDialog(obj) {
+        //点击更新按钮后展示模态框
+        $('#updateModal').modal('show');
+
+        //获取当前行的所有列对象数组，随后赋值给模态框
+        let tds = $(obj).parent().parent().find('td');
+        $("#articleId").val($(tds.eq(0)).text());
+        $("#oldPic").attr('src', $(tds.eq(1)).find('img')[0].src);
+        $("#oldTitle").text($(tds.eq(2)).text());
+    }
+    
+</script>
+
+<!-- jQuery -->
+<script src="../../static/adminLTE/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../static/adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

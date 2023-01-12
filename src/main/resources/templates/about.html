@@ -24,57 +24,8 @@
 
 <body>
 
-<!-- 顶部导航栏:灰色的水平导航栏在小型屏幕上变为垂直 -->
-<nav class="navbar navbar-expand-lg bg-danger navbar-dark sticky-top">
-
-    <div class="container-fluid">
-        <!-- 设置Logo -->
-        <a class="navbar-brand" href="#" th:href="@{/home}">
-            <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
-            Leftwing Community
-        </a>
-
-        <!-- 设置小屏按钮折叠导航栏 -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <!-- 后面的标签向右对齐 -->
-            <div class="me-auto"></div>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/home}">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blogs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/library}">文库</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/assistance}">支持我们</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/about}">关于</a>
-                </li>
-            </ul>
-
-            <!-- 搜索功能表单 -->
-            <form class="d-flex" action="#" th:action="@{/article_search}" method="get">
-                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words"
-                       required="required">
-                <input class="" type="hidden" name="page" value="1">
-
-                <button class="btn btn-dark" type="submit">Search</button>
-            </form>
-
-        </div>
-    </div>
-
-</nav>
-
+<!-- 引入顶部导航栏 -->
+<div th:replace="home::home_nav"></div>
 
 <!-- 网站内容 -->
 <div class="container">

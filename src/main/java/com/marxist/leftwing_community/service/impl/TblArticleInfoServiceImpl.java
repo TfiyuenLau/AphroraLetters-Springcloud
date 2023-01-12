@@ -27,13 +27,10 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     @Autowired
     private TblArticleInfoMapper articleInfoMapper;
 
-    @Autowired
-    private TblArticleContentServiceImpl articleContentService;
-
     /**
      * 获取所有文章信息
      *
-     * @return
+     * @return 封装了所有文章信息的List对象
      */
     @Override
     public List<TblArticleInfo> getAllArticleInfo() {
@@ -41,6 +38,12 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
         return articleInfoMapper.selectList(null);
     }
 
+    /**
+     * 通过id查询文章数据
+     *
+     * @param id 文章id
+     * @return 一条文章数据
+     */
     @Override
     public TblArticleInfo getArticleById(Long id) {
         return articleInfoMapper.selectById(id);
@@ -49,8 +52,8 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     /**
      * 按id获取文章标题
      *
-     * @param id
-     * @return
+     * @param id 文章di
+     * @return 文章标题
      */
     @Override
     public String getArticleTitle(Long id) {
@@ -60,15 +63,18 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     }
 
     /**
-     * 分页插件，返回分页后的数据
+     * 分页查询文章
      *
-     * @param page
+     * @param page 页码
      * @return IPage
      */
     @Override
     public IPage<TblArticleInfo> getArticleByPage(Long page) {
         IPage<TblArticleInfo> infoIPage = new Page<>(page, 10);//第page页，每页10条数据
-        articleInfoMapper.selectPage(infoIPage, null);
+        articleInfoMapper.selectPage(
+                infoIPage,
+                new QueryWrapper<TblArticleInfo>().orderByDesc("id")//倒叙查询
+        );
 
         return infoIPage;
     }
@@ -76,9 +82,9 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     /**
      * 通过content查询返回分页的Info对象集合
      *
-     * @param contentIPage
-     * @param page
-     * @return
+     * @param contentIPage 搜索字段
+     * @param page 页码
+     * @return infoIPage
      */
     @Override
     public IPage<TblArticleInfo> searchArticleInfoByPage(IPage<TblArticleContent> contentIPage, Integer page) {
@@ -118,8 +124,9 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
 
     /**
      * 逻辑删除文章
+     *
      * @param id 文章id
-     * @return
+     * @return 删除数据条数
      */
     @Override
     public int delArticle(Long id) {
@@ -128,8 +135,28 @@ public class TblArticleInfoServiceImpl extends ServiceImpl<TblArticleInfoMapper,
     }
 
     /**
+     * 部分更新文章信息数据
+     *
+     * @param id 文章id
+     * @param title 文章标题
+     * @param summary 文章综述
+     * @return 修改数据条数
+     */
+    @Override
+    public int updateArticleInfo(Long id, String title, String summary) {
+        //封装对象
+        TblArticleInfo articleInfo = new TblArticleInfo();
+        articleInfo.setId(id);
+        articleInfo.setTitle(title);
+        articleInfo.setSummary(summary);//为null则不更新
+
+        return articleInfoMapper.updateById(articleInfo);
+    }
+
+    /**
      * 获取推荐文章
-     * @return
+     *
+     * @return List<TblArticleInfo>
      */
     @Override
     public List<TblArticleInfo> getRecommendArticle() {

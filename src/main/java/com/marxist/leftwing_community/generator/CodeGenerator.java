@@ -57,7 +57,9 @@ public class CodeGenerator {
 //        strategyConfigBuilder.addInclude("sys_log", "tbl_article_category", "tbl_article_comment", "tbl_article_info", "tbl_article_content", "tbl_article_picture");
 //        strategyConfigBuilder.addInclude("user");
 //        strategyConfigBuilder.addInclude("library_author", "author_index");
-        strategyConfigBuilder.addInclude("classification");//字符串数组，可以生成多个表
+//        strategyConfigBuilder.addInclude("classification");
+//        strategyConfigBuilder.addInclude("announcement");
+        strategyConfigBuilder.addInclude("version_log");//字符串数组，可以生成多个表
 
         // 下划线转驼峰
         strategyConfigBuilder.entityBuilder().naming(NamingStrategy.underline_to_camel);

@@ -41,7 +41,7 @@
 /*超小屏幕设备 手机*/
 @media (max-width: 768px) {
     body {
-        background-image: url("../img/20221030141215.jpg");
+        background-image: url("../img/移动端背景图.jpg");
         background-position: center 0;
         background-repeat: no-repeat;
         background-attachment: fixed;

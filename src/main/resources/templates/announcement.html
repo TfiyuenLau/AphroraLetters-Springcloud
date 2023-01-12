@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- 加载thymeleaf模板 -->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>公告栏 | 最新消息</title>
+    <link rel="icon" th:href="@{/img/newlogo.png}" href="../static/img/newlogo.png" type="image/x-icon">
+
+    <!-- 加载Bootstrap V5，Springboot项目自动扫描resource资源目录 -->
+    <link th:href="@{/bootstrap-5.1.3-dist/css/bootstrap.min.css}"
+          href="../static/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js}"
+            src="../static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js" type="text/javascript"
+            charset="utf-8"></script>
+
+    <!-- 加载index.css -->
+    <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+
+    <script>
+        function IFrameResize() {
+            //alert(this.document.body.scrollHeight); //弹出当前页面的高度
+            var obj = parent.document.getElementById("childFrame"); //取得父页面IFrame对象
+            //alert(obj.height); //弹出父页面中IFrame中设置的高度
+            obj.height = this.document.body.scrollHeight + 50; //调整父页面中IFrame的高度为此页面的高度
+        }
+    </script>
+</head>
+
+<body onload="IFrameResize()">
+
+<!-- 引入顶部导航栏 -->
+<div th:replace="home::home_nav"></div>
+
+<!-- 网站内容 -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-9">
+            <!-- 主容器 -->
+            <div class="container mt-3 rounded">
+                <div class="card border-danger active">
+                    <div class="card-header bg-danger text-light" style="font-weight: 600;word-spacing: 4px">
+                        公告栏 | 最新消息
+                    </div>
+                    <div class="card-body">
+                        <!-- 公告通用图片 -->
+                        <div>
+                            <img th:src="@{/img/格拉西莫夫%20S.V.%20革命大本营.jpg}" src="../static/img/格拉西莫夫%20S.V.%20革命大本营.jpg" style="width: 100%;max-height: 256px;object-fit: cover;" class="img-thumbnail" alt="公告通用图片">
+                        </div>
+                        <!-- 公告标题 -->
+                        <h3 class="text-center" style="font-weight: 600" th:text="${announcement.getTitle()}">
+                            游客须知 | 左翼社区将用于收录各重要文章与网络资源
+                        </h3>
+                        <hr>
+                        <!-- 发布者与发布时间 -->
+                        <div class="text-center">
+                            <span class="text-center text-muted" th:text="${'发布者：' + announcement.getPublisher()}">
+                                发布者：左翼社区
+                            </span>
+                            <span class="text-center text-muted" th:text="${'发布时间：' + announcement.getTime()}">
+                                发布时间：2023年01月11日
+                            </span>
+                        </div>
+                        <br>
+                        <!-- 公告正文——th:utext支持html语法解析 -->
+                        <div class="lead" style="text-indent: 2em" th:utext="${announcement.getContent()}">
+                            <p>
+                                左翼一词一说起源于法国大革命时期：革命家将象征封建制度的、代表落后生产力而阻挠资产阶级民主的皇帝及其保皇派簇拥们称为<strong>右派（或右翼、反动派）</strong>，将显出勃勃生机并羽翼渐丰满的资产阶级革命者称之为<strong>左派（左翼）</strong>。在其百年后的近代，这些词的内涵并未改变，右翼仍代表着统治阶级的<strong>专权与压迫</strong>、<strong>狭隘的民族视角</strong>、对已然<strong>腐化之现状</strong>的捍卫；左翼则以实践争取着底层即多数人的最大利益，探讨与找寻<strong>社会公平的实现方式</strong>，以温和改革或激进革命的方式对暴露弊病的现实进行<strong>否定</strong>。
+                            </p>
+                            <p>
+                                然而，恪守左翼进步主义的知识分子早已不是<strong>资产阶级</strong>与<strong>威权建制派</strong>们。他们或是<strong>享受着资本扩张</strong>的愉悦，以传播<strong>消费主义</strong>与占据<strong>房地产及其附属金融产业（房产抵押贷款）</strong>近乎法西斯式地控制着普罗大众（The
+                                Proletariat）的生产与消费行为；或是<strong>背弃</strong>无产阶级，官商勾结，无视父辈们为劳动者们制定的法律，以已然蜕变为技术官僚统治工具的行政权力<strong>为己谋私利</strong>。左翼的大旗则落到了吸收有马克思主义思想内核、与继承了安那其主义反叛传统的思想流派。
+                            </p>
+                            <p>
+                                事实上，我们都知道，左翼各流派完全不是一团和气的。至少在当今网络环境上，<strong>原初马克思主义、安那其主义、列宁主义、工团主义、马赫诺主义、斯派、托派、毛主义、西马及法兰克福学派、社民、民社</strong>相互“开除左籍”、互扣帽子，这样的<strong>路线之争造成了理论混乱</strong>，“同僚”们在斗争空耗斗志。我们需得在<strong>进步之大旗</strong>下集结，结成统一战线，在哲学理论斗争的相互诘难中共同趋向成熟，在实践斗争中互济互助。
+                            </p>
+                        </div>
+                        <!-- 公告声明 -->
+                        <p class="text-end" style="font-weight: 600">素材来自网络，侵删。</p>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- 底部留白 -->
+            <br>
+            <br>
+            <br>
+
+        </div>
+
+        <!-- 右侧悬浮列表组 -->
+        <div class="col-lg-3 rightIsShow">
+            <div class="mt-lg-3 rounded">
+                <!-- 固定在顶部 -->
+                <div class="list-group text-break" style="word-break: break-all;width: 100%">
+                    <a href="#" class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</a>
+                    <div th:each="recommendArticle, status:${recommendArticles}">
+                        <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 引入页脚 -->
+<div th:replace="home::home_footer"></div>
+
+<script>
+    //检测媒体屏幕，当为小型屏幕时隐藏部分标签
+    let hid = function () {
+        //隐藏logo
+        let img = document.getElementById('displayImg');
+        img.style.display = document.documentElement.clientWidth > 768 ? 'block' : 'none'
+    }
+    window.onresize = hid()
+    window.addEventListener("beforeunload", hid())
+
+</script>
+
+</body>
+
+</html>

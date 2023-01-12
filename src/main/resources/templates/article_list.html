@@ -23,55 +23,9 @@
 </head>
 
 <body>
-<!-- 顶部导航栏:灰色的水平导航栏在小型屏幕上变为垂直 -->
-<nav class="navbar navbar-expand-lg bg-danger navbar-dark sticky-top">
 
-    <div class="container-fluid">
-        <!-- 设置Logo -->
-        <a class="navbar-brand" href="#" th:href="@{/home}">
-            <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
-            Leftwing Community
-        </a>
-
-        <!-- 设置小屏按钮折叠导航栏 -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse"  id="collapsibleNavbar">
-            <!-- 后面的标签向右对齐 -->
-            <div class="me-auto"></div>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/home}">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/article_list?page=1}">Blogs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/library}">文库</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/assistance}">支持我们</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/about}">关于</a>
-                </li>
-            </ul>
-
-            <form class="d-flex" action="#" th:action="@{/article_search}" method="get">
-                <input class="form-control me-2" type="text" name="content_like" placeholder="Enter the words" required="required">
-                <input class="" type="hidden" name="page" value="1">
-
-                <button class="btn btn-dark" type="submit">Search</button>
-            </form>
-
-        </div>
-    </div>
-
-</nav>
-
+<!-- 引入顶部导航栏 -->
+<div th:replace="home::home_nav"></div>
 
 <!-- 网站内容 -->
 <div class="container" id="mobile_device">
@@ -85,20 +39,37 @@
                     <li class="list-group-item active list-group-item-action list-group-item-danger rounded">文章列表</li>
                     <!-- 迭代生成文章列表 -->
                     <div th:each="articleInfo, status:${aPageArticleInfo}">
-                        <li style="height: 100px;width: 100%;overflow: hidden;padding: 0!important;" class="list-group-item rounded">
+                        <li style="height: 100%;width: 100%;overflow: hidden;padding: 0!important;" class="list-group-item rounded">
                             <div class="row">
                                 <!-- 文章题图 -->
-                                <div class="col-3" style="height: 100px;padding-right: 0" >
-                                    <img style="height: 100%;width: 100%;object-fit: cover" class="img-thumbnail img-fluid mx-auto d-block" th:src="@{/{pic_url}(pic_url=${allPictureUrl.get(status.index + ((pageCurrent - 1) * 10))})}" src="../static/img/PhoneBG%20(3).jpg" alt="文章题图"/>
+                                <div class="col-lg-3" style="max-height: 128px;padding-right: 0" >
+                                    <a href="#" th:href="${'/article?id=' + articleInfo.getId()}" target="_blank">
+                                        <img style="height: 100%;width: 100%;object-fit: cover"
+                                             class="img-thumbnail img-fluid mx-auto d-block"
+                                             th:src="@{/{pic_url}(pic_url=${allPictureUrl.get(status.index + ((pageCurrent - 1) * 10))})}"
+                                             src="../static/img/CCCP05.jpg" alt="文章题图"/>
+                                    </a>
                                 </div>
                                 <!-- 文章标题与地址索引 -->
-                                <div class="col-9" style="position: relative;padding-left: 0;">
+                                <div class="col-lg-9" style="position: relative;padding-left: 0;">
+                                    <!-- 滚动条 -->
                                     <div class="noScroll" style="width: 100%;overflow-x: scroll;">
-                                        <!-- 滚动条 -->
-                                        <div style="white-space: nowrap;"> <a class="btn btn-default btn-lg active" style="padding-left: 0.2rem" href="#" th:href="${'/article?id=' + articleInfo.getId()}" target="_blank" th:text="${articleInfo.getTitle()}">《自由和历史的绝对律令》马尔库塞</a><span style="margin-left: 3px" class="badge bg-danger" th:each="category, status:${articleInfo.getCategoryList()}" th:text="${category.getCategoryName()}">分类标签</span></div>
+                                        <!-- 标题 -->
+                                        <div style="white-space: nowrap;">
+                                            <a class="btn btn-default btn-lg active" style="padding-left: 0.2rem" href="#" th:href="${'/article?id=' + articleInfo.getId()}" target="_blank" th:text="${articleInfo.getTitle()}">《自由和历史的绝对律令》马尔库塞</a>
+                                            <span style="margin-left: 3px" class="badge bg-danger" th:each="category, status:${articleInfo.getCategoryList()}" th:text="${category.getCategoryName()}">分类标签</span>
+                                        </div>
                                     </div>
-                                    <p class="h6 text-muted" style="text-indent:1em;overflow: hidden;white-space:nowrap;text-overflow: ellipsis;" th:text="${articleInfo.getSummary()}">原载马尔库塞《批判哲学研究》（Studies in critical philosophy, 1972）文本超出一行时将折叠文本，以省略号结尾！</p>
-                                    <span style="position: absolute;bottom: 0;right: 6px;color: #BC9F77" class="h6 text-end" th:text="${'发布时间:' + articleInfo.getModifiedBy()}">发布时间:2022/10/1 下午6:08</span>
+                                    <!-- 简介 -->
+                                    <p class="h6 text-muted" style="text-indent:1em;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;text-overflow: ellipsis;overflow: hidden;" th:text="${articleInfo.getSummary()}">
+                                        原载马尔库塞《批判哲学研究》（Studies in critical philosophy, 1972）文本超出两行时将折叠文本，以省略号结尾！原载马尔库塞《批判哲学研究》（Studies in critical philosophy, 1972）文本超出两行时将折叠文本，以省略号结尾！
+                                    </p>
+                                    <br>
+                                    <!-- 发表时间 -->
+                                    <p class="h6 text-end" style="position: absolute;bottom: 0;right: 6px;color: #BC9F77"
+                                       th:text="${'发布时间：' + articleInfo.getTime()}">
+                                        发布时间：2022年10月11日
+                                    </p>
                                 </div>
                             </div>
                         </li>
@@ -128,7 +99,9 @@
                 <div class="list-group text-break" style="word-break: break-all;width: 100%">
                     <div class="list-group-item list-group-item-action active list-group-item-danger">推荐文章</div>
                     <div th:each="recommendArticle, status:${recommendArticles}">
-                        <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)</a>
+                        <a href="#" th:href="${'/article?id=' + recommendArticle.getId()}" class="list-group-item list-group-item-action" th:text="${recommendArticle.getTitle()}">
+                            《约·菲·贝克尔、约·狄慈根、弗·恩格斯、卡·马克思等致弗·阿·左尔格等书信集》俄译本序言(1907年4月6日〔19日〕)
+                        </a>
                     </div>
                 </div>
 
@@ -138,6 +111,9 @@
     </div>
 
 </div>
+
+<!-- 引入页脚 -->
+<!--<div th:replace="home::home_footer"></div>-->
 
 <style>
     /* 取消移动端右划白边 */

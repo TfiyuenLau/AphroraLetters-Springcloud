@@ -67,30 +67,7 @@ class LeftwingCommunityApplicationTests {
         for (int i = 0; i < fileNameLists.length; i++) {
             assert fileLists != null;
             MarkdownEntity markdownEntity = MarkDown2HtmlWrapper.ofFile(fileLists[i].getPath());
-
-            String htmlContent = new String();
-            String head = "<!DOCTYPE html>\n" +
-                    "<html lang=\"zh-CN\">\n" +
-                    "\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"UTF-8\">\n" +
-                    "    <title>Default</title>\n" +
-                    "\n" +
-                    "    <link rel=\"icon\" href=\"../img/logo.png\" type=\"image/x-icon\">\n" +
-                    "    <link href=\"../css/markdown.css\" rel=\"stylesheet\" type=\"text/css\">\n" +
-                    "\n" +
-                    "    <script>\n" +
-                    "        function IFrameResize() {\n" +
-                    "            var obj = parent.document.getElementById(\"childFrame\"); //取得父页面IFrame对象\n" +
-                    "            obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度\n" +
-                    "        }\n" +
-                    "    </script>\n" +
-                    "</head>\n" +
-                    "\n" +
-                    "<body onload=\"IFrameResize()\">\n\n";
-            htmlContent += head;//拼接head标签与js语法
-            htmlContent += markdownEntity.getHtml();//拼接html
-            htmlContent += "\n</body>\n" + "</html>";//拼接尾部
+            String htmlContent = MarkDown2HtmlWrapper.htmlAppend(markdownEntity);
 
             BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\Projects\\LeftwingCommunity-Springboot\\src\\main\\resources\\static\\page\\" + fileLists[i].getName().substring(0, fileLists[i].getName().length()-3) + ".html"));
             bw.write(htmlContent);

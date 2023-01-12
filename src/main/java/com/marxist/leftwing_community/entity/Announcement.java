@@ -1,13 +1,11 @@
 package com.marxist.leftwing_community.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,13 +18,12 @@ import lombok.Setter;
  * </p>
  *
  * @author @MatikaneSpartakusbund
- * @since 2022-09-21
+ * @since 2023-01-12
  */
 @Getter
 @Setter
-@TableName("tbl_article_info")
-@ApiModel(value = "TblArticleInfo对象", description = "")
-public class TblArticleInfo implements Serializable {
+@ApiModel(value = "Announcement对象", description = "")
+public class Announcement implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,30 +31,21 @@ public class TblArticleInfo implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty("文章标题")
+    @ApiModelProperty("公告发布者")
+    private String publisher;
+
+    @ApiModelProperty("公告标题")
     private String title;
 
-    @ApiModelProperty("文章简介，默认100个汉字以内")
-    private String summary;
+    @ApiModelProperty("公告内容")
+    private String content;
 
-    @ApiModelProperty("文章是否置顶，0为否，1为是")
-    private Boolean isTop;
-
-    @ApiModelProperty("文章访问量")
-    private Integer traffic;
-
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty("发布时间")
     private LocalDateTime createBy;
 
-    @ApiModelProperty("修改日期")
-    private LocalDateTime modifiedBy;
-
     @ApiModelProperty("是否有效")
+    @TableLogic
     private Boolean isEffective;
-
-    @TableField(exist = false)
-    @ApiModelProperty("代表当前文章所属的所有标签")
-    private List<TblArticleCategory> categoryList;
 
     /**
      * 获取格式化后的时间字符串
