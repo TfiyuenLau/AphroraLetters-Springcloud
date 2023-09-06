@@ -22,7 +22,7 @@ interface Announcement {
 const route = useRoute();
 let announcementId = computed(() => route.params.id);
 
-const announcement = ref<Announcement | null>(null)
+const announcement = ref<Announcement>();
 const getAnnouncementById = async () => {
   axiosHttp.get("/api/article/getAnnouncementById/" + announcementId.value).then(res => {
     announcement.value = res.data

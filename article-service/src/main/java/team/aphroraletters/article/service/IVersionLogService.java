@@ -1,7 +1,7 @@
 package team.aphroraletters.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import team.aphroraletters.article.entity.VersionLog;
+import team.aphroraletters.article.pojo.entity.VersionLog;
 
 import java.util.List;
 

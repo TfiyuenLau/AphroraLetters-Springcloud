@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import Navbar from "@/components/Navbar.vue"
+import Navbar from "@/components/Navbar.vue";
 import RecommendArticle from "@/components/RecommendArticleList.vue";
+import ArticleList from "@/components/ArticleList.vue";
 import axiosHttp from "@/axios.http";
-import {ref, onMounted, reactive, computed} from 'vue'
+import {ref, onMounted, reactive, computed} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
 
 interface ArticleList {
@@ -24,7 +25,7 @@ const router = useRouter();
 const route = useRoute();
 const page = computed(() => Number(route.params.page));
 
-const articleList = ref<ArticleList[] | null>(null);
+const articleList = ref<ArticleList[]>();
 
 // antdv pagination分页对象
 const pagination = reactive({
@@ -51,12 +52,12 @@ const pagination = reactive({
 // 获取文章分页数据
 const getArticleListByPage = async () => {
   axiosHttp.get('/api/article/getArticleListByPage/' + pagination.current).then(res => {
-    articleList.value = res.data.records
-    pagination.total = res.data.total
-    pagination.pages = res.data.pages
+    articleList.value = res.data.records;
+    pagination.total = res.data.total;
+    pagination.pages = res.data.pages;
     // console.log(res)
   }).catch(error => {
-    console.log(error)
+    console.log(error);
   });
 };
 
@@ -67,12 +68,6 @@ onMounted(() => {
 
   document.title = 'Aphrora Letters | 文章列表';
 });
-
-// 使用路由打开文章页面
-const openArticle = (articleId: number) => {
-  let routeData = router.resolve({path: `/article/${articleId}`, params: {'id': articleId}});
-  window.open(routeData.href, '_blank'); // 打开新窗口
-};
 
 </script>
 
@@ -85,58 +80,22 @@ const openArticle = (articleId: number) => {
     <div class="row">
       <div class="col-lg-9">
         <!-- 正文 -->
-        <div class="container-fluid mt-3 rounded">
-          <ul class="list-group rounded">
-            <!-- 列表表头 -->
-            <div class="list-group-item list-group-item-action list-group-item-danger active bi bi-newspaper">
-              文章列表-第 {{ pagination.current }} 页
-            </div>
-            <!-- 迭代生成文章列表 -->
-            <div>
-              <li v-for="article in articleList" class="list-group-item"
-                  style="height: 100%;width: 100%;overflow: hidden;padding: 0!important;">
-                <div class="row">
-                  <!-- 文章题图 -->
-                  <div class="col-lg-3" style="max-height: 128px;padding-right: 0;cursor: pointer;"
-                       @click="openArticle(article.id)">
-                    <img style="height: 100%;width: 100%;object-fit: cover" :src="'/api/article/' + article.pictureUrl"
-                         class="img-thumbnail img-fluid mx-auto d-block" alt="文章题图"/>
-                  </div>
-                  <!-- 文章标题与地址索引 -->
-                  <div class="col-lg-9" style="position: relative;padding-left: 0;">
-                    <!-- 滚动条 -->
-                    <div class="noScroll" style="width: 100%;overflow-x: scroll;">
-                      <!-- 标题 -->
-                      <div style="white-space: nowrap;">
-                        <a class="btn btn-default btn-lg" style="padding-left: 0.2rem" @click="openArticle(article.id)">
-                          {{ article.title }}
-                        </a>
-                        <span style="margin-left: 3px" class="badge bg-danger" v-for="category in article.categoryList">
-                          {{ category.categoryName }}</span>
-                      </div>
-                    </div>
-                    <!-- 简介 -->
-                    <p class="h6 text-muted"
-                       style="font-family: 等线,serif;text-indent:1em;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;text-overflow: ellipsis;overflow: hidden;">
-                      {{ article.summary }}
-                    </p>
-                    <br>
-                    <!-- 发表时间 -->
-                    <p class="h6 text-end" style="position: absolute;bottom: 0;right: 6px;color: #BC9F77">
-                      发布时间：{{ article.time }}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            </div>
-          </ul>
-        </div>
+        <article-list
+            :article-list="articleList"
+            :title="'文章列表'"
+            :type="'最近'"
+        >
+        </article-list>
         <br>
 
         <!-- 分页导航栏 -->
         <div class="pagination justify-content-end me-lg-3">
-          <a-pagination v-model:current="pagination.current" v-model:pageSize="pagination.pageSize"
-                        :total="pagination.total" :showTotal="pagination.showTotal" @change="pagination.onChange"/>
+          <a-pagination v-model:current="pagination.current"
+                        v-model:pageSize="pagination.pageSize"
+                        :total="pagination.total"
+                        :showTotal="pagination.showTotal"
+                        @change="pagination.onChange"
+          />
         </div>
         <br>
         <br>
@@ -145,7 +104,7 @@ const openArticle = (articleId: number) => {
 
       <!-- 右侧悬浮列表组 -->
       <div class="col-lg-3 rightIsShow">
-        <RecommendArticle offsetTop="6"/>
+        <recommend-article offsetTop="6"/>
       </div>
 
     </div>

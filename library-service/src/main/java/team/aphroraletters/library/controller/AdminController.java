@@ -1,7 +1,8 @@
 package team.aphroraletters.library.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import team.aphroraletters.library.entity.*;
+import team.aphroraletters.library.pojo.entity.AuthorIndex;
+import team.aphroraletters.library.pojo.entity.LibraryAuthor;
 import team.aphroraletters.library.service.*;
 import team.aphroraletters.library.util.OperateLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,7 @@ public class AdminController {
         //上传文件：存放至/static/img/目录
         uploadFile(picFile, "img");
         //添加至数据库
-        libraryAuthorService.addLibraryAuthor(libraryAuthor);
+        libraryAuthorService.insertLibraryAuthor(libraryAuthor);
 
         HashMap<String, Object> feedbackMap = new HashMap<>();
         feedbackMap.put("flag", true);
@@ -109,7 +110,7 @@ public class AdminController {
         //保存文件至target并上传至数据库
         try {
             uploadFile(pdfFile, "static/pdf");//上传文件至/static/pdf/目录
-            authorIndexService.addAuthorIndex(authorIndex);
+            authorIndexService.insertAuthorIndex(authorIndex);
         } catch (Exception e) {
             e.printStackTrace();
         }

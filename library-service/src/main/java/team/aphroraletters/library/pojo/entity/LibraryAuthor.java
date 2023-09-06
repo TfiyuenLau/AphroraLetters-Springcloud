@@ -1,4 +1,4 @@
-package team.aphroraletters.article.entity;
+package team.aphroraletters.library.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author @MatikaneSpartakusbund

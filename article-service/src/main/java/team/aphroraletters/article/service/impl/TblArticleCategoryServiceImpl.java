@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.aphroraletters.article.dao.TblArticleCategoryMapper;
-import team.aphroraletters.article.entity.TblArticleCategory;
-import team.aphroraletters.article.entity.TblArticleInfo;
+import team.aphroraletters.article.pojo.entity.TblArticleCategory;
+import team.aphroraletters.article.pojo.entity.TblArticleInfo;
 import team.aphroraletters.article.service.ITblArticleCategoryService;
 
 import java.util.List;

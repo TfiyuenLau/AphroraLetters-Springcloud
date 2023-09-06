@@ -1,7 +1,7 @@
 package team.aphroraletters.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import team.aphroraletters.article.entity.TblArticleComment;
+import team.aphroraletters.article.pojo.entity.TblArticleComment;
 
 import java.util.List;
 

@@ -1,27 +1,34 @@
 package team.aphroraletters.library.controller;
 
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import team.aphroraletters.library.entity.AuthorIndex;
-import team.aphroraletters.library.entity.LibraryAuthor;
-import team.aphroraletters.library.entity.response.ResultVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import team.aphroraletters.library.pojo.entity.AuthorIndex;
+import team.aphroraletters.library.pojo.entity.LibraryAuthor;
+import team.aphroraletters.library.pojo.request.LibraryAuthorParams;
+import team.aphroraletters.library.pojo.request.LiteratureIndexParams;
+import team.aphroraletters.library.pojo.response.ResultVO;
 import team.aphroraletters.library.service.IAuthorIndexService;
 import team.aphroraletters.library.service.ILibraryAuthorService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 import team.aphroraletters.library.util.OperateLog;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @RestController
+@Slf4j
 public class LibraryController {
 
     @Autowired
@@ -61,6 +68,154 @@ public class LibraryController {
         }
 
         return ResultVO.ok(authorIndexList);
+    }
+
+    @ApiOperation("上传文章作者头像图片")
+    @PostMapping("/admin/uploadAuthorImage")
+    public ResultVO uploadAuthorImage(@RequestParam("image") MultipartFile imageFile) {
+        File uploadFile;
+        try {
+            uploadFile = uploadFile(imageFile, "img");
+        } catch (FileNotFoundException e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok(uploadFile.getName());
+    }
+
+    @ApiOperation("新增收录一位文库作者")
+    @PostMapping("/admin/insertAuthor")
+    public ResultVO insertAuthor(@RequestBody LibraryAuthorParams authorParams) {
+        LibraryAuthor libraryAuthor = new LibraryAuthor();
+        BeanUtils.copyProperties(authorParams, libraryAuthor);
+        try {
+            libraryAuthorService.insertLibraryAuthor(libraryAuthor);
+        } catch (Exception e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok("收录作者【" + authorParams.getCharacterName() + "】成功");
+    }
+
+    @ApiOperation("上传文章PDF文件")
+    @PostMapping("/admin/uploadAuthorPdf")
+    public ResultVO uploadAuthorPdf(@RequestParam("pdf") MultipartFile pdfFile) {
+        File uploadFile;
+        try {
+            uploadFile = uploadFile(pdfFile, "pdf");
+        } catch (FileNotFoundException e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok(uploadFile.getName());
+    }
+
+    @ApiOperation("收录一篇新增的文库文章")
+    @PostMapping("/admin/insertLiterature")
+    public ResultVO insertLiterature(@RequestBody LiteratureIndexParams literatureIndexParams) {
+        AuthorIndex authorIndex = new AuthorIndex();
+        BeanUtils.copyProperties(literatureIndexParams, authorIndex);
+        try {
+            authorIndexService.insertAuthorIndex(authorIndex);
+        } catch (Exception e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok("收录文章【" + literatureIndexParams.getTitle() + "】成功");
+    }
+
+    @ApiOperation("更新文库作者信息")
+    @PutMapping("/admin/updateAuthor")
+    public ResultVO updateAuthor(@RequestBody LibraryAuthorParams authorParams) {
+        LibraryAuthor libraryAuthor = new LibraryAuthor();
+        BeanUtils.copyProperties(authorParams, libraryAuthor);
+        try {
+            libraryAuthorService.updateLibraryAuthorById(libraryAuthor);
+        } catch (Exception e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok("作者【" + authorParams.getCharacterName() + "】基本信息修改成功");
+    }
+
+    @ApiOperation("修改文库文章数据")
+    @PutMapping("/admin/updateLiterature")
+    public ResultVO updateLiterature(@RequestBody LiteratureIndexParams literatureIndexParams) {
+        AuthorIndex authorIndex = new AuthorIndex();
+        BeanUtils.copyProperties(literatureIndexParams, authorIndex);
+        try {
+            authorIndexService.updateAuthorIndexById(authorIndex);
+        } catch (Exception e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok("文章【" + literatureIndexParams.getTitle() + "】信息修改成功");
+    }
+
+    @ApiOperation("删除文库中ID对应的指定作者")
+    @DeleteMapping("/admin/deleteAuthor")
+    public ResultVO deleteAuthor(@RequestParam("id") Long id) {
+        try {
+            libraryAuthorService.deleteLibraryAuthorById(id);
+        } catch (Exception e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok("文库作者删除成功");
+    }
+
+    @ApiOperation("删除文库中ID对应的指定文章")
+    @DeleteMapping("/admin/deleteLiterature")
+    public ResultVO deleteLiterature(@RequestParam("articleId") Long articleId) {
+        try {
+            authorIndexService.deleteAuthorIndex(articleId);
+        } catch (Exception e) {
+            return ResultVO.errorMsg(new RuntimeException(e).getMessage());
+        }
+
+        return ResultVO.ok("文库文章删除成功");
+    }
+
+    /**
+     * 上传文件通用方法
+     *
+     * @param file         MultipartFile 文件对象
+     * @param filePathName 静态资源文件目录——img、md、page、pdf
+     * @return 创建的targetPicFile对象
+     * @throws FileNotFoundException 抛出找不到文件异常
+     */
+    private File uploadFile(MultipartFile file, String filePathName) throws FileNotFoundException {
+        // 获取上传文件的地址
+        File newFile = new File(ResourceUtils.getURL("classpath:").getPath());
+        // 项目路径绝对my_web_project\target\classes
+        String absolutePath = newFile.getAbsolutePath();
+        // 文件放入/static/#/目录下
+        String pathPic = absolutePath + "/static/" + filePathName + "/";
+        // 获取文件后缀
+        String fileSuffix = Objects.requireNonNull(file.getOriginalFilename())
+                .substring(file.getOriginalFilename().lastIndexOf("."));
+        // 生片路径和唯一标识
+        File targetPicFile = new File(pathPic, UUID.randomUUID().toString().replace("-", "") + fileSuffix);
+        if (!targetPicFile.exists()) {
+            targetPicFile.mkdirs();
+        }
+
+        // 保存文件至target
+        try {
+            file.transferTo(targetPicFile);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        // 复制target文件到/static/*/(仅Win开发时使用)
+        try {
+            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(),
+                    new File(System.getProperty("user.dir") + "\\library-service\\src\\main\\resources\\static\\" + filePathName + "\\" + targetPicFile.getName()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return targetPicFile; // 返回创建的目标文件对象
     }
 
     //访问文库全索引页面

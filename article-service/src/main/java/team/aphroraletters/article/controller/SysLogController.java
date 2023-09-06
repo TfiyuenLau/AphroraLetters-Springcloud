@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.aphroraletters.article.entity.SysLog;
-import team.aphroraletters.article.entity.response.ResultVO;
+import team.aphroraletters.article.pojo.entity.SysLog;
+import team.aphroraletters.article.pojo.response.ResultVO;
 import team.aphroraletters.article.service.ISysLogService;
 
 @RestController

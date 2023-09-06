@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {ref} from 'vue'
+import {ref} from 'vue';
 
 const router = useRouter();
 
 // 搜索请求对象
-const content = ref<string>('')
+const content = ref<string>();
 
 // 使用路由打开文章页面
 const openArticleSearch = (content: string, page: number) => {
-  let routeData = router.resolve({path: `/article_search/${content}/${page}`, params: {'content': content, 'page': page}});
-  window.open(routeData.href, '_blank') // 打开新窗口
+  let routeData = router.resolve({
+    path: `/article_search/${content}/${page}`,
+    params: {'content': content, 'page': page},
+  });
+  window.open(routeData.href, '_blank'); // 打开新窗口
 }
 </script>
 
@@ -54,7 +57,7 @@ const openArticleSearch = (content: string, page: number) => {
         </ul>
 
         <!-- 搜索功能表单 -->
-        <form class="d-flex" method="get" @submit.prevent="openArticleSearch(content, 1)">
+        <form class="d-flex" method="get" @submit.prevent="openArticleSearch(content!, 1)">
           <input v-model="content" class="form-control me-2" type="text" name="content_like" placeholder="Enter the words" required>
           <input class="" type="hidden" name="page" value="1">
 

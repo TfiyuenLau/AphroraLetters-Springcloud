@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.aphroraletters.article.dao.VersionLogMapper;
-import team.aphroraletters.article.entity.VersionLog;
+import team.aphroraletters.article.pojo.entity.VersionLog;
 import team.aphroraletters.article.service.IVersionLogService;
 
 import java.util.List;

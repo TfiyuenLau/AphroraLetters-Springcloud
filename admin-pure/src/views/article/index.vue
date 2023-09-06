@@ -132,27 +132,27 @@ const insertArticle = () => {
 // MdEditor上传文件方法实现
 const onUploadImg = async (files, callback) => {
   const res = await Promise.all(
-    files.map((file) => {
-      return new Promise((rev, rej) => {
-        const form = new FormData();
-        form.append('image', file);
+      files.map((file) => {
+        return new Promise((rev, rej) => {
+          const form = new FormData();
+          form.append('image', file);
 
-        axios
-          .post('/api/article/admin/uploadArticleImage', form, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then((res) => {
-            openSuccessNotification("图片上传成功");
-            rev(res);
-          })
-          .catch((error) => {
-            openErrorNotification("图片上传失败！请重试")
-            rej(error);
-          });
-      });
-    })
+          axios
+              .post('/api/article/admin/uploadArticleImage', form, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              })
+              .then((res) => {
+                openSuccessNotification("图片上传成功");
+                rev(res);
+              })
+              .catch((error) => {
+                openErrorNotification("图片上传失败！请重试")
+                rej(error);
+              });
+        });
+      })
   );
 
   callback(res.map((item) => "/api/article/img/" + item.data.data));
@@ -234,7 +234,7 @@ const beforeImageUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 // 题图文件上传反馈
 const handleArticleImageSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
-  articleInsertFrom.pictureUrl = response.data;
+  articleInsertFrom.pictureUrl = "img/" + response.data;
   openSuccessNotification("题图上传成功");
 }
 
@@ -346,62 +346,58 @@ onMounted(() => {
           <span>文章列表</span>
         </div>
       </template>
-      <div class="text item">
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <!-- 列表与分页 -->
-            <el-table :data="articleList" border max-height="1024">
-              <el-table-column prop="id" label="ID" width="64"></el-table-column>
-              <el-table-column label="文章题图">
-                <template #default="scope">
-                  <el-image :src="'/api/article/' + scope.row.pictureUrl" fit="scale-down" lazy/>
-                </template>
-              </el-table-column>
-              <el-table-column prop="title" label="文章标题"></el-table-column>
-              <el-table-column prop="summary" label="文章简介" show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="content" label="内容" v-if="false"></el-table-column>
-              <el-table-column prop="categoryList" label="分类标签">
-                <template #default="scope">
-                  <el-space wrap>
-                    <el-tag v-for="category in scope.row.categoryList">
-                      {{ category.categoryName }}
-                    </el-tag>
-                  </el-space>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="最后一次修改"></el-table-column>
-              <el-table-column fixed="right" width="160" label="Operation">
-                <template #default="scope">
-                  <el-space direction="vertical">
-                    <!-- 触发修改对话框 -->
-                    <el-button type="primary" size="small" @click="handleInfoEdit(scope.row)">编辑信息</el-button>
-                    <el-button type="primary" size="small" @click="handleContentEdit(scope.row)">编辑内容</el-button>
-                    <!-- 删除确认按钮 -->
-                    <el-popconfirm title="你确定要删除该文章吗？"
-                                   width="200"
-                                   confirm-button-text="确认删除"
-                                   cancel-button-text="不了"
-                                   @confirm="deleteArticleInfoById(scope.row.id)">
-                      <template #reference>
-                        <el-button type="danger" size="small">删除文章</el-button>
-                      </template>
-                    </el-popconfirm>
-                  </el-space>
-                </template>
-              </el-table-column>
-            </el-table>
-            <br>
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="pagination.current"
-              :page-sizes="Array.from({ length: (1000 - 10) / 10 + 1 }, (_, index) => (index + 1) * 10).filter((pageSize) => pageSize <= pagination.size)"
-              :page-size="pagination.size"
-              :total="pagination.total"
-              layout="sizes, prev, pager, next, jumper"
-            ></el-pagination>
-          </el-col>
-        </el-row>
+      <div class="">
+        <!-- 列表与分页 -->
+        <el-table :data="articleList" border max-height="1024">
+          <el-table-column prop="id" label="ID" width="64"></el-table-column>
+          <el-table-column label="文章题图">
+            <template #default="scope">
+              <el-image :src="'/api/article/' + scope.row.pictureUrl" fit="scale-down" lazy/>
+            </template>
+          </el-table-column>
+          <el-table-column prop="title" label="文章标题"></el-table-column>
+          <el-table-column prop="summary" label="文章简介" show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="content" label="内容" v-if="false"></el-table-column>
+          <el-table-column prop="categoryList" label="分类标签">
+            <template #default="scope">
+              <el-space wrap>
+                <el-tag v-for="category in scope.row.categoryList">
+                  {{ category.categoryName }}
+                </el-tag>
+              </el-space>
+            </template>
+          </el-table-column>
+          <el-table-column prop="time" label="最后一次修改"></el-table-column>
+          <el-table-column fixed="right" width="160" label="Operation">
+            <template #default="scope">
+              <el-space direction="vertical">
+                <!-- 触发修改对话框 -->
+                <el-button type="primary" size="small" @click="handleInfoEdit(scope.row)">编辑信息</el-button>
+                <el-button type="primary" size="small" @click="handleContentEdit(scope.row)">编辑内容</el-button>
+                <!-- 删除确认按钮 -->
+                <el-popconfirm title="你确定要删除该文章吗？"
+                               width="200"
+                               confirm-button-text="确认删除"
+                               cancel-button-text="不了"
+                               @confirm="deleteArticleInfoById(scope.row.id)">
+                  <template #reference>
+                    <el-button type="danger" size="small">删除文章</el-button>
+                  </template>
+                </el-popconfirm>
+              </el-space>
+            </template>
+          </el-table-column>
+        </el-table>
+        <br>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pagination.current"
+            :page-sizes="Array.from({ length: (1000 - 10) / 10 + 1 }, (_, index) => (index + 1) * 10).filter((pageSize) => pageSize <= pagination.size)"
+            :page-size="pagination.size"
+            :total="pagination.total"
+            layout="sizes, prev, pager, next, jumper"
+        ></el-pagination>
       </div>
     </el-card>
     <br>

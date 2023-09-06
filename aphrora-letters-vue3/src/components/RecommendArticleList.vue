@@ -15,7 +15,7 @@ interface ArticleInfo {
   time: string;
 }
 
-const recommendArticleInfos = ref<ArticleInfo[] | null>(null)
+const recommendArticleInfos = ref<ArticleInfo[]>()
 
 onMounted(() => {
   axiosHttp.get('/api/article/getRecommendArticles').then(res => {

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
-import team.aphroraletters.library.entity.AuthorIndex;
-import team.aphroraletters.library.entity.LibraryAuthor;
+import team.aphroraletters.library.pojo.entity.AuthorIndex;
+import team.aphroraletters.library.pojo.entity.LibraryAuthor;
 
 import java.util.List;
 

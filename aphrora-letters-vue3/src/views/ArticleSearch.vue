@@ -7,15 +7,6 @@ import {ref, onMounted, reactive, computed} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
 import RecommendArticleList from "@/components/RecommendArticleList.vue";
 
-interface Category {
-  id: number;
-  categoryName: string;
-  createBy: string | null;
-  modifiedBy: string | null;
-  articleInfoList: any[] | null;
-  articleCategoryList: Category[] | null;
-}
-
 interface ArticleList {
   id: number;
   title: string;
@@ -31,30 +22,25 @@ interface ArticleList {
 
 const router = useRouter();
 
-// 获取当前路径参数：categoryId、page
+// 获取当前路径参数：content、page
 const route = useRoute();
-const categoryId = computed(() => Number(route.params.categoryId));
+const content = computed(() => String(route.params.content));
 const page = computed(() => Number(route.params.page));
 
-const category = ref<Category>();
 const articleList = ref<ArticleList[]>();
 
 onMounted(() => {
-  axiosHttp.get('/api/article/getArticleCategoryById/' + categoryId.value).then(res => {
-    category.value = res.data;
-
-    if (category.value) {
-      document.title = `${category.value.categoryName} | Aphrora Letters`;
-    }
-  })
-
-  axiosHttp.get('/api/article/getArticleListByCategoryIdAndPage/' + categoryId.value + '/' + pagination.current).then(res => {
+  axiosHttp.get("/api/article/searchArticleByContent?content=" + content.value + '&page=' + pagination.current).then(res => {
     articleList.value = res.data.records;
     pagination.total = res.data.total;
     pagination.pages = res.data.pages;
   }).catch(error => {
     console.log(error);
   })
+
+  if (content.value) {
+    document.title = `'${content.value}'搜索结果 | Aphrora Letters`;
+  }
 });
 
 const pagination = reactive({
@@ -63,14 +49,14 @@ const pagination = reactive({
   current: page.value,
   pageSize: 10,
   onChange: (page: number, pageSize: number) => { // 分页状态改变
-    pagination.current = page // 更新当前页为路由参数page
+    pagination.current = page; // 更新当前页为路由参数page
     router.push({
-      path: `/article_category/${categoryId.value}/${page}`,
-      params: {'categoryId': categoryId.value, 'page': page},
+      path: `/article_search/${content.value}/${page}`,
+      params: {'content': content.value, 'page': page},
     });
 
     // 请求新分页数据
-    axiosHttp.get('/api/article/getArticleListByCategoryIdAndPage/' + categoryId.value + '/' + pagination.current).then(res => {
+    axiosHttp.get("/api/article/searchArticleByContent?content=" + content.value + '&page=' + pagination.current).then(res => {
       articleList.value = res.data.records;
     }).catch(error => {
       console.log('没有找到该页面：' + error);
@@ -98,18 +84,18 @@ const pagination = reactive({
       <div class="col-lg-9">
         <!-- 正文 -->
         <article-list
-            v-if="category"
+            v-if="content"
             :article-list="articleList"
-            :title="'标签分类'"
-            :type="category.categoryName"
+            :title="'字段搜索'"
+            :type="content"
         >
         </article-list>
         <br>
         <!-- 分页导航栏 -->
         <div class="pagination justify-content-end me-lg-3">
           <a-pagination
-              v-model:current="pagination.current"
-              v-model:pageSize="pagination.pageSize"
+              :current="pagination.current"
+              :pageSize="pagination.pageSize"
               :total="pagination.total"
               :showTotal="pagination.showTotal"
               @change="pagination.onChange"

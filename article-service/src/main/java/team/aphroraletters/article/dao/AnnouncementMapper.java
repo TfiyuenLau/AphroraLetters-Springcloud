@@ -2,7 +2,7 @@ package team.aphroraletters.article.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Component;
-import team.aphroraletters.article.entity.Announcement;
+import team.aphroraletters.article.pojo.entity.Announcement;
 
 /**
  * <p>

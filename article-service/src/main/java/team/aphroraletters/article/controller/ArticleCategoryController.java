@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import team.aphroraletters.article.entity.Classification;
-import team.aphroraletters.article.entity.TblArticleCategory;
-import team.aphroraletters.article.entity.TblArticleInfo;
-import team.aphroraletters.article.entity.response.ArticleInfoListVO;
-import team.aphroraletters.article.entity.response.ResultVO;
+import team.aphroraletters.article.pojo.entity.Classification;
+import team.aphroraletters.article.pojo.entity.TblArticleCategory;
+import team.aphroraletters.article.pojo.entity.TblArticleInfo;
+import team.aphroraletters.article.pojo.response.ArticleInfoListVO;
+import team.aphroraletters.article.pojo.response.ResultVO;
 import team.aphroraletters.article.service.IClassificationService;
 import team.aphroraletters.article.service.ITblArticleCategoryService;
 

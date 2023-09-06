@@ -2,7 +2,7 @@ package team.aphroraletters.article.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import team.aphroraletters.article.entity.TblArticleContent;
+import team.aphroraletters.article.pojo.entity.TblArticleContent;
 
 import java.io.File;
 import java.io.IOException;

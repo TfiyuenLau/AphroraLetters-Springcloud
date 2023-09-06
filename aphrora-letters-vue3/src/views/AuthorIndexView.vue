@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 import axiosHttp from "@/axios.http";
-import {ref, onMounted, computed} from 'vue'
+import {ref, reactive, onMounted, computed} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import router from "@/router";
 
@@ -25,31 +25,38 @@ interface AuthorIndex {
   libraryAuthor: LibraryAuthor | string;
 }
 
-const route = useRoute()
+const route = useRoute();
 let authorId = computed(() => Number(route.params.id));
 
-const libraryAuthor = ref<LibraryAuthor | null>(null)
-const authorIndexList = ref<AuthorIndex[] | null>(null)
+let libraryAuthor = reactive<LibraryAuthor>({
+  id: 0,
+  characterName: "",
+  picUrl: "",
+  introduction: "",
+  isEffective: 1,
+  authorIndices: [] as number[],
+});
+const authorIndexList = ref<AuthorIndex[]>();
 
 const getAuthorInfo = async () => {
-  axiosHttp.get('/api/library/getAuthorByAuthorId/' + authorId.value).then(res => {
-    libraryAuthor.value = res.data
-    document.title = libraryAuthor!.value!.characterName + ' | Aphrora Letters'
+  await axiosHttp.get('/api/library/getAuthorByAuthorId/' + authorId.value).then(res => {
+    libraryAuthor = {...res.data};
+    document.title = libraryAuthor!.characterName + ' | Aphrora Letters';
   }).catch(error => {
-    console.log(error)
-  })
+    console.log(error);
+  });
 
-  axiosHttp.get('/api/library/getAuthorIndexListByAuthorId/' + authorId.value).then(res => {
-    authorIndexList.value = res.data
-    // console.log(authorIndexList.value)
+  await axiosHttp.get('/api/library/getAuthorIndexListByAuthorId/' + authorId.value).then(res => {
+    authorIndexList.value = res.data;
+    // console.log(authorIndexList.value);
   }).catch(error => {
-    console.log(error)
-  })
-}
+    console.log(error);
+  });
+};
 
 onMounted(() => {
-  getAuthorInfo()
-})
+  getAuthorInfo();
+});
 
 </script>
 
@@ -70,7 +77,7 @@ onMounted(() => {
                 <h4 class="card-title text-danger bi bi-book" style="font-family: 华文新魏,serif;">
                   {{ libraryAuthor.characterName }}
                 </h4>
-                <p class="card-text lead">{{ libraryAuthor.introduction }}</p>
+                <p class="card-text lead">{{ libraryAuthor.introduction ? libraryAuthor.introduction : "" }}</p>
               </div>
               <img class="img-fluid card-img-bottom rounded" :src="'/api/library/' + libraryAuthor.picUrl" alt="Card image">
             </div>

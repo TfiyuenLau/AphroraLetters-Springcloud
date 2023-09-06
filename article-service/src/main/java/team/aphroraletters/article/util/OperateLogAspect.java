@@ -1,7 +1,7 @@
 package team.aphroraletters.article.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import team.aphroraletters.article.entity.SysLog;
+import team.aphroraletters.article.pojo.entity.SysLog;
 import team.aphroraletters.article.service.ISysLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

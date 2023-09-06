@@ -1,4 +1,4 @@
-package team.aphroraletters.article.entity.request;
+package team.aphroraletters.article.pojo.request;
 
 import lombok.Data;
 

@@ -12,6 +12,13 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: is_effective
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+
 logging:
   level:
     edu.hbmu: debug

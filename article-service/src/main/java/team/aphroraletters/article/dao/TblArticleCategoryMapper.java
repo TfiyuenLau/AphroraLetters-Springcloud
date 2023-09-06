@@ -1,13 +1,12 @@
 package team.aphroraletters.article.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
-import team.aphroraletters.article.entity.TblArticleCategory;
-import team.aphroraletters.article.entity.TblArticleInfo;
+import team.aphroraletters.article.pojo.entity.TblArticleCategory;
+import team.aphroraletters.article.pojo.entity.TblArticleInfo;
 
 import java.util.List;
 

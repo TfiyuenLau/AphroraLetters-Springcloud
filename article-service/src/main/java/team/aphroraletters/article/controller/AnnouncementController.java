@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import team.aphroraletters.article.entity.Announcement;
-import team.aphroraletters.article.entity.VersionLog;
-import team.aphroraletters.article.entity.response.ResultVO;
+import team.aphroraletters.article.pojo.entity.Announcement;
+import team.aphroraletters.article.pojo.entity.VersionLog;
+import team.aphroraletters.article.pojo.response.ResultVO;
 import team.aphroraletters.article.service.IAnnouncementService;
 import team.aphroraletters.article.service.IVersionLogService;
 

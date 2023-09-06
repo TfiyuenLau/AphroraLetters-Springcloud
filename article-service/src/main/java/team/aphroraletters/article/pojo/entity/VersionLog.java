@@ -1,8 +1,8 @@
-package team.aphroraletters.article.entity;
+package team.aphroraletters.article.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,16 +14,17 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
- * @author @TfiyuenLau
+ * @author @MatikaneSpartakusbund
  * @since 2023-01-12
  */
 @Getter
 @Setter
-@ApiModel(value = "Announcement对象", description = "")
-public class Announcement implements Serializable {
+@TableName("version_log")
+@ApiModel(value = "VersionLog对象", description = "")
+public class VersionLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,21 +32,14 @@ public class Announcement implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty("公告发布者")
-    private String publisher;
+    @ApiModelProperty("版本号")
+    private String version;
 
-    @ApiModelProperty("公告标题")
-    private String title;
-
-    @ApiModelProperty("公告内容")
-    private String content;
+    @ApiModelProperty("版本日志")
+    private String log;
 
     @ApiModelProperty("发布时间")
     private LocalDateTime createBy;
-
-    @ApiModelProperty("是否有效")
-    @TableLogic
-    private Boolean isEffective;
 
     /**
      * 获取格式化后的时间字符串
@@ -54,7 +48,7 @@ public class Announcement implements Serializable {
      */
     public String getTime() {
 
-        return this.getCreateBy().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"));
+        return this.getCreateBy().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
 }

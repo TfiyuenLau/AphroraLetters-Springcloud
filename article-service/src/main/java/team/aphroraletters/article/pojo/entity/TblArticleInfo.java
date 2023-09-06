@@ -1,4 +1,4 @@
-package team.aphroraletters.article.entity;
+package team.aphroraletters.article.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -16,7 +16,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author @TfiyuenLau

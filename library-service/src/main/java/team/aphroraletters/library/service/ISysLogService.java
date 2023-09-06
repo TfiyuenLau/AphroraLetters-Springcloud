@@ -2,7 +2,7 @@ package team.aphroraletters.library.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import team.aphroraletters.library.entity.SysLog;
+import team.aphroraletters.library.pojo.entity.SysLog;
 
 /**
  * <p>

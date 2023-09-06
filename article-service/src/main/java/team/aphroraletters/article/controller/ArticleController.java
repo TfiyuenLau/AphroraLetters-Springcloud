@@ -3,15 +3,16 @@ package team.aphroraletters.article.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import team.aphroraletters.article.entity.*;
-import team.aphroraletters.article.entity.request.ArticleParams;
-import team.aphroraletters.article.entity.response.ArticleInfoListVO;
-import team.aphroraletters.article.entity.response.ArticleVO;
-import team.aphroraletters.article.entity.response.ResultVO;
+import team.aphroraletters.article.pojo.entity.*;
+import team.aphroraletters.article.pojo.request.ArticleParams;
+import team.aphroraletters.article.pojo.response.ArticleInfoListVO;
+import team.aphroraletters.article.pojo.response.ArticleVO;
+import team.aphroraletters.article.pojo.response.ResultVO;
 import team.aphroraletters.article.service.*;
 import team.aphroraletters.article.util.OperateLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,10 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 public class ArticleController {
     @Autowired
@@ -109,10 +112,23 @@ public class ArticleController {
     public ResultVO searchArticleByContent(@RequestParam("content") String content, @RequestParam("page") Integer page) {
         IPage<TblArticleContent> articleContentIPage = articleContentService.searchContent(content, page);
         if (articleContentIPage.getRecords().isEmpty()) {
-            return ResultVO.errorMsg("找不到含有字段{" + content + "}的文章");
+            return ResultVO.errorMsg("找不到含有字段【" + content + "】的文章");
         }
 
-        return ResultVO.ok(articleContentIPage);
+        // 封装文章信息分页列表对象
+        IPage<ArticleInfoListVO> infoListVOPage = new Page<>();
+        BeanUtils.copyProperties(articleContentIPage, infoListVOPage);
+        ArrayList<ArticleInfoListVO> infoListVOS = new ArrayList<>();
+        for (TblArticleContent record : articleContentIPage.getRecords()) {
+            TblArticleInfo articleInfo = articleInfoService.getArticleById(record.getId());
+            ArticleInfoListVO articleInfoListVO = new ArticleInfoListVO();
+            BeanUtils.copyProperties(articleInfo, articleInfoListVO);
+            articleInfoListVO.setCategoryList(articleCategoryService.getCategoriesByArticleId(articleInfoListVO.getId()));
+            infoListVOS.add(articleInfoListVO);
+        }
+        infoListVOPage.setRecords(infoListVOS);
+
+        return ResultVO.ok(infoListVOPage);
     }
 
     @ApiOperation("添加一条文章评论")
@@ -155,7 +171,7 @@ public class ArticleController {
 
     @ApiOperation("新增一篇文章")
     @PostMapping("/admin/insertArticle")
-    @Transient
+    @Transient // 开启MySql事务
     public ResultVO insertArticle(@RequestBody ArticleParams articleParams) {
         TblArticleInfo articleInfo = new TblArticleInfo();
         BeanUtils.copyProperties(articleParams, articleInfo);
@@ -249,10 +265,13 @@ public class ArticleController {
         File newFile = new File(ResourceUtils.getURL("classpath:").getPath());
         // 项目路径绝对my_web_project\target\classes
         String absolutePath = newFile.getAbsolutePath();
-        // 图片文件放入/static/#/目录下
+        // 文件放入/static/#/目录下
         String pathPic = absolutePath + "/static/" + filePathName + "/";
+        // 获取文件后缀
+        String fileSuffix = Objects.requireNonNull(file.getOriginalFilename())
+                .substring(file.getOriginalFilename().lastIndexOf("."));
         // 生成图片路径和唯一标识
-        File targetPicFile = new File(pathPic, UUID.randomUUID().toString().replace("-", "") + ".jpeg");
+        File targetPicFile = new File(pathPic, UUID.randomUUID().toString().replace("-", "") + fileSuffix);
         if (!targetPicFile.exists()) {
             targetPicFile.mkdirs();
         }
@@ -261,15 +280,15 @@ public class ArticleController {
         try {
             file.transferTo(targetPicFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
-        // 复制target文件到/static/*/(仅idea测试时使用)
+        // 复制target文件到/static/*/(仅Win开发时使用)
         try {
             Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(),
                     new File(System.getProperty("user.dir") + "\\article-service\\src\\main\\resources\\static\\" + filePathName + "\\" + targetPicFile.getName()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         return targetPicFile; // 返回创建的目标文件对象

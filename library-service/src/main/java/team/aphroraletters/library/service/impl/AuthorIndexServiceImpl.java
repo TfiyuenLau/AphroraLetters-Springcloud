@@ -1,12 +1,13 @@
 package team.aphroraletters.library.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.aphroraletters.library.dao.AuthorIndexMapper;
-import team.aphroraletters.library.entity.AuthorIndex;
+import team.aphroraletters.library.pojo.entity.AuthorIndex;
 import team.aphroraletters.library.service.IAuthorIndexService;
 
 import java.util.List;
@@ -63,20 +64,28 @@ public class AuthorIndexServiceImpl extends ServiceImpl<AuthorIndexMapper, Autho
      * @return
      */
     @Override
-    public int addAuthorIndex(AuthorIndex authorIndex) {
+    public int insertAuthorIndex(AuthorIndex authorIndex) {
 
         return authorIndexMapper.insert(authorIndex);
     }
 
+    @Override
+    public int updateAuthorIndexById(AuthorIndex authorIndex) {
+        return authorIndexMapper.updateById(authorIndex);
+    }
+
     /**
-     * 按articleId删除文章
+     * 逻辑删除文库对应articleId的文章
      *
-     * @param articleId AuthorIndex对象对应的数据库主键
-     * @return 1为成功
+     * @param articleId
+     * @return
      */
     @Override
     public int deleteAuthorIndex(Long articleId) {
+        LambdaQueryWrapper<AuthorIndex> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(AuthorIndex::getArticleId, articleId);
 
-        return authorIndexMapper.deleteById(articleId);
+        return authorIndexMapper.delete(lambdaQueryWrapper);
     }
+
 }

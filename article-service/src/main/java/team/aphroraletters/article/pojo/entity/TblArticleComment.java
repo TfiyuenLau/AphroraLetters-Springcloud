@@ -1,4 +1,4 @@
-package team.aphroraletters.article.entity;
+package team.aphroraletters.article.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author @MatikaneSpartakusbund
@@ -20,27 +20,27 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("tbl_article_content")
-@ApiModel(value = "TblArticleContent对象", description = "")
-public class TblArticleContent implements Serializable {
+@TableName("tbl_article_comment")
+@ApiModel(value = "TblArticleComment对象", description = "")
+public class TblArticleComment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty("文章内容")
-    private String content;
-
-    @ApiModelProperty("对应文章ID")
+    @ApiModelProperty("文章ID")
     private Long articleId;
+
+    @ApiModelProperty("评论者邮箱")
+    private String email;
+
+    @ApiModelProperty("对应的留言")
+    private String comment;
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createBy;
 
-    @ApiModelProperty("更新时间")
-    private LocalDateTime modifiedBy;
-
-    @ApiModelProperty("是否有效")
+    @ApiModelProperty("是否有效，默认为1有效，置0无效")
     private Boolean isEffective;
 }

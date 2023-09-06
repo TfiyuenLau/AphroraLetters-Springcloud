@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import team.aphroraletters.article.dao.TblArticleContentMapper;
-import team.aphroraletters.article.entity.MarkdownEntity;
-import team.aphroraletters.article.entity.TblArticleContent;
-import team.aphroraletters.article.entity.TblArticleInfo;
+import team.aphroraletters.article.pojo.entity.MarkdownEntity;
+import team.aphroraletters.article.pojo.entity.TblArticleContent;
+import team.aphroraletters.article.pojo.entity.TblArticleInfo;
 import team.aphroraletters.article.service.ITblArticleContentService;
 import team.aphroraletters.article.util.MarkDown2HtmlWrapper;
 

@@ -1,4 +1,4 @@
-package team.aphroraletters.article.entity;
+package team.aphroraletters.article.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import lombok.ToString;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author @TfiyuenLau

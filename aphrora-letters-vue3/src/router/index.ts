@@ -8,6 +8,7 @@ import ArticleView from "@/views/ArticleView.vue";
 import ArticleCategory from "@/views/ArticleCategory.vue";
 import AnnouncementView from "@/views/AnnouncementView.vue";
 import LiteratureView from "@/views/LiteratureView.vue";
+import ArticleSearch from "@/views/ArticleSearch.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/article/:id',
       name: 'article',
       component: ArticleView
+    },
+    {
+      path: '/article_search/:content/:page',
+      name: 'article_search',
+      component: ArticleSearch
     },
     {
       path: '/article_category/:categoryId/:page',

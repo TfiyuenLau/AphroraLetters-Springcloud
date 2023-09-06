@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.aphroraletters.article.dao.SysLogMapper;
-import team.aphroraletters.article.entity.SysLog;
+import team.aphroraletters.article.pojo.entity.SysLog;
 import team.aphroraletters.article.service.ISysLogService;
 
 /**

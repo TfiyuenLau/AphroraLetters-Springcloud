@@ -2,7 +2,7 @@ package team.aphroraletters.library.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Component;
-import team.aphroraletters.library.entity.SysLog;
+import team.aphroraletters.library.pojo.entity.SysLog;
 
 /**
  * <p>

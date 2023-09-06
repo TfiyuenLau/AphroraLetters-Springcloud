@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.aphroraletters.article.dao.TblArticleCommentMapper;
-import team.aphroraletters.article.entity.TblArticleComment;
+import team.aphroraletters.article.pojo.entity.TblArticleComment;
 import team.aphroraletters.article.service.ITblArticleCommentService;
 
 import java.util.List;

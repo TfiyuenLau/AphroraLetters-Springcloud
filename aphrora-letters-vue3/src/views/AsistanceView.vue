@@ -33,17 +33,17 @@ document.title = '支持我们 | Aphrora Letters'
                   </p>
                   <p>
                     事实上，我们网站急需具备左翼流派哲学专业知识的作者和对文库进行归档和收集工作的管理员。如果您对此感兴趣，我们非常欢迎您与我们联系：
-                    <strong>tfiquenlau@foxmail.com</strong>。
+                    <strong>tfiyuenlau@foxmail.com</strong>。
                   </p>
                   <p>
                     此外，为了确保网站的正常运行，服务器的运维也需要一些物质条件和费用支持。因此，我们欢迎任何形式的捐助来支持本社区的发展。如果您有兴趣进行捐助，请通过邮箱联系我们：
-                    <strong>tfiquenlau@foxmail.com</strong>。
+                    <strong>tfiyuenlau@foxmail.com</strong>。
                   </p>
                   <p>
                     再次感谢您对我们网站的关注和支持。我们期待与更多热心的作者和捐助者合作，共同推动文库的发展。如果您有任何疑问或建议，也请随时与我们联系。
                   </p>
                 </div>
-                <div class="card-footer text-muted text-end">——网站管理员@TfieyuenLau</div>
+                <div class="card-footer text-muted text-end">——开发者@TfiyuenLau</div>
               </div>
             </div>
           </div>

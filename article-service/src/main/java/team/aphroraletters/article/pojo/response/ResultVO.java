@@ -1,4 +1,4 @@
-package team.aphroraletters.library.entity.response;
+package team.aphroraletters.article.pojo.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

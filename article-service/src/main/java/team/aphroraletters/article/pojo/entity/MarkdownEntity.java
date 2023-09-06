@@ -1,4 +1,4 @@
-package team.aphroraletters.article.entity;
+package team.aphroraletters.article.pojo.entity;
 
 import lombok.Data;
 

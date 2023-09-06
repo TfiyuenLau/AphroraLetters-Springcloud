@@ -1,7 +1,7 @@
 package team.aphroraletters.library.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import team.aphroraletters.library.entity.LibraryAuthor;
+import team.aphroraletters.library.pojo.entity.LibraryAuthor;
 
 import java.util.List;
 
@@ -23,5 +23,9 @@ public interface ILibraryAuthorService extends IService<LibraryAuthor> {
 
     LibraryAuthor getAuthorByCharacterName(String characterName);
 
-    int addLibraryAuthor(LibraryAuthor libraryAuthor);
+    void insertLibraryAuthor(LibraryAuthor libraryAuthor);
+
+    void updateLibraryAuthorById(LibraryAuthor libraryAuthor);
+
+    void deleteLibraryAuthorById(Long id);
 }

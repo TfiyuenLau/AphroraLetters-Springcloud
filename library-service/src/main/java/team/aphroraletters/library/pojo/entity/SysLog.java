@@ -1,4 +1,4 @@
-package team.aphroraletters.library.entity;
+package team.aphroraletters.library.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author @MatikaneSpartakusbund

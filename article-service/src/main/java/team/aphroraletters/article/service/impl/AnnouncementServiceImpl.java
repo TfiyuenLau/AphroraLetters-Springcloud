@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.aphroraletters.article.dao.AnnouncementMapper;
-import team.aphroraletters.article.entity.Announcement;
+import team.aphroraletters.article.pojo.entity.Announcement;
 import team.aphroraletters.article.service.IAnnouncementService;
 
 import java.util.List;

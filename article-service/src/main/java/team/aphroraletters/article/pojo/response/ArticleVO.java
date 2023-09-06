@@ -1,8 +1,8 @@
-package team.aphroraletters.article.entity.response;
+package team.aphroraletters.article.pojo.response;
 
 import lombok.Data;
-import team.aphroraletters.article.entity.TblArticleCategory;
-import team.aphroraletters.article.entity.TblArticleComment;
+import team.aphroraletters.article.pojo.entity.TblArticleCategory;
+import team.aphroraletters.article.pojo.entity.TblArticleComment;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +33,6 @@ public class ArticleVO {
     private List<TblArticleComment> articleCommentList;
 
     public String getTime() {
-        return this.getModifiedBy().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"));
+        return this.getCreateBy().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"));
     }
 }

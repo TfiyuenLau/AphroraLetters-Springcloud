@@ -18,7 +18,7 @@ import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.html.MutableAttributes;
 import org.jetbrains.annotations.NotNull;
-import team.aphroraletters.article.entity.MarkdownEntity;
+import team.aphroraletters.article.pojo.entity.MarkdownEntity;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

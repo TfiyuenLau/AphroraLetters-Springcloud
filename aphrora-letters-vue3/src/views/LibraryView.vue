@@ -16,18 +16,18 @@ interface LibraryAuthor {
 
 let router = useRouter();
 
-const libraryAuthorList = ref<LibraryAuthor[] | null>(null)
+const libraryAuthorList = ref<LibraryAuthor[]>();
 const getAuthorList = async () => {
   axiosHttp.get('/api/library/getAuthorList').then(res => {
-    libraryAuthorList.value = res.data
-    document.title = '文库总览 | Aphrora Letters'
+    libraryAuthorList.value = res.data;
+    document.title = '文库总览 | Aphrora Letters';
   }).catch(error => {
-    console.log(error)
+    console.log(error);
   })
 }
 
 onMounted(() => {
-  getAuthorList()
+  getAuthorList();
 })
 
 // 打开作者对应的文章索引界面
@@ -37,8 +37,8 @@ const openAuthorIndex = (authorId: number) => {
     params: {
       'id': authorId
     }
-  })
-}
+  });
+};
 
 </script>
 
