@@ -19,6 +19,46 @@
 
     <!-- 加载index.css -->
     <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+    <!-- 树状结构css实现 -->
+    <style>
+        ul.domtree,
+        ul.domtree ul {
+            margin: 0;
+            padding: 0 0 0 2em;
+        }
+
+        ul.domtree li {
+            list-style: none;
+            position: relative;
+        }
+
+        ul.domtree > li:first-child:before {
+            border-style: none none solid none;
+        }
+
+        ul.domtree li:before {
+            position: absolute;
+            content: '';
+            top: -0.01em;
+            left: -0.7em;
+            width: 0.5em;
+            height: 0.615em;
+            border-style: none none solid solid;
+            border-width: 0.2em;
+            border-color: #aaa;
+        }
+
+        ul.domtree li:not(:last-child):after {
+            position: absolute;
+            content: '';
+            top: 0.7em;
+            left: -0.7em;
+            bottom: 0;
+            border-style: none none none solid;
+            border-width: 0.2em;
+            border-color: #aaa;
+        }
+    </style>
 
 </head>
 
@@ -250,46 +290,6 @@
 <!-- 文章索引js实现 -->
 <script th:src="@{/js/articleIndex.js}" src="../static/js/articleIndex.js"
         type="text/javascript" charset="utf-8"></script>
-<!-- 树状结构css实现 -->
-<style>
-    ul.domtree,
-    ul.domtree ul {
-        margin: 0;
-        padding: 0 0 0 2em;
-    }
-
-    ul.domtree li {
-        list-style: none;
-        position: relative;
-    }
-
-    ul.domtree > li:first-child:before {
-        border-style: none none solid none;
-    }
-
-    ul.domtree li:before {
-        position: absolute;
-        content: '';
-        top: -0.01em;
-        left: -0.7em;
-        width: 0.5em;
-        height: 0.615em;
-        border-style: none none solid solid;
-        border-width: 0.2em;
-        border-color: #aaa;
-    }
-
-    ul.domtree li:not(:last-child):after {
-        position: absolute;
-        content: '';
-        top: 0.7em;
-        left: -0.7em;
-        bottom: 0;
-        border-style: none none none solid;
-        border-width: 0.2em;
-        border-color: #aaa;
-    }
-</style>
 
 </body>
 </html>

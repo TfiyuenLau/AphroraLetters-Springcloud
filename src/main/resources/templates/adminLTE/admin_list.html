@@ -85,22 +85,22 @@
                 </thead>
                 <!-- 列表主体内容 -->
                 <tbody>
-                <tr th:each="user, status:${userList}">
-                    <td th:text="${user.getUserId()}">First</td>
-                    <td th:text="${user.getUserAccount()}">account</td>
-                    <td th:text="${user.getPassword()}">password</td>
+                <tr th:each="admin, status:${userList}">
+                    <td th:text="${admin.getUserId()}">First</td>
+                    <td th:text="${admin.getUserAccount()}">account</td>
+                    <td th:text="${admin.getPassword()}">password</td>
                     <td>
                         <div>
                             <!-- 打开修改管理员的模态框 -->
                             <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                                     data-target="#adminUpdateModal">
                                 <a class="text-primary" href="#"
-                                   th:href="'javascript:updateAdminPassword(' + ${user.getUserId()} + ')'">修改密码</a>
+                                   th:href="'javascript:updateAdminPassword(' + ${admin.getUserId()} + ')'">修改密码</a>
                             </button>
                             <!-- 删除管理员 -->
                             <button type="button" class="btn btn-outline-danger">
                                 <a class="text-danger" href="#"
-                                   th:href="'javascript:delAdmin(' + ${user.getUserId()} + ')'">删除</a>
+                                   th:href="'javascript:delAdmin(' + ${admin.getUserId()} + ')'">删除</a>
                             </button>
                         </div>
                     </td>

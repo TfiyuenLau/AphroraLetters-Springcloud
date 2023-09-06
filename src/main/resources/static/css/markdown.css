@@ -27,7 +27,7 @@ img {
     display: block;
     margin: 0 auto;
     /*保持纵横比缩放图片,使图片的长边能完全显示出来*/
-    width: 75%;
+    width: 80%;
     object-fit: contain;
 }
 

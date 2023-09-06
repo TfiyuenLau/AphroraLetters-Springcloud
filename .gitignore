@@ -42,3 +42,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/admin-pure/admin-pure.iml

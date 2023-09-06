@@ -1,0 +1,12 @@
+# nacos配置文件
+spring:
+    application:
+        name: article  # 实例名称
+    profiles:
+        active: public  # 环境
+    cloud:
+        nacos:
+            server-addr: localhost:8848  # 项目地址
+            discovery:
+                cluster-name: HB  # 自定义集群名称
+                ephemeral: true  # 是否为临时实例

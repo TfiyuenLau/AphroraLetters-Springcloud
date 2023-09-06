@@ -1,0 +1,19 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /library
+
+spring:
+  application:
+    name: library
+  datasource:
+    url: jdbc:mysql://localhost:3306/aphrora_letters?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    edu.hbmu: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS

@@ -59,7 +59,7 @@
 
 /*设置正文容器背景*/
 #bg {
-    background: rgba(255, 255, 255, 0.80) no-repeat fixed center 0;
+    background: rgba(255, 255, 255, 0.85) no-repeat fixed center 0;
     background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;

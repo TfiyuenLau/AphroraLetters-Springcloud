@@ -19,6 +19,40 @@
 
     <!-- 加载index.css -->
     <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+    <!-- 取消bootstrap边距，解决移动端右划白边 -->
+    <style>
+        /**/
+        .row {
+            margin: 0;
+        }
+    </style>
+    <!-- 版本日志css样式-->
+    <style>
+        .box {
+            border-left: 2px solid #d1d7de;
+            padding: 0 0 10px 15px;
+            position: relative;
+            pointer-events: none;
+        }
+
+        .box::before {
+            position: absolute;
+            left: -8px;
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50ch;
+            background-color: #d1d7de;
+        }
+
+        .box:nth-child(1)::before {
+            width: 16px;
+            height: 16px;
+            left: -9px;
+            cursor: pointer;
+            pointer-events: all;
+        }
+    </style>
 
 </head>
 
@@ -29,7 +63,7 @@
 
     <div class="container-fluid">
         <!-- 设置Logo -->
-        <a class="navbar-brand" href="#" th:href="@{/home}">
+        <a class="navbar-brand" href="#" th:href="@{/home}" style="font-weight: bold">
             <img th:src="@{/img/newlogo.png}" src="../static/img/newlogo.png" alt="Logo" width="32" height="32"
                  class="d-inline-block align-text-top">
             Leftwing Community
@@ -44,7 +78,7 @@
             <!-- 后面的标签向右对齐 -->
             <div class="me-auto"></div>
 
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" style="font-weight: bold">
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/home}">首页</a>
                 </li>
@@ -159,7 +193,7 @@
                                      th:src="@{/img/公告栏.png}" src="../static/img/公告栏.png" alt="公告栏">
                             </div>
                             <div class="h1 text-center"
-                                 style="font-family: 楷体,serif;color: #494D55;font-weight: 600;word-spacing: 8px">
+                                 style="font-family: 楷体,serif;color: #494D55;font-weight: bold;word-spacing: 8px">
                                 公 告 栏
                             </div>
                         </div>
@@ -169,7 +203,7 @@
                         <!-- 最新消息 -->
                         <div class="col-lg-8">
                             <h3 class="border-start border-warning text-danger"
-                                style="font-family: 楷体,serif;font-weight: 600;">最新消息</h3>
+                                style="font-family: 楷体,serif;font-weight: bold;">最新消息</h3>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item" th:each="announcement, status:${announcements}">
                                     <a class="text-black text-decoration-none lead" target="_blank"
@@ -193,7 +227,7 @@
                         <!-- 版本日志 -->
                         <div class="col-lg-4">
                             <h3 class="border-start border-warning text-danger"
-                                style="font-family: 楷体,serif;font-weight: 600;">版本日志</h3>
+                                style="font-family: 楷体,serif;font-weight: bold;">版本日志</h3>
                             <div th:each="versionLog, status:${versionLogs}">
                                 <div class="box" th:classappend="${status.first}?firstOne">
                                     <span class="badge bg-danger" th:text="${versionLog.getVersion()}">version</span>：
@@ -223,7 +257,7 @@
              data-bs-scroll="true" aria-labelledby="offcanvasExampleLabel1">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title border-start border-warning text-danger"
-                    id="offcanvasExampleLabel1" style="font-family: 楷体,serif;font-weight: 600;">最新消息</h3>
+                    id="offcanvasExampleLabel1" style="font-family: 楷体,serif;font-weight: bold;">最新消息</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
@@ -245,7 +279,7 @@
              data-bs-scroll="true" aria-labelledby="offcanvasExampleLabel2">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title border-start border-warning text-danger"
-                    id="offcanvasExampleLabel2" style="font-family: 楷体,serif;font-weight: 600;">版本日志</h3>
+                    id="offcanvasExampleLabel2" style="font-family: 楷体,serif;font-weight: bold;">版本日志</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
@@ -317,40 +351,6 @@
     window.addEventListener("beforeunload", hidDiv())
 </script>
 
-<!-- 取消bootstrap边距，解决移动端右划白边 -->
-<style>
-    /**/
-    .row {
-        margin: 0;
-    }
-</style>
-<!-- 版本日志css样式-->
-<style>
-    .box {
-        border-left: 2px solid #d1d7de;
-        padding: 0 0 10px 15px;
-        position: relative;
-        pointer-events: none;
-    }
-
-    .box::before {
-        position: absolute;
-        left: -8px;
-        content: '';
-        width: 12px;
-        height: 12px;
-        border-radius: 50ch;
-        background-color: #d1d7de;
-    }
-
-    .box:nth-child(1)::before {
-        width: 16px;
-        height: 16px;
-        left: -9px;
-        cursor: pointer;
-        pointer-events: all;
-    }
-</style>
 <!-- 版本日志js -->
 <script>
     let boxes = document.querySelectorAll('.box')
@@ -358,7 +358,7 @@
     let before = window.getComputedStyle(firstOne, '::before'); //获取伪元素
     let hid = false
     firstOne.addEventListener('click', () => {
-        if (hid == false) {
+        if (hid === false) {
             document.querySelectorAll('.box').forEach((e) => {
                 e.style.display = 'none'
             })

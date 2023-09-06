@@ -68,6 +68,10 @@ public class IndexController {
         Announcement announcement = announcementService.getAnnouncementById(id);
         model.addAttribute("announcement", announcement);
 
+        //获取推荐文章列表
+        List<TblArticleInfo> recommendArticles = articleInfoService.getRecommendArticle();
+        model.addAttribute("recommendArticles", recommendArticles);
+
         return "announcement";
     }
 

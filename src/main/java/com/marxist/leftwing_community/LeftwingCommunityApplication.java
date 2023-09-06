@@ -20,8 +20,8 @@ public class LeftwingCommunityApplication extends SpringBootServletInitializer {
         System.out.println("current spring.application.name=" + property);
         System.out.println("debug server-address=http://localhost:8080/home");
         System.out.println("debug server-management-address=http://localhost:8080/admin/starter?url=home");
-        System.out.println("cloud server-address=http://8.130.39.9:8080/home");
-        System.out.println("cloud server-management-address=http://8.130.39.9:8080/admin/starter?url=home");
+//        System.out.println("cloud server-address=http://8.130.39.9:8080/home");
+//        System.out.println("cloud server-management-address=http://8.130.39.9:8080/admin/starter?url=home");
 //        System.out.println("cloud server-actuator-address=http://8.130.39.9:8081/applications");
     }
 

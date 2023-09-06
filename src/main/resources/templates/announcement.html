@@ -19,18 +19,45 @@
 
     <!-- 加载index.css -->
     <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
-
-    <script>
-        function IFrameResize() {
-            //alert(this.document.body.scrollHeight); //弹出当前页面的高度
-            var obj = parent.document.getElementById("childFrame"); //取得父页面IFrame对象
-            //alert(obj.height); //弹出父页面中IFrame中设置的高度
-            obj.height = this.document.body.scrollHeight + 50; //调整父页面中IFrame的高度为此页面的高度
+    <!-- 取消bootstrap边距，解决移动端右划白边 -->
+    <style>
+        /**/
+        .row {
+            margin: 0;
         }
-    </script>
+    </style>
+    <!-- 公告消息正文css -->
+    <style>
+        #content p {
+            /*段落缩进2em*/
+            text-indent: 2em;
+        }
+        #content img {
+            /*设置图片居中显示*/
+            display: block;
+            margin: 0 auto;
+            /*保持纵横比缩放图片,使图片的长边能完全显示出来*/
+            width: 80%;
+            object-fit: contain;
+        }
+        #content a {
+            /*a标签文本颜色*/
+            color: #8E354A;
+            font-weight: bold;
+            padding: 0px 2px;
+            text-decoration: none;
+        }
+        #content blockquote {
+            border-left: 4px solid #CB1B45;
+            padding: 10px 0px 10px 15px;
+            color: #34495e;
+            background-color: rgba(245, 150, 170, .1);
+        }
+    </style>
+
 </head>
 
-<body onload="IFrameResize()">
+<body>
 
 <!-- 引入顶部导航栏 -->
 <div th:replace="home::home_nav"></div>
@@ -43,23 +70,23 @@
             <!-- 主容器 -->
             <div class="container mt-3 rounded">
                 <div class="card border-danger active">
-                    <div class="card-header bg-danger text-light" style="font-weight: 600;word-spacing: 4px">
+                    <div class="card-header bg-danger text-light" style="font-weight: bold;word-spacing: 4px">
                         公告栏 | 最新消息
                     </div>
                     <div class="card-body">
                         <!-- 公告通用图片 -->
                         <div>
-                            <img th:src="@{/img/格拉西莫夫%20S.V.%20革命大本营.jpg}" src="../static/img/格拉西莫夫%20S.V.%20革命大本营.jpg" style="width: 100%;max-height: 256px;object-fit: cover;" class="img-thumbnail" alt="公告通用图片">
+                            <img th:src="@{/img/格拉西莫夫-革命大本营.jpg}" src="../static/img/格拉西莫夫-革命大本营.jpg" style="width: 100%;max-height: 256px;object-fit: cover;" class="img-thumbnail" alt="公告通用图片">
                         </div>
                         <!-- 公告标题 -->
-                        <h3 class="text-center" style="font-weight: 600" th:text="${announcement.getTitle()}">
+                        <h3 class="text-center" style="font-weight: bold" th:text="${announcement.getTitle()}">
                             游客须知 | 左翼社区将用于收录各重要文章与网络资源
                         </h3>
                         <hr>
                         <!-- 发布者与发布时间 -->
                         <div class="text-center">
                             <span class="text-center text-muted" th:text="${'发布者：' + announcement.getPublisher()}">
-                                发布者：左翼社区
+                                发布者：Leftwing Community
                             </span>
                             <span class="text-center text-muted" th:text="${'发布时间：' + announcement.getTime()}">
                                 发布时间：2023年01月11日
@@ -67,9 +94,12 @@
                         </div>
                         <br>
                         <!-- 公告正文——th:utext支持html语法解析 -->
-                        <div class="lead" style="text-indent: 2em" th:utext="${announcement.getContent()}">
+                        <div class="lead" id="content" th:utext="${announcement.getContent()}">
                             <p>
                                 左翼一词一说起源于法国大革命时期：革命家将象征封建制度的、代表落后生产力而阻挠资产阶级民主的皇帝及其保皇派簇拥们称为<strong>右派（或右翼、反动派）</strong>，将显出勃勃生机并羽翼渐丰满的资产阶级革命者称之为<strong>左派（左翼）</strong>。在其百年后的近代，这些词的内涵并未改变，右翼仍代表着统治阶级的<strong>专权与压迫</strong>、<strong>狭隘的民族视角</strong>、对已然<strong>腐化之现状</strong>的捍卫；左翼则以实践争取着底层即多数人的最大利益，探讨与找寻<strong>社会公平的实现方式</strong>，以温和改革或激进革命的方式对暴露弊病的现实进行<strong>否定</strong>。
+                            </p>
+                            <p>
+                                <img src="../static/img/CCCP01.jpg" alt="demo">
                             </p>
                             <p>
                                 然而，恪守左翼进步主义的知识分子早已不是<strong>资产阶级</strong>与<strong>威权建制派</strong>们。他们或是<strong>享受着资本扩张</strong>的愉悦，以传播<strong>消费主义</strong>与占据<strong>房地产及其附属金融产业（房产抵押贷款）</strong>近乎法西斯式地控制着普罗大众（The
@@ -79,10 +109,10 @@
                                 事实上，我们都知道，左翼各流派完全不是一团和气的。至少在当今网络环境上，<strong>原初马克思主义、安那其主义、列宁主义、工团主义、马赫诺主义、斯派、托派、毛主义、西马及法兰克福学派、社民、民社</strong>相互“开除左籍”、互扣帽子，这样的<strong>路线之争造成了理论混乱</strong>，“同僚”们在斗争空耗斗志。我们需得在<strong>进步之大旗</strong>下集结，结成统一战线，在哲学理论斗争的相互诘难中共同趋向成熟，在实践斗争中互济互助。
                             </p>
                         </div>
-                        <!-- 公告声明 -->
-                        <p class="text-end" style="font-weight: 600">素材来自网络，侵删。</p>
-
                     </div>
+
+                    <!-- 公告声明 -->
+                    <div class="card-footer text-end" style="font-weight: bold">素材来自网络，侵删。</div>
                 </div>
 
             </div>

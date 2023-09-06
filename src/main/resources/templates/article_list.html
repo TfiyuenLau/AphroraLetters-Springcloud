@@ -19,6 +19,16 @@
 
     <!-- 加载index.css -->
     <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+    <!-- 取消白边与隐藏滚动条-->
+    <style>
+        /* 取消移动端右划白边 */
+        .row{margin:0;}
+        /* 隐藏滚动条 */
+        .noScroll::-webkit-scrollbar{
+            width: 0 !important;
+            height: 0!important;
+        }
+    </style>
 
 </head>
 
@@ -36,7 +46,7 @@
             <div class="container-fluid mt-3 rounded">
                 <ul class="list-group rounded">
                     <!-- 列表表头 -->
-                    <li class="list-group-item active list-group-item-action list-group-item-danger rounded">文章列表</li>
+                    <div class="list-group-item list-group-item-action list-group-item-danger active rounded">文章列表</div>
                     <!-- 迭代生成文章列表 -->
                     <div th:each="articleInfo, status:${aPageArticleInfo}">
                         <li style="height: 100%;width: 100%;overflow: hidden;padding: 0!important;" class="list-group-item rounded">
@@ -114,16 +124,6 @@
 
 <!-- 引入页脚 -->
 <!--<div th:replace="home::home_footer"></div>-->
-
-<style>
-    /* 取消移动端右划白边 */
-    .row{margin:0;}
-    /* 隐藏滚动条 */
-    .noScroll::-webkit-scrollbar{
-     width: 0 !important;
-        height: 0!important;
-    }
-</style>
 
 <script>
     //移动设备隐藏标签

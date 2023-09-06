@@ -19,6 +19,19 @@
 
     <!-- 加载index.css -->
     <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet" type="text/css">
+    <!-- 取消白边与隐藏滚动条-->
+    <style>
+        /* 取消移动端右划白边 */
+        .row {
+            margin: 0;
+        }
+
+        /* 隐藏滚动条 */
+        .noScroll::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+        }
+    </style>
 
 </head>
 
@@ -105,19 +118,6 @@
     </div>
 
 </div>
-
-<style>
-    /* 取消移动端右划白边 */
-    .row {
-        margin: 0;
-    }
-
-    /* 隐藏滚动条 */
-    .noScroll::-webkit-scrollbar {
-        width: 0 !important;
-        height: 0 !important;
-    }
-</style>
 
 <script>
     let change = function () {

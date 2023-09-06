@@ -35,7 +35,7 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
      */
     @Override
     public List<Announcement> getAnnouncements() {
-        Page<Announcement> announcementPage = new Page<>(1, 5);
+        Page<Announcement> announcementPage = new Page<>(1, 8);
         announcementMapper.selectPage(announcementPage, new QueryWrapper<Announcement>().orderByDesc("id"));
 
         return announcementPage.getRecords();
