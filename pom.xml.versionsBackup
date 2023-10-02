@@ -11,17 +11,10 @@
     <groupId>team.aphroraletters</groupId>
     <artifactId>AphroraLetters-Springcloud</artifactId>
     <!-- 版本构建命令：mvn versions:set -DnewVersion="2.0.0-RELEASE" -DprocessAllModules -DgenerateBackupPoms=true -->
-    <version>2.0.0-RELEASE</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AphroraLetters-Springcloud</name>
     <description>AphroraLetters-Springcloud父工程模块</description>
-
-    <modules>
-        <module>gateway</module>
-        <module>article-service</module>
-        <module>library-service</module>
-        <module>feign-api</module>
-    </modules>
 
     <properties>
         <java.version>11</java.version>
@@ -129,6 +122,21 @@
                 <version>2.15.0</version>
             </plugin>
         </plugins>
+
+        <!-- 打包时手动排除下列文件 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <!-- 排除的目录相对路径 -->
+<!--                <excludes>-->
+<!--                    <exclude>static/img/**</exclude>-->
+<!--                    <exclude>static/md/**</exclude>-->
+<!--                    <exclude>static/page/**</exclude>-->
+<!--                    <exclude>static/pdf/**</exclude>-->
+<!--                </excludes>-->
+            </resource>
+        </resources>
 
         <finalName>AphroraLetters-Springcloud</finalName>
     </build>

@@ -5,13 +5,12 @@
     <parent>
         <groupId>team.aphroraletters</groupId>
         <artifactId>AphroraLetters-Springcloud</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>2.0.0-RELEASE</version>
     </parent>
     <groupId>team.aphroraletters.fegin</groupId>
     <artifactId>feign-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>feign-api</name>
-    <description>feign-api</description>
+    <description>feign微服务远程调用模块</description>
 
     <properties>
         <java.version>11</java.version>

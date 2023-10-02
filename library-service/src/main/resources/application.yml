@@ -21,6 +21,6 @@ mybatis-plus:
 
 logging:
   level:
-    edu.hbmu: debug
+    team.aphroraletters.library: info
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS

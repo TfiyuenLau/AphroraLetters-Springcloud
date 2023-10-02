@@ -32,7 +32,7 @@ public class CodeGenerator {
         System.out.println(outputDir);
         globalConfigBuilder.outputDir(outputDir);
         // Author
-        globalConfigBuilder.author("@MatikaneSpartakusbund");
+        globalConfigBuilder.author("@TfiyuenLau");
         // 结束时不打开文件夹
         //globalConfigBuilder.disableOpenDir();
         // 是否覆盖旧的文件
@@ -44,7 +44,7 @@ public class CodeGenerator {
         PackageConfig.Builder packageConfigBuilder = new PackageConfig.Builder();
         //packageConfigBuilder.moduleName("");//模块名称
         packageConfigBuilder.parent("team.aphroraletters.library");//设置父包
-        packageConfigBuilder.entity("entity");//自定义实体包名(不同的模块自己手动修改)
+        packageConfigBuilder.entity("pojo.entity");//自定义实体包名(不同的模块自己手动修改)
         packageConfigBuilder.mapper("dao");//自定义mapper包名(不同的模块自己手动修改)
         packageConfigBuilder.xml("dao.mapper");//自定义mapper.xml包名(不同的模块自己手动修改)
         packageConfigBuilder.service("service");//自定义service包名(不同的模块自己手动修改)

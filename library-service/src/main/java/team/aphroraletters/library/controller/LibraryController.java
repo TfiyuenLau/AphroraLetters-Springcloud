@@ -15,8 +15,6 @@ import team.aphroraletters.library.service.IAuthorIndexService;
 import team.aphroraletters.library.service.ILibraryAuthorService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import team.aphroraletters.library.util.OperateLog;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,8 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@RestController
 @Slf4j
+@RestController
 public class LibraryController {
 
     @Autowired
@@ -216,39 +214,6 @@ public class LibraryController {
         }
 
         return targetPicFile; // 返回创建的目标文件对象
-    }
-
-    //访问文库全索引页面
-    @OperateLog(operateDesc = "访问文库")
-    @RequestMapping("/library")
-    public String toLibrary(Model model) {
-        //查询文库作者
-        List<LibraryAuthor> libraryAuthors = libraryAuthorService.getAllLibraryAuthor();
-        model.addAttribute("libraryAuthors", libraryAuthors);
-
-        return "library";
-    }
-
-    //访问通用文库人物索引页面
-    @OperateLog(operateDesc = "访问马尔库塞文库索引")
-    @RequestMapping("/author_index")
-    public String toAuthorIndex(Long author_id, Model model) {
-        //按id查询封装了AuthorIndex的LibraryAuthor对象
-        LibraryAuthor author = libraryAuthorService.getAuthorById(author_id);
-        model.addAttribute("author", author);
-
-        return "author_index";
-    }
-
-    //访问literature具体文献页
-    @OperateLog(operateDesc = "访问文库PDF文章")
-    @RequestMapping("/literature")
-    public String literature(String url, Model model) {
-//        String url = "http://127.0.0.1:8080/pdf/DreamLogic实验指导3.1.pdf";
-//        InetAddress address = InetAddress.getLocalHost();
-        model.addAttribute("url", url);
-
-        return "literature";
     }
 
     /**

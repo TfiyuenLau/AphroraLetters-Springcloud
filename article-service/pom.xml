@@ -5,13 +5,12 @@
     <parent>
         <groupId>team.aphroraletters</groupId>
         <artifactId>AphroraLetters-Springcloud</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>2.0.0-RELEASE</version>
     </parent>
     <groupId>team.aphroraletters.article</groupId>
     <artifactId>article-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>article-service</name>
-    <description>article-service</description>
+    <description>article微服务模块</description>
 
     <properties>
         <java.version>11</java.version>
@@ -142,6 +141,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.15</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -186,6 +195,18 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <!-- 打包时手动排除下列文件 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <!-- 排除的目录相对路径 -->
+                <excludes>
+<!--                    <exclude>static/img/**</exclude>-->
+                </excludes>
+            </resource>
+        </resources>
     </build>
 
 </project>
