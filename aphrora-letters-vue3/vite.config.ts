@@ -9,7 +9,7 @@ export default defineConfig({
         preprocessorOptions: {
             less: {
                 modifyVars: { // antdv3主题色配置
-                    'primary-color': '#dc3545',
+                    'primary-color': '#DC3545',
                     'link-color': '#8E354A',
                     'success-color': '#198754',
                     'warning-color': '#ffc107',

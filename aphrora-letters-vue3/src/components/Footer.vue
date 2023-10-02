@@ -10,7 +10,7 @@
         <div class="col-12">
           <!-- logo图片 -->
           <div style="float: left;" id="displayImg">
-            <img src="/img/logo.png" alt="网站logo" style="max-width: 83px">
+            <img src="/img/newlogo.png" alt="网站logo" style="max-width: 83px">
           </div>
           <!-- 底部页脚文字 -->
           <div class="text-warning" style="font-size: 0.9rem">

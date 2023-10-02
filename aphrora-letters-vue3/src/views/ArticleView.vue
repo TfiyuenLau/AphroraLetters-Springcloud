@@ -42,33 +42,60 @@ interface ArticleComment {
   isEffective: boolean;
 }
 
-const router = useRouter()
+interface HeadingIndex {
+  key: number;
+  href: string;
+  title: string;
+  children?: HeadingIndex[];
+}
+
+const router = useRouter();
 
 // 获取当前路径参数
 const route = useRoute();
-const articleId = computed(() => route.params.id)
+const articleId = computed(() => route.params.id);
 
-const article = ref<Article | null>(null)
+const article = ref<Article>();
+const headings = ref<HeadingIndex[]>([]);
 
 // 获取文章信息
 const getArticleById = async () => {
   axiosHttp.get('/api/article/getArticleById/' + articleId.value).then(res => {
-    article.value = res.data
+    article.value = res.data;
 
     if (null != article?.value?.content) {
-      article.value.content = marked.parse(article.value.content) // 解析md文本为html
-      document.title = article.value.title + ' | Aphrora Letters'
+      // 解析md文本为html
+      article.value.content = marked.parse(article.value.content);
+
+      // 提取标题信息以生成目录索引
+      let htmlContent = article.value.content;
+      htmlContent.replace(/<h(\d) id="(.*?)">(.*?)<\/h\d>/g, (match, level, id, text): any => {
+        const key = headings.value.length + 1;
+        const href = `#${id}`;
+        const title = text;
+
+        const headingInfo: HeadingIndex = { key, href, title, children: [] };
+
+        if (level != "1" && headings.value.length > 0) {
+          headings.value[headings.value.length - 1].children!.push(headingInfo);
+        } else {
+          headings.value.push(headingInfo);
+        }
+      });
+      // console.log(headings.value);
+
+      document.title = article.value.title + ' | Aphrora Letters';
     } else {
-      document.title = '文章详情 | Aphrora Letters'
+      document.title = '文章详情 | Aphrora Letters';
     }
   }).catch(error => {
-    console.log(error)
+    console.log(error);
   })
 }
 
 // DOM加载完毕调用
 onMounted(() => {
-  getArticleById()
+  getArticleById();
 })
 
 // 定义评论表单数据
@@ -152,7 +179,7 @@ const openArticleCategory = (categoryId: number) => {
               <div class="mb-3">
                 <label for="email" class="form-label"><strong>电子邮件</strong>：</label>
                 <input type="email" class="form-control" id="email" v-model="commentData.email"
-                       placeholder="想匿名?试试我们的工作邮箱~(tfiquenlau@foxmail.com)" name="email" required>
+                       placeholder="想匿名?试试我们的工作邮箱~(tfiyuenlau@foxmail.com)" name="email" required>
               </div>
               <div class="mb-3">
                 <label for="comment" class="form-label"><strong>评论</strong>：</label>
@@ -229,19 +256,25 @@ const openArticleCategory = (categoryId: number) => {
         </a-affix>
 
         <!-- 推荐文章 -->
-        <RecommendArticleList offsetTop="20"/>
+        <recommend-article-list offsetTop="20"/>
 
       </div>
     </div>
   </div>
 
   <!-- 文章目录索引 -->
-  <a-float-button shape="square" type="primary" :style="{ right: '24px', bottom: '100px' }" data-bs-toggle="collapse" data-bs-target="#indexCollapse"
-                  aria-expanded="false" aria-controls="collapseExample">
-    <template #icon>
-      <BarsOutlined/>
-    </template>
-  </a-float-button>
+  <a-affix :style="{ position: 'fixed', bottom: '100px', right: '24px'}">
+    <a-popover title="目录索引" trigger="click" placement="topRight" :overlayStyle="{width: '256px'}">
+      <template #content style="text-decoration: none;">
+        <a-anchor :affix="true" :items="headings" :target-offset="64"></a-anchor>
+      </template>
+      <a-button type="primary" size="large" shape="default" style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+        <template #icon>
+          <BarsOutlined style="font-size: large"/>
+        </template>
+      </a-button>
+    </a-popover>
+  </a-affix>
 
   <!-- 回到顶部 -->
   <a-back-top/>

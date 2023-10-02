@@ -1,5 +1,6 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import axios from "axios";
+import {openErrorNotification} from "@/utils/notification";
 
 /**
  * axios封装类
@@ -41,17 +42,12 @@ class AxiosHttp {
                 let message = "";
                 if (error.response) {
                     switch (error.response.status) {
-                        case 2:
-                            message = "未登录，直接跳转到登录页面";
+                        case 400:
+                            message = "请求错误，请重试";
                             break;
-                        case 3:
-                            message = "TOKEN过期，拒绝访问，直接跳转到登录页面";
-                            break;
-                        case 4:
-                            message = "请求路径错误";
-                            break;
-                        case 5:
-                            message = "系统异常，请联系管理员";
+                        case 429:
+                            message = "请求过于频繁，请在一分钟后重试";
+                            openErrorNotification("429", message);
                             break;
                         default:
                             message = "未知错误，请联系管理员";

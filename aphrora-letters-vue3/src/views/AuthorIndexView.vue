@@ -40,7 +40,7 @@ const authorIndexList = ref<AuthorIndex[]>();
 
 const getAuthorInfo = async () => {
   await axiosHttp.get('/api/library/getAuthorByAuthorId/' + authorId.value).then(res => {
-    libraryAuthor = {...res.data};
+    Object.assign(libraryAuthor, res.data);
     document.title = libraryAuthor!.characterName + ' | Aphrora Letters';
   }).catch(error => {
     console.log(error);

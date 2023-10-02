@@ -18,7 +18,7 @@ const themeColors = {
     menuActiveBefore: "#4091f7"
   },
   light: {
-    subMenuActiveText: "#409eff",
+    subMenuActiveText: "#DC3545",
     menuBg: "#fff",
     menuHover: "#e0ebf6",
     subMenuBg: "#fff",

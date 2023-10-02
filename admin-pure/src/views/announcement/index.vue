@@ -181,7 +181,7 @@ const deleteAnnouncement = (id: number) => {
           <div class="text item">
             <el-form :model="versionLogForm" label-position="top">
               <el-form-item label="版本号">
-                <el-input v-model="versionLogForm.version" placeholder="请输入规范的版本号，如1.2"></el-input>
+                <el-input v-model="versionLogForm.version" placeholder="请输入规范的版本号，如1.2.7-BETA"></el-input>
               </el-form-item>
               <el-form-item label="版本信息">
                 <el-input v-model="versionLogForm.log" placeholder="版本更新的描述"></el-input>
@@ -211,17 +211,18 @@ const deleteAnnouncement = (id: number) => {
                 <span>版本日志</span>
               </div>
             </template>
-            <div class="text item">
-              <div v-for="(versionLog, index) in versionLogList" :key="index">
-                <div class="box" :class=" { 'firstOne': index === 0 } ">
-                  <el-tag>{{ versionLog.version }}</el-tag>
+            <el-timeline class="text item">
+              <el-timeline-item v-for="(versionLog, index) in versionLogList" :key="index" :timestamp="versionLog.time">
+                <el-card>
+                  <el-tag :size="'large'" style="font-weight: bolder">
+                    {{ 'VERSION: ' + versionLog.version }}
+                  </el-tag>
                   <div>
                     <el-text>{{ versionLog.log }}</el-text>
-                    <el-tag type="info">{{ versionLog.time }}</el-tag>
                   </div>
-                </div>
-              </div>
-            </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
           </el-card>
         </el-scrollbar>
       </el-col>
@@ -352,32 +353,4 @@ const deleteAnnouncement = (id: number) => {
 
 <style scoped>
 
-</style>
-
-<!-- 版本日志css样式-->
-<style scoped>
-.box {
-  border-left: 2px solid #d1d7de;
-  padding: 0 0 10px 15px;
-  position: relative;
-  pointer-events: none;
-}
-
-.box::before {
-  position: absolute;
-  left: -8px;
-  content: '';
-  width: 12px;
-  height: 12px;
-  border-radius: 50ch;
-  background-color: #d1d7de;
-}
-
-.box:nth-child(1)::before {
-  width: 16px;
-  height: 16px;
-  left: -9px;
-  cursor: pointer;
-  pointer-events: all;
-}
 </style>

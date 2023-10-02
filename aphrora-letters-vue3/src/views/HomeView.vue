@@ -46,23 +46,29 @@ const versionLogList = ref<VersionLog[] | null>(null)
 
 // 钩子函数：在组件挂载到DOM后被调用
 onMounted(() => {
+  document.title = "Aphrora Letters | 首页";
+
+  getRecommendArticles();
+
+  axiosHttp.get('/api/article/getAnnouncements').then(res => {
+    announcements.value = res.data
+  });
+  axiosHttp.get('/api/article/getVersionLogs').then(res => {
+    versionLogs.value = res.data
+  });
+});
+
+// 获取推荐文章列表
+const getRecommendArticles = async () => {
   axiosHttp.get('/api/article/getRecommendArticles').then(res => {
     recommendArticleInfos.value = res.data
   })
-  axiosHttp.get('/api/article/getAnnouncements').then(res => {
-    announcements.value = res.data
-  })
-  axiosHttp.get('/api/article/getVersionLogs').then(res => {
-    versionLogs.value = res.data
-  })
-
-  document.title = 'Aphrora Letters | 首页'
-});
+}
 
 // 发送异步请求并在按钮点击后获取全部公告消息
 const getAnnouncementList = async () => {
   axiosHttp.get('/api/article/getAnnouncementList').then(res => {
-    announcementList.value = res.data
+    announcementList.value = res.data;
   })
 }
 
@@ -97,7 +103,7 @@ const openAnnouncement = (announcementId: number) => {
             <div class="row mt-3 p-5 bg-danger text-white rounded">
               <h1>欢迎访问 Aphrora Letters ！</h1>
               <p>
-                本文库致力于<strong>左翼进步文化</strong>的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与，<strong>经典著作</strong>。
+                本文库致力于<strong>左翼进步文化</strong>的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与经典著作。
               </p>
               <p>
                 注：本项目处于<strong>测试阶段</strong>，WEB应用内部的Logo、图片素材和部分转载文章内容等均来源于网络，<strong>仅用于个人学习用途</strong>，若侵犯了您的著作权请即使联系
@@ -199,7 +205,7 @@ const openAnnouncement = (announcementId: number) => {
                     style="font-family: 楷体,serif;font-weight: bold;">版本日志</h3>
                 <a-timeline>
                   <a-timeline-item v-for="(versionLog, index) in versionLogs" :key="index">
-                    <span class="badge bg-danger">{{ versionLog.version }}</span>
+                    <span class="badge bg-danger">{{ 'VERSION: ' + versionLog.version }}</span>
                     <div>
                       <span>{{ versionLog.log }}</span>
                       <span class="badge bg-secondary">{{ versionLog.time }}</span>
@@ -251,7 +257,7 @@ const openAnnouncement = (announcementId: number) => {
         <div class="offcanvas-body">
           <a-timeline>
             <a-timeline-item v-for="(versionLog, index) in versionLogList" :key="index">
-              <span class="badge bg-danger">{{ versionLog.version }}</span>
+              <span class="badge bg-danger">{{ 'VERSION: ' + versionLog.version }}</span>
               <div>
                 <span>{{ versionLog.log }}</span>
                 <span class="badge bg-secondary">{{ versionLog.time }}</span>
