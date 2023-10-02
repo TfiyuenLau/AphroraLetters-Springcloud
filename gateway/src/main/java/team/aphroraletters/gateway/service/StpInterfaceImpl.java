@@ -1,4 +1,4 @@
-package team.aphroraletters.gateway;
+package team.aphroraletters.gateway.service;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.fasterxml.jackson.core.type.TypeReference;
