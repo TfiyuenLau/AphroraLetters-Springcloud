@@ -1,4 +1,4 @@
-package team.aphroraletters.fegin.domain;
+package team.aphroraletters.feign.domain.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author @TfiyuenLau

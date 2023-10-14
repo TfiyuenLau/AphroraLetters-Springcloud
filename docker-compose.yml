@@ -1,0 +1,140 @@
+version: "3.8"
+
+services:
+  nacos: # 自定义服务名称
+    image: nacos/nacos-server:v2.1.1
+    container_name: nacos
+    ports: # 端口映射
+      - "8848:8848"
+    network_mode: "host"
+    environment: # 环境配置
+      - LANG=en_US.UTF-8
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    volumes: # 硬盘挂载
+      - /home/nacos/logs:/home/nacos/logs
+      - /home/nacos/data:/home/nacos/data
+    restart: always
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    network_mode: "host"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "aphrora_letters"
+    volumes:
+      - /home/mysql/conf:/etc/mysql/conf.d
+      - /home/mysql/init:/docker-entrypoint-initdb.d
+      - /home/mysql/data:/var/lib/mysql
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --default-authentication-plugin=mysql_native_password
+  redis:
+    image: redis:5.0.14
+    container_name: redis
+    ports:
+      - "6379:6379"
+    network_mode: "host"
+    restart: always
+    environment:
+      - LANG=en_US.UTF-8
+    volumes:
+      - /home/redis/conf:/usr/local/etc/redis
+      - /home/redis/data:/data:rw
+      - /home/redis/logs:/logs
+    command: redis-server /usr/local/etc/redis/redis.conf
+  al-gateway:
+    image: al-gateway:2.0.0-RELEASE
+    container_name: al-gateway-service
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    network_mode: "host" # host网络模式——对宿主机的直接访问
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes: # 挂载
+      - /home/aphrora-letters/gateway/logs:/logs
+    depends_on: # 依赖nacos、mysql、redis
+      - nacos
+      - mysql
+      - redis
+  al-article:
+    image: al-article:2.0.0-RELEASE
+    container_name: al-article-service
+    build:
+      context: ./article-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    network_mode: "host"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - /home/aphrora-letters/article/static:/resources/static
+      - /home/aphrora-letters/article/logs:/logs
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+  al-library:
+    image: al-library:2.0.0-RELEASE
+    container_name: al-library-service
+    build:
+      context: ./library-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    network_mode: "host"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - /home/aphrora-letters/library/static:/resources/static
+      - /home/aphrora-letters/library/logs:/logs
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+  aphrora-letters-vue3:
+    image: aphrora-letters-vue3:2.0.0-RELEASE
+    container_name: aphrora-letters-vue3
+    build:
+      context: ./aphrora-letters-vue3
+      dockerfile: Dockerfile
+  admin-pure:
+    image: admin-pure:2.0.0-RELEASE
+    container_name: admin-pure
+    build:
+      context: ./admin-pure
+      dockerfile: Dockerfile
+  al-nginx-proxy:
+    image: al-nginx-proxy:2.0.0-RELEASE
+    container_name: al-nginx-proxy
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "80:80"
+    network_mode: "host"
+    depends_on:
+      - aphrora-letters-vue3
+      - admin-pure
+
+# bridge网络模式配置
+#networks:
+#  al-networks:

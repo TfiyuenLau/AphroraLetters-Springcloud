@@ -1,19 +1,7 @@
-### 其他非必要资源 ###
-target/
-HELP.md
-mvnw
-mvnw.cmd
-
-### 不关键的的静态资源 ###
-/src/main/resources/static/adminLTE/**
-/src/main/resources/static/bootstrap-5.1.3-dist/**
-/src/main/resources/static/pdfjs/**
-/src/main/resources/static/img/*.*
-/src/main/resources/static/md/*.md
-/src/main/resources/static/page/*.html
-
-
 !.mvn/wrapper/maven-wrapper.jar
+/.mvn/
+/admin-pure/admin-pure.iml
+/HELP.md
 !**/src/main/java/**
 !**/src/test/**
 
@@ -42,4 +30,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/admin-pure/admin-pure.iml

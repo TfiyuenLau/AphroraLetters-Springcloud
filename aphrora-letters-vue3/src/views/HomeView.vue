@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import '@/assets/index.css'
-import NavbarComponent from '@/components/Navbar.vue'
+import '@/assets/index.css';
+import NavbarComponent from '@/components/Navbar.vue';
 import Footer from "@/components/Footer.vue";
 import axiosHttp from "@/axios.http";
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import router from "@/router";
 
 interface ArticleInfo {
   id: number;
   title: string;
+  pictureUrl: string,
   summary: string;
   isTop: boolean;
   traffic: number;
@@ -38,11 +39,11 @@ interface VersionLog {
 }
 
 // 声明实例数据
-const recommendArticleInfos = ref<ArticleInfo[] | null>(null)
-const announcements = ref<Announcement[] | null>(null)
-const announcementList = ref<Announcement[] | null>(null)
-const versionLogs = ref<VersionLog[] | null>(null)
-const versionLogList = ref<VersionLog[] | null>(null)
+const recommendArticleInfos = ref<ArticleInfo[]>();
+const announcements = ref<Announcement[]>();
+const announcementList = ref<Announcement[]>();
+const versionLogs = ref<VersionLog[]>();
+const versionLogList = ref<VersionLog[]>();
 
 // 钩子函数：在组件挂载到DOM后被调用
 onMounted(() => {
@@ -61,27 +62,27 @@ onMounted(() => {
 // 获取推荐文章列表
 const getRecommendArticles = async () => {
   axiosHttp.get('/api/article/getRecommendArticles').then(res => {
-    recommendArticleInfos.value = res.data
-  })
-}
+    recommendArticleInfos.value = res.data;
+  });
+};
 
 // 发送异步请求并在按钮点击后获取全部公告消息
 const getAnnouncementList = async () => {
   axiosHttp.get('/api/article/getAnnouncementList').then(res => {
     announcementList.value = res.data;
-  })
-}
+  });
+};
 
 const getVersionLogList = async () => {
   axiosHttp.get('/api/article/getVersionLogList').then(res => {
     versionLogList.value = res.data
-  })
-}
+  });
+};
 
 // 使用路由打开公告页面
 const openAnnouncement = (announcementId: number) => {
   router.push({path: `/announcement/${announcementId}`, params: {'id': announcementId}});
-}
+};
 
 </script>
 
@@ -96,77 +97,80 @@ const openAnnouncement = (announcementId: number) => {
     <div class="mt-3 rounded p-3" id="bg">
 
       <!-- 第一行 -->
-      <div class="row">
-        <div class="col-12">
+      <a-row :gutter="16">
+        <a-col :span="24">
           <div class="container mt-3 rounded">
             <!-- Jumbotron -->
             <div class="row mt-3 p-5 bg-danger text-white rounded">
               <h1>欢迎访问 Aphrora Letters ！</h1>
-              <p>
-                本文库致力于<strong>左翼进步文化</strong>的推广，刊载哲学社科类社评文章、国内外左翼运动报导与其他文体；收录有当今各主流学派的学术观点与经典著作。
+              <p class="lead">
+                <strong>Aphrora Letters</strong>是一个<strong>分享哲学社科文章的个人社区</strong>，我们以致力于推广左翼进步文化为宗旨，刊载哲学社科类社评文章、国内外社会运动报导与其他文体；并对当今各主流学派的学术观点与经典著作进行收录整理。
               </p>
               <p>
-                注：本项目处于<strong>测试阶段</strong>，WEB应用内部的Logo、图片素材和部分转载文章内容等均来源于网络，<strong>仅用于个人学习用途</strong>，若侵犯了您的著作权请即使联系
+                注意：本项目仍处于<strong>测试阶段</strong>，WEB应用内部的Logo、图片素材和部分转载文章内容等均来源于网络，<strong>仅用于个人学习用途</strong>，若侵犯了您的著作权请即使联系
                 <strong>tfiyuenlau@foxmail.com</strong>
-                进行删除。网站仍在测试阶段，未部署域名解析与Https协议；网站积极依照《网络安全法》《网络安全管理条例》相关法律条例进行运营，若存在黄赌毒、政治敏感言论请向网站管理员举报，谢谢配合。
+                进行删除。网站仍在测试阶段，并积极依照《网络安全法》《网络安全管理条例》相关法律条例进行运营，若存在黄赌毒、政治敏感言论请向网站管理员举报，谢谢配合。
               </p>
             </div>
 
             <div class="row mt-3 rounded">
-              <img class="img-thumbnail img-fluid mx-auto d-block" src="/img/封面图.jpg" alt="导师">
+              <img class="img-thumbnail img-fluid mx-auto d-block" src="/img/封面图.jpg" alt="封面图">
               <p class="h6 text-center text-muted">
-                图中从左到右依次为——马克思、马赫诺、列宁、毛泽东、阿尔都塞、齐泽克.</p>
+                密涅瓦的猫头鹰只有在夜幕降临的时候才开始飞翔。
+              </p>
             </div>
-
           </div>
-        </div>
-      </div>
+        </a-col>
+      </a-row>
 
       <!-- 第二行 -->
-      <div class="row">
-        <div class="container mt-3 rounded">
-          <div class="row">
-
-            <!-- 正文内容 -->
-            <div class="lead col-lg-9 mt-3" style="text-indent: 2em">
-              <p>
-                左翼一词一说起源于法国大革命时期：革命家将象征封建制度的、代表落后生产力而阻挠资产阶级民主的皇帝及其保皇派簇拥们称为<strong>右派（或右翼、反动派）</strong>，将显出勃勃生机并羽翼渐丰满的资产阶级革命者称之为<strong>左派（左翼）</strong>。在其百年后的近代，这些词的内涵并未改变，右翼仍代表着统治阶级的<strong>专权与压迫</strong>、<strong>狭隘的民族视角</strong>、对已然<strong>腐化之现状</strong>的捍卫；左翼则以实践争取着底层即多数人的最大利益，探讨与找寻<strong>社会公平的实现方式</strong>，以温和改革或激进革命的方式对暴露弊病的现实进行<strong>否定</strong>。
-              </p>
-              <p>
-                然而，恪守左翼进步主义的知识分子早已不是<strong>资产阶级</strong>与<strong>威权建制派</strong>们。他们或是<strong>享受着资本扩张</strong>的愉悦，以传播<strong>消费主义</strong>与占据<strong>房地产及其附属金融产业（房产抵押贷款）</strong>近乎法西斯式地控制着普罗大众（The
-                Proletariat）的生产与消费行为；或是<strong>背弃</strong>无产阶级，官商勾结，无视父辈们为劳动者们制定的法律，以已然蜕变为技术官僚统治工具的行政权力<strong>为己谋私利</strong>。左翼的大旗则落到了吸收有马克思主义思想内核、与继承了安那其主义反叛传统的思想流派。
-              </p>
-              <p>
-                事实上，我们都知道，左翼各流派完全不是一团和气的。至少在当今网络环境上，<strong>原初马克思主义、安那其主义、列宁主义、工团主义、马赫诺主义、斯派、托派、毛主义、西马及法兰克福学派、社民、民社</strong>相互“开除左籍”、互扣帽子，这样的<strong>路线之争造成了理论混乱</strong>，“同僚”们在斗争空耗斗志。我们需得在<strong>进步之大旗</strong>下集结，结成统一战线，在哲学理论斗争的相互诘难中共同趋向成熟，在实践斗争中互济互助。
-              </p>
-            </div>
+      <a-row :gutter="16">
+        <div class="container rounded">
+          <a-row :gutter="16" style="display: flex;align-content: center;justify-content: center">
+            <!-- 文章轮播图 -->
+            <a-col :xs="24" :lg="17" class="mt-3">
+              <a-card title="近日热文">
+                <a-carousel autoplay>
+                  <a :href="'/article/' + articleInfo.id"
+                     v-for="articleInfo in recommendArticleInfos?.slice(0, 5)"
+                     :key="articleInfo.id"
+                     target="_blank"
+                     class="carousel-item"
+                  >
+                    <div class="carousel-image">
+                      <img :src="'/api/article/' + articleInfo.pictureUrl" :alt="articleInfo.title"/>
+                    </div>
+                    <h3>{{ articleInfo.title }}</h3>
+                  </a>
+                </a-carousel>
+              </a-card>
+            </a-col>
 
             <!-- 文章推荐 -->
-            <div class="col-lg-3">
-              <div class="mt-3 rounded">
-                <div class="list-group text-break" style="width: 100%">
-                  <div class="list-group-item list-group-item-action list-group-item-danger active bi bi-card-list">
-                    推荐文章
-                  </div>
-                  <div v-for="articleInfo in recommendArticleInfos">
-                    <a :href="'/article/' + articleInfo.id" class="list-group-item list-group-item-action">
-                      {{ articleInfo.title }}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+            <a-col :xs="24" :lg="7" class="mt-3">
+              <a-card title="推荐文章">
+                <a-list bordered :data-source="recommendArticleInfos">
+                  <template #renderItem="{ item }">
+                    <a-list-item :key="item.id">
+                      <a :href="'/article/' + item.id" target="_blank"
+                         style="text-decoration: none;font-size: larger;font-family: 楷体,serif;color: #8E354A">
+                        {{ item.title }}
+                      </a>
+                    </a-list-item>
+                  </template>
+                </a-list>
+              </a-card>
+            </a-col>
+          </a-row>
         </div>
-      </div>
+      </a-row>
 
       <!-- 第三行 -->
       <div class="container row">
         <div class="card border-warning shadow mt-3">
           <div class="card-body">
-            <div class="row">
-              <div class="col-12">
+            <a-row :gutter="16">
+              <a-col :span="24">
                 <div style="float: left;">
                   <img class="img-fluid" style="max-width: 48px" src="/img/公告栏.png" alt="公告栏">
                 </div>
@@ -174,12 +178,12 @@ const openAnnouncement = (announcementId: number) => {
                      style="font-family: 楷体,serif;color: #494D55;font-weight: bold;word-spacing: 8px">
                   公 告 栏
                 </div>
-              </div>
-            </div>
+              </a-col>
+            </a-row>
             <hr>
-            <div class="row">
+            <a-row :gutter="16">
               <!-- 最新消息 -->
-              <div class="col-12 col-lg-8">
+              <a-col :xs="24" :lg="16">
                 <h3 class="border-start border-warning text-danger"
                     style="font-family: 楷体,serif;font-weight: bold;">最新消息</h3>
                 <ul class="list-group list-group-flush">
@@ -197,10 +201,10 @@ const openAnnouncement = (announcementId: number) => {
                     显示更多
                   </button>
                 </div>
-              </div>
+              </a-col>
 
               <!-- 版本日志 -->
-              <div class="col-12 col-lg-4">
+              <a-col :xs="24" :lg="8">
                 <h3 class="border-start border-warning text-danger"
                     style="font-family: 楷体,serif;font-weight: bold;">版本日志</h3>
                 <a-timeline>
@@ -219,8 +223,8 @@ const openAnnouncement = (announcementId: number) => {
                     显示更多
                   </button>
                 </div>
-              </div>
-            </div>
+              </a-col>
+            </a-row>
 
           </div>
         </div>
@@ -279,10 +283,38 @@ const openAnnouncement = (announcementId: number) => {
   <Footer/>
 </template>
 
-<!-- 取消bootstrap边距，解决移动端右划白边 -->
 <style scoped>
-/**/
+/* 取消bootstrap边距，解决移动端右划白边 */
 .row {
   margin: 0;
 }
+
+/* 轮播图样式 */
+.carousel-item {
+  position: relative;
+}
+
+.carousel-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 让图片自然充满容器 */
+}
+
+.carousel-image {
+  max-height: 72vh;
+  overflow: hidden;
+}
+
+.carousel-item h3 {
+  position: absolute;
+  bottom: 32px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25); /* 添加半透明背景以提升标题可读性 */
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: x-large;
+}
+
 </style>

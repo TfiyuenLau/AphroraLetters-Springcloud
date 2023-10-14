@@ -24,6 +24,8 @@ logging:
     team.aphroraletters.article: info
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
+  file:
+    path: /logs
 
 sa-token:
   # token名称 (同时也是cookie名称)

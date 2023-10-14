@@ -4,6 +4,9 @@ import {createPinia} from 'pinia'
 import App from './App.vue'
 import router from './router'
 
+// 引入全局样式
+import "@/assets/common.css";
+
 // component and css of antdv
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css';

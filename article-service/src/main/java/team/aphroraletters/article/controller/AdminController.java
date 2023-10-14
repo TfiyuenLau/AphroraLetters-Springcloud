@@ -89,6 +89,7 @@ public class AdminController {
             return SaResult.error("登陆失败，账号或密码错误");
         }
 
+        redisUtils.set("admin:authority:id-" + account.getId(), account.getAuthority());
         StpUtil.login(account.getId());
         account.setRoles(Lists.newArrayList(account.getAuthority())); // 封装权限列表
 

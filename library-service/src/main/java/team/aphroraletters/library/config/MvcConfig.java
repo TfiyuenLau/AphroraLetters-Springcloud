@@ -17,12 +17,10 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/");
 
         // 文件上传映射地址:addResourceLocations是我们的文件上传绝对路径，注意要加file:
-        //项目静态资源md映射路径/project/file:/project/LeftwingCommunity-Springboot.jar!/BOOT-INF/classes!/static/
-//                .addResourceLocations("file:/project/file:/project/LeftwingCommunity-Springboot.jar!/BOOT-INF/classes!/static/page/");
-//        registry.addResourceHandler("/img/**")
-//                .addResourceLocations("file:/project/file:/project/LeftwingCommunity-Springboot.jar!/BOOT-INF/classes!/static/img/");
-//        registry.addResourceHandler("/pdf/**")
-//                .addResourceLocations("file:/project/file:/project/LeftwingCommunity-Springboot.jar!/BOOT-INF/classes!/static/pdf/");
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("file:/resources/static/img/");
+        registry.addResourceHandler("/pdf/**")
+                .addResourceLocations("file:/resources/static/pdf/");
     }
 
 }

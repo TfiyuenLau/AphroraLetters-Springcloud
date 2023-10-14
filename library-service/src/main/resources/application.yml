@@ -24,3 +24,5 @@ logging:
     team.aphroraletters.library: info
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
+  file:
+    path: /logs

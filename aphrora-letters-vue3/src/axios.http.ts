@@ -45,6 +45,9 @@ class AxiosHttp {
                         case 400:
                             message = "请求错误，请重试";
                             break;
+                        case 404:
+                            message = "请求错误，没有找到服务器";
+                            break;
                         case 429:
                             message = "请求过于频繁，请在一分钟后重试";
                             openErrorNotification("429", message);

@@ -1,78 +1,71 @@
 # 工程简介
 
-**Leftwing Community是一个类似博客的，为众多作者提供发表哲学社科文章平台并存放左翼著作典籍的WEB项目(Author: @MatikaneSpartakusbund)。**
+Aphrora Letters是一个为众多作者提供发表哲学社科文章平台，并存放哲学著作典籍的社区项目(Author: tfiyuenlau@foxmail.com)。
 
-**其后端基于SpringBoot与MybatisPlus框架、前端使用Bootstrap组件与Thymeleaf模板并使用Tomcat服务器进行部署**
+## 开源组件
 
-### 开源组件说明
+* **JDK版本**: 11
+* **项目构建管理工具**: Apache Maven
+* **服务器**: Apache Tomcat, Nginx
+* **后端开发框架**: SpringBoot
+* **微服务框架**: SpringCloud(Fegin, Gateway), SpringCloud Alibaba(Nacos)
+* **前端开发框架**: Vue3
+* **前端组件库**: Bootstrap, Element Plus, Ant Design vue
+* **数据存储**: MySql, Redis
+* **ORM框架**: MyBatis, Mybatis Plus
+* **认证鉴权**: Sa-Token
+* **接口文档工具**: Swagger2
+* **性能测试**: Jmeter
+* **容器技术**: Docker
 
-* 项目构建管理工具：Apache Maven
-* 服务器：Apache Tomcat
-* 后端框架：SpringBoot
-* 数据库：MySql
-* 数据库框架：MyBatis、MybatisPlus
-* 数据库连接池：Alibaba Druid
-* 前端组件库：Bootstrap5
-* 后台组件：AdminLTE-3.1.0
-* 页面模板引擎：Thymeleaf
-* MD2HTML工具：FlexMark
-* PDF插件：PDF.js
-* 接口文档工具：Swagger2
+## 部署文档
+### Ⅰ、环境要求
+* 开发平台OS：Windows 10及以上
+* 部署平台OS：推荐Linux发行版
+* 内存：推荐8GB以上
+* Git: 官方稳定版
+* Java: 推荐JDK 11及以上
+* Maven: 推荐3.8.5及以上
+* Docker、Docker Compose: 官方稳定版
 
-### 项目文件结构
-
+### Ⅱ、步骤说明
+1.使用 **git** 从 GitHub 拉取项目；
+~~~shell
+git clone https://github.com/TfiyuenLau/AphroraLetters-Springcloud.git
 ~~~
 
-LeftwingCommunity-Springboot:
-├───.mvn
-│   └───wrapper
-├───src  # java源程序
-│   ├───main
-│   │   ├───java  # 代码层
-│   │   │   └───com
-│   │   │       └───marxist
-│   │   │           └───leftwing_community
-│   │   │               ├───config  # 各配置类
-│   │   │               ├───controller  # 前端控制器
-│   │   │               ├───dao  # 数据持久层Mapper接口
-│   │   │               ├───entity  # 实体类
-│   │   │               ├───generator  # 生成器
-│   │   │               ├───interceptor  # 拦截器
-│   │   │               ├───service  # Web服务层接口
-│   │   │               │   └───impl  # 实现类
-│   │   │               └───util  #工具类
-│   │   └───resources  # 资源文件
-│   │       ├───mappers  # 存放mybatis映射文件
-│   │       ├───static  # 存放静态资源文件
-│   │       │   ├───adminLTE  # adminLTE资源文件(存放AdminLTE-3.1.0-rc/dist与/plugins下的资源文件)
-│   │       │   │   ├───dist
-│   │       │   │   └───plugins
-│   │       │   ├───bootstrap-5.1.3-dist  # bootstrap组件库
-│   │       │   │   ├───css
-│   │       │   │   └───js
-│   │       │   ├───css
-│   │       │   ├───img  # 存放项目图片资源
-│   │       │   ├───js
-│   │       │   ├───md  # 存放markdown资源文件
-│   │       │   ├───page  # 存放静态博客页面
-│   │       │   ├───pdf  # 存放文库阅读所需的pdf文件
-│   │       │   └───pdfjs  # 存放开源插件pdf.js
-│   │       │       ├───bulid
-│   │       │       └───web
-│   │       └───templates  # 存放thymeleaf模板文件
-│   │           └───adminLTE  # thymeleaf后台页面
-│   └───test  # 测试类
-│       ├───java
-│       │   └───com
-│       │       └───marxist
-│       │           └───leftwing_community
-│       └───resources
-└───pom.xml  # Maven的pom文件
-
+2.使用 **Maven** 对 SpringCloud 微服务子项目进行**打包**；
+~~~shell
+mvn clean
 ~~~
+~~~shell
+mvn package
+~~~
+
+3.将 gateway, article-service, library-service 打包生成的 `./#/target/#.jar` 文件从 `./#/target/` 复制到 `./#/` 目录下。
+
+4.进入主项目目录，**运行`docker-compose`一键打包部署**；
+~~~shell
+docker-compose up
+~~~
+
+5.进入项目前台页面 `http://localhost:80/home` 或项目后台面板 `http://localhost:80/admin`。
 
 # 延伸阅读
+## 相关站点
+**项目地址**：[点我进入](https://aphrora-letters.hk.cpolar.io/home)
 
-### 项目地址：[点我进入](http://8.130.39.9:8080/home)
-### 后台地址：[点我进入](http://8.130.39.9:8080/admin/starter?url=home)
-### 博客地址：[点我进入](https://www.cnblogs.com/MatikaneSpartakusbund/articles/16927271.html)
+**后台地址**：[点我进入](https://aphrora-letters.hk.cpolar.io/admin)
+
+**项目开发博客**：[点我进入](https://www.cnblogs.com/tfiyuenlau/articles/17764385.html)
+
+## 项目界面
+![Home首页](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165446238-482846355.png)
+![文章列表](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165513669-529013424.png)
+![文章浏览页](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165525768-1384681825.png)
+![关于](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165553809-1285658013.png)
+![后台面板登录页](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165604701-1769792316.png)
+![后台首页](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165618216-23715689.png)
+![文章管理](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165636078-1548535643.png)
+![文库管理1](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165652589-639771898.png)
+![文库管理2](https://img2023.cnblogs.com/blog/3018774/202310/3018774-20231014165701261-66766400.png)

@@ -1,4 +1,4 @@
-package team.aphroraletters.fegin.domain.response;
+package team.aphroraletters.feign.domain.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

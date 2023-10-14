@@ -1,5 +1,15 @@
 <script setup lang="ts">
-
+/**
+ * 移动端隐藏底部logo
+ */
+let hiddenImg = function () {
+  let img = document.getElementById("displayImg")
+  if (img != null) {
+    img.style.display =document.documentElement.clientWidth > 768 ? "block" : "none"
+  }
+}
+window.addEventListener('resize', hiddenImg)
+window.addEventListener('beforeunload', hiddenImg)
 </script>
 
 <template>
@@ -19,8 +29,11 @@
                href="https://www.marxists.org/" target="_blank"><strong>马克思主义中文网</strong></a>
             <span style="margin: 0 3px;">/</span>
             <a class="btn" style="color: #FC8C23"
-               href="https://github.com/TfiyuenLau/LeftwingCommunity-Springboot"
-               target="_blank"><strong>GitHub项目地址</strong></a>
+               href="https://github.com/TfiyuenLau/AphroraLetters-Springcloud"
+               target="_blank"
+            >
+              <strong>GitHub项目地址</strong>
+            </a>
             <br>
             <strong>Copyright &copy; 2022
               <a class="btn btn-lg" style="color: #FC8C23" href="https://www.cnblogs.com/tfiyuenlau/" target="_blank">
@@ -36,17 +49,3 @@
 <style scoped>
 
 </style>
-
-<script lang="ts">
-/**
- * 移动端隐藏底部logo
- */
-let hiddenImg = function () {
-  let img = document.getElementById('displayImg')
-  if (img != null) {
-    img.style.display =document.documentElement.clientWidth > 768 ? 'block' : 'none'
-  }
-}
-window.addEventListener('resize', hiddenImg)
-window.addEventListener('beforeunload', hiddenImg)
-</script>

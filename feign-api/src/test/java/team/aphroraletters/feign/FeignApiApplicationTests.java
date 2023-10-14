@@ -1,4 +1,4 @@
-package team.aphroraletters.fegin;
+package team.aphroraletters.feign;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

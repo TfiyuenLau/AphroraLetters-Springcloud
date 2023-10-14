@@ -7,8 +7,9 @@
         <artifactId>AphroraLetters-Springcloud</artifactId>
         <version>2.0.0-RELEASE</version>
     </parent>
-    <groupId>team.aphroraletters.fegin</groupId>
+    <groupId>team.aphroraletters.feign</groupId>
     <artifactId>feign-api</artifactId>
+    <packaging>jar</packaging>
     <name>feign-api</name>
     <description>feign微服务远程调用模块</description>
 
@@ -79,6 +80,14 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

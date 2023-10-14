@@ -33,3 +33,11 @@ sa-token:
     token-style: uuid
     # 是否输出操作日志
     is-log: false
+
+logging:
+    level:
+        team.aphroraletters.gateway: info
+    pattern:
+        dateformat: MM-dd HH:mm:ss:SSS
+    file:
+        path: /logs

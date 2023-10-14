@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: "/",
     css: {
         preprocessorOptions: {
             less: {
@@ -29,7 +30,7 @@ export default defineConfig({
     server: {
         host: true,
         port: 80,
-        proxy: {// 配置反向代理服务器
+        proxy: { // 配置反向代理服务器
             '/api': {
                 target: 'http://localhost:8080',
                 changeOrigin: true, // 跨域
@@ -37,4 +38,4 @@ export default defineConfig({
             }
         },
     }
-})
+});

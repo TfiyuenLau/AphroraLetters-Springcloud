@@ -9,6 +9,7 @@
     </parent>
     <groupId>team.aphroraletters.gateway</groupId>
     <artifactId>gateway</artifactId>
+    <packaging>jar</packaging>
     <name>gateway</name>
     <description>gateway微服务网关模块</description>
 
@@ -45,12 +46,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>team.aphroraletters.fegin</groupId>
-            <artifactId>feign-api</artifactId>
-            <version>2.0.0-RELEASE</version>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -68,6 +63,15 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <skip>false</skip>
+                    <mainClass>team.aphroraletters.gateway.GatewayApplication</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
@@ -76,23 +80,6 @@
                     <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>team.aphroraletters.gateway.GatewayApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

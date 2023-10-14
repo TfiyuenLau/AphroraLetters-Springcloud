@@ -24,7 +24,8 @@ document.title = '支持我们 | Aphrora Letters'
           <div class="row mt-3 rounded">
             <img class="img-thumbnail img-fluid mx-auto d-block" src="/img/封面图.jpg" alt="导师">
             <p class="h6 text-center text-muted">
-              图中从左到右依次为——马克思、马赫诺、列宁、毛泽东、阿尔都塞、齐泽克.</p>
+              图中从左到右依次为——马克思、马赫诺、列宁、毛泽东、阿尔都塞、齐泽克.
+            </p>
           </div>
 
           <!-- 问题集合 -->
@@ -58,7 +59,7 @@ document.title = '支持我们 | Aphrora Letters'
                          class="h5 text-danger" target="_blank">点我进入</a>
                     </p>
                     <p style="text-indent: 0"><strong>GitHub项目地址：</strong>
-                      <a href="https://github.com/TfiyuenLau/LeftwingCommunity-Springboot"
+                      <a href="https://github.com/TfiyuenLau/AphroraLetters-Springcloud"
                          class="h5 text-danger" target="_blank">点我进入</a>
                     </p>
                   </div>
@@ -108,7 +109,7 @@ document.title = '支持我们 | Aphrora Letters'
                       。我们欢迎有才华和热情的个人加入我们的团队，共同推动本文库的发展和壮大。
                     </p>
                     <p style="text-indent: 0">
-                      <strong>后台管理面板：</strong><a href="#" class="h5 text-danger" target="_blank">点我进入</a>
+                      <strong>后台管理面板：</strong><a href="https://aphrora-letters.hk.cpolar.io/admin" class="h5 text-danger" target="_blank">点我进入</a>
                     </p>
                   </div>
                 </div>
