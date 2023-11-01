@@ -1,42 +1,14 @@
 <script setup lang="ts">
-import '@/assets/index.css';
-import NavbarComponent from '@/components/Navbar.vue';
-import Footer from "@/components/Footer.vue";
-import axiosHttp from "@/axios.http";
-import {ref, onMounted, computed} from 'vue';
-import router from "@/router";
+import {onBeforeMount, onMounted, ref} from 'vue';
+import {getRecommendArticles} from "../api/ArticleApi";
+import type {ApiResult} from "../models/ApiResult";
+import type {ArticleInfo} from "../models/Article";
+import type {Announcement} from "../models/Announcement";
+import type {VersionLog} from "../models/VersionLog";
+import {getAnnouncements, getAnnouncementList} from "../api/AnnouncementApi";
+import {getVersionLogs, getVersionLogList} from "../api/VersionLogApi";
 
-interface ArticleInfo {
-  id: number;
-  title: string;
-  pictureUrl: string,
-  summary: string;
-  isTop: boolean;
-  traffic: number;
-  createBy: string;
-  modifiedBy: string;
-  isEffective: boolean;
-  categoryList: null | string[];
-  time: string;
-}
-
-interface Announcement {
-  id: number;
-  publisher: string;
-  title: string;
-  content: string;
-  createBy: string;
-  isEffective: boolean;
-  time: string;
-}
-
-interface VersionLog {
-  id: number;
-  version: string;
-  log: string;
-  createBy: string;
-  time: string;
-}
+let router = useRouter();
 
 // 声明实例数据
 const recommendArticleInfos = ref<ArticleInfo[]>();
@@ -45,37 +17,39 @@ const announcementList = ref<Announcement[]>();
 const versionLogs = ref<VersionLog[]>();
 const versionLogList = ref<VersionLog[]>();
 
-// 钩子函数：在组件挂载到DOM后被调用
-onMounted(() => {
+// 调用后端服务器请求
+onBeforeMount(() => {
   document.title = "Aphrora Letters | 首页";
 
-  getRecommendArticles();
-
-  axiosHttp.get('/api/article/getAnnouncements').then(res => {
-    announcements.value = res.data
+  getRecommendArticles().then((res: ApiResult<ArticleInfo[]>) => {
+    recommendArticleInfos.value = res.data;
   });
-  axiosHttp.get('/api/article/getVersionLogs').then(res => {
-    versionLogs.value = res.data
+
+  getAnnouncements().then((res: ApiResult<Announcement[]>) => {
+    announcements.value = res.data;
+  });
+
+  getVersionLogs().then((res: ApiResult<VersionLog[]>) => {
+    versionLogs.value = res.data;
   });
 });
 
-// 获取推荐文章列表
-const getRecommendArticles = async () => {
-  axiosHttp.get('/api/article/getRecommendArticles').then(res => {
-    recommendArticleInfos.value = res.data;
-  });
-};
+// 在组件挂载到DOM后被调用
+onMounted(() => {
+
+});
 
 // 发送异步请求并在按钮点击后获取全部公告消息
-const getAnnouncementList = async () => {
-  axiosHttp.get('/api/article/getAnnouncementList').then(res => {
+const handleAnnouncementList = async () => {
+  getAnnouncementList().then((res: ApiResult<Announcement[]>) => {
     announcementList.value = res.data;
   });
 };
 
-const getVersionLogList = async () => {
-  axiosHttp.get('/api/article/getVersionLogList').then(res => {
-    versionLogList.value = res.data
+// 发送异步请求并在按钮点击后获取全部版本日志消息
+const handleVersionLogList = async () => {
+  getVersionLogList().then((res: ApiResult<VersionLog[]>) => {
+    versionLogList.value = res.data;
   });
 };
 
@@ -88,11 +62,10 @@ const openAnnouncement = (announcementId: number) => {
 
 <template>
   <!-- 导航栏组件 -->
-  <NavbarComponent/>
+  <navbar-component/>
 
   <!-- 网站首页内容 -->
   <div class="container">
-
     <!-- 正文:背景透明 -->
     <div class="mt-3 rounded p-3" id="bg">
 
@@ -115,8 +88,8 @@ const openAnnouncement = (announcementId: number) => {
 
             <div class="row mt-3 rounded">
               <img class="img-thumbnail img-fluid mx-auto d-block" src="/img/封面图.jpg" alt="封面图">
-              <p class="h6 text-center text-muted">
-                密涅瓦的猫头鹰只有在夜幕降临的时候才开始飞翔。
+              <p class="h6 text-center text-muted" style="font-weight: bold">
+                Aphrora Letters | 一个刊载社哲时评的文库社区
               </p>
             </div>
           </div>
@@ -126,42 +99,49 @@ const openAnnouncement = (announcementId: number) => {
       <!-- 第二行 -->
       <a-row :gutter="16">
         <div class="container rounded">
-          <a-row :gutter="16" style="display: flex;align-content: center;justify-content: center">
-            <!-- 文章轮播图 -->
-            <a-col :xs="24" :lg="17" class="mt-3">
-              <a-card title="近日热文">
-                <a-carousel autoplay>
-                  <a :href="'/article/' + articleInfo.id"
-                     v-for="articleInfo in recommendArticleInfos?.slice(0, 5)"
-                     :key="articleInfo.id"
-                     target="_blank"
-                     class="carousel-item"
-                  >
-                    <div class="carousel-image">
-                      <img :src="'/api/article/' + articleInfo.pictureUrl" :alt="articleInfo.title"/>
-                    </div>
-                    <h3>{{ articleInfo.title }}</h3>
-                  </a>
-                </a-carousel>
-              </a-card>
-            </a-col>
-
-            <!-- 文章推荐 -->
-            <a-col :xs="24" :lg="7" class="mt-3">
-              <a-card title="推荐文章">
-                <a-list bordered :data-source="recommendArticleInfos">
-                  <template #renderItem="{ item }">
-                    <a-list-item :key="item.id">
-                      <a :href="'/article/' + item.id" target="_blank"
-                         style="text-decoration: none;font-size: larger;font-family: 楷体,serif;color: #8E354A">
-                        {{ item.title }}
-                      </a>
-                    </a-list-item>
+          <a-skeleton :loading="!recommendArticleInfos" active :paragraph="{ rows: 8 }">
+            <a-row :gutter="16" style="display: flex;align-content: center;justify-content: center">
+              <!-- 文章轮播图 -->
+              <a-col :xs="24" :lg="17" class="mt-3">
+                <a-card>
+                  <template #title>
+                    <span class="bi bi-graph-up-arrow text-danger">近日热文</span>
                   </template>
-                </a-list>
-              </a-card>
-            </a-col>
-          </a-row>
+                  <a-carousel autoplay v-if="recommendArticleInfos">
+                    <a :href="'/article/' + articleInfo.id"
+                       v-for="articleInfo in recommendArticleInfos?.slice(0, 5)"
+                       :key="articleInfo.id"
+                       class="carousel-item"
+                    >
+                      <div class="carousel-image">
+                        <img :src="'/api/article/' + articleInfo.pictureUrl" :alt="articleInfo.title"/>
+                      </div>
+                      <h3>{{ articleInfo.title }}</h3>
+                    </a>
+                  </a-carousel>
+                </a-card>
+              </a-col>
+
+              <!-- 文章推荐 -->
+              <a-col :xs="24" :lg="7" class="mt-3">
+                <a-card>
+                  <template #title>
+                    <span class="bi bi-globe text-danger">推荐文章</span>
+                  </template>
+                  <a-list bordered :data-source="recommendArticleInfos" v-if="recommendArticleInfos">
+                    <template #renderItem="{ item }">
+                      <a-list-item :key="item.id">
+                        <nuxt-link :to="'/article/' + item.id"
+                           style="text-decoration: none;font-size: larger;font-family: 楷体,serif;color: #8E354A">
+                          {{ item.title }}
+                        </nuxt-link>
+                      </a-list-item>
+                    </template>
+                  </a-list>
+                </a-card>
+              </a-col>
+            </a-row>
+          </a-skeleton>
         </div>
       </a-row>
 
@@ -186,17 +166,18 @@ const openAnnouncement = (announcementId: number) => {
               <a-col :xs="24" :lg="16">
                 <h3 class="border-start border-warning text-danger"
                     style="font-family: 楷体,serif;font-weight: bold;">最新消息</h3>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item" v-for="announcement in announcements" style="cursor: pointer">
-                    <a class="text-black text-decoration-none lead" target="_blank"
-                       @click="openAnnouncement(announcement.id)">
-                      {{ announcement.title }}
-                    </a>
-                    <span class="badge bg-secondary">{{ announcement.time }}</span>
-                  </li>
-                </ul>
+                <a-skeleton :loading="!announcements" active :paragraph="{ rows: 8 }">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" v-for="announcement in announcements" style="cursor: pointer">
+                      <a class="text-black text-decoration-none lead" @click="openAnnouncement(announcement.id)">
+                        {{ announcement.title }}
+                      </a>
+                      <span class="badge bg-secondary">{{ announcement.time }}</span>
+                    </li>
+                  </ul>
+                </a-skeleton>
                 <div class="text-end">
-                  <button class="btn btn-sm btn-danger" data-bs-toggle="offcanvas" @click="getAnnouncementList"
+                  <button class="btn btn-sm btn-danger" data-bs-toggle="offcanvas" @click="handleAnnouncementList"
                           data-bs-target="#announcementOffcanvas" aria-controls="offcanvasExample">
                     显示更多
                   </button>
@@ -207,18 +188,20 @@ const openAnnouncement = (announcementId: number) => {
               <a-col :xs="24" :lg="8">
                 <h3 class="border-start border-warning text-danger"
                     style="font-family: 楷体,serif;font-weight: bold;">版本日志</h3>
-                <a-timeline>
-                  <a-timeline-item v-for="(versionLog, index) in versionLogs" :key="index">
-                    <span class="badge bg-danger">{{ 'VERSION: ' + versionLog.version }}</span>
-                    <div>
-                      <span>{{ versionLog.log }}</span>
-                      <span class="badge bg-secondary">{{ versionLog.time }}</span>
-                    </div>
-                  </a-timeline-item>
-                </a-timeline>
+                <a-skeleton :loading="!versionLogs" active :paragraph="{ rows: 8 }">
+                  <a-timeline>
+                    <a-timeline-item v-for="(versionLog, index) in versionLogs" :key="index">
+                      <span class="badge bg-danger">{{ 'VERSION: ' + versionLog.version }}</span>
+                      <div>
+                        <span>{{ versionLog.log }}</span>
+                        <span class="badge bg-secondary">{{ versionLog.time }}</span>
+                      </div>
+                    </a-timeline-item>
+                  </a-timeline>
+                </a-skeleton>
                 <div class="text-end">
                   <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="offcanvas"
-                          @click="getVersionLogList"
+                          @click="handleVersionLogList"
                           data-bs-target="#versionOffcanvas" aria-controls="offcanvasExample">
                     显示更多
                   </button>
@@ -230,7 +213,7 @@ const openAnnouncement = (announcementId: number) => {
         </div>
       </div>
 
-      <!-- 公告栏消息的滑动侧边栏 -->
+      <!-- 公共消息的滑动侧边栏 -->
       <div class="offcanvas offcanvas-start" tabindex="-1" id="announcementOffcanvas"
            data-bs-scroll="true" aria-labelledby="offcanvasExampleLabel1">
         <div class="offcanvas-header">
@@ -240,9 +223,8 @@ const openAnnouncement = (announcementId: number) => {
         </div>
         <div class="offcanvas-body">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item" v-for="announcement in announcementList">
-              <a class="text-black text-decoration-none lead" target="_blank"
-                 @click="openAnnouncement(announcement.id)">
+            <li class="list-group-item" v-for="announcement in announcementList" style="cursor: pointer">
+              <a class="text-black text-decoration-none lead" @click="openAnnouncement(announcement.id)">
                 {{ announcement.title }}
               </a>
               <span class="badge bg-secondary">{{ announcement.time }}</span>
@@ -250,7 +232,7 @@ const openAnnouncement = (announcementId: number) => {
           </ul>
         </div>
       </div>
-      <!-- 公告栏版本日志的滑动侧边栏 -->
+      <!-- 版本日志的滑动侧边栏 -->
       <div class="offcanvas offcanvas-end" tabindex="-1" id="versionOffcanvas"
            data-bs-scroll="true" aria-labelledby="offcanvasExampleLabel2">
         <div class="offcanvas-header">
@@ -270,17 +252,14 @@ const openAnnouncement = (announcementId: number) => {
           </a-timeline>
         </div>
       </div>
-
       <br>
     </div>
     <!-- 底部留白 -->
     <br>
-    <br>
-
   </div>
 
   <!-- 页脚 -->
-  <Footer/>
+  <footer-component/>
 </template>
 
 <style scoped>
@@ -301,7 +280,6 @@ const openAnnouncement = (announcementId: number) => {
 }
 
 .carousel-image {
-  max-height: 72vh;
   overflow: hidden;
 }
 
