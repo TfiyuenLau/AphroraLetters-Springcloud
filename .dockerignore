@@ -1,0 +1,8 @@
+*/node_modules
+*/target
+*.local
+
+# Editor directories and files
+*.md
+*.iml
+*/.gitignore
