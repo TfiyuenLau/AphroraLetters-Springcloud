@@ -180,7 +180,7 @@ public class LibraryController {
      * @param file         MultipartFile 文件对象
      * @param filePathName 静态资源文件目录——img、md、page、pdf
      * @return 创建的targetPicFile对象
-     * @throws FileNotFoundException 抛出找不到文件异常
+     * @throws FileNotFoundException 找不到文件
      */
     private File uploadFile(MultipartFile file, String filePathName) throws FileNotFoundException {
         // 获取上传文件的地址
@@ -206,12 +206,12 @@ public class LibraryController {
         }
 
         // 复制target文件到/static/*/(仅Win开发时使用)
-        try {
-            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(),
-                    new File(System.getProperty("user.dir") + "\\library-service\\src\\main\\resources\\static\\" + filePathName + "\\" + targetPicFile.getName()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+//        try {
+//            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(),
+//                    new File(System.getProperty("user.dir") + "\\library-service\\src\\main\\resources\\static\\" + filePathName + "\\" + targetPicFile.getName()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
 
         return targetPicFile; // 返回创建的目标文件对象
     }

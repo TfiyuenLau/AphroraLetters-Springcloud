@@ -279,12 +279,12 @@ public class ArticleController {
         }
 
         // 复制target文件到/static/*/(仅Win开发时使用)
-        try {
-            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(),
-                    new File(System.getProperty("user.dir") + "\\article-service\\src\\main\\resources\\static\\" + filePathName + "\\" + targetPicFile.getName()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+//        try {
+//            Files.copy(new File(targetPicFile.getAbsolutePath()).toPath(),
+//                    new File(System.getProperty("user.dir") + "\\article-service\\src\\main\\resources\\static\\" + filePathName + "\\" + targetPicFile.getName()).toPath(), StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
 
         return targetPicFile; // 返回创建的目标文件对象
     }

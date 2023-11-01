@@ -18,9 +18,9 @@ public class MvcConfig implements WebMvcConfigurer {
 
         // 文件上传映射地址:addResourceLocations是我们的文件上传绝对路径，注意要加file:
         registry.addResourceHandler("/img/**")
-                .addResourceLocations("file:/resources/static/img/");
+                .addResourceLocations("file:/resources/static/img/", "file:/app/file:/app/al-library.jar!/BOOT-INF/classes!/static/img/");
         registry.addResourceHandler("/pdf/**")
-                .addResourceLocations("file:/resources/static/pdf/");
+                .addResourceLocations("file:/resources/static/pdf/", "file:/app/file:/app/al-library.jar!/BOOT-INF/classes!/static/pdf/");
     }
 
 }

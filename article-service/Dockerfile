@@ -6,10 +6,11 @@ MAINTAINER TfiyuenLau <tfiyuenlau@foxmail>
 
 # 在容器中创建一个新目录来存放应用程序
 RUN mkdir /app
+
 # 创建挂载目录
 RUN mkdir /logs
-RUN mkdir /resources
-RUN mkdir /resources/static
+RUN mkdir -p /resources/static
+RUN mkdir -p /app/file:/app/al-article.jar!/BOOT-INF/classes!/static/img
 
 # 将应用程序的.jar文件复制到容器中
 COPY article-service-2.0.0-RELEASE.jar /app/al-article.jar
