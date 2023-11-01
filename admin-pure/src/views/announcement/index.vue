@@ -27,8 +27,8 @@ interface Announcement {
   createBy: string;
 }
 
-const versionLogList = ref<VersionLog[] | null>(null)
-const announcements = ref<Announcement[] | null>(null);
+const versionLogList = ref<VersionLog[]>();
+const announcements = ref<Announcement[]>();
 
 const pagination = ref({
   current: 1,
@@ -37,13 +37,13 @@ const pagination = ref({
 });
 
 const getVersionLogList = () => {
-  http.request<any>('get', '/api/article/getVersionLogList').then(res => {
+  http.request<any>("get", "/api/article/getVersionLogList").then(res => {
     versionLogList.value = res.data;
   });
 };
 
 const getAnnouncementByPage = () => {
-  http.request<any>('get', '/api/article/admin/getAnnouncementByPage/' + pagination.value.current).then(res => {
+  http.request<any>("get", "/api/article/admin/getAnnouncementByPage/" + pagination.value.current).then(res => {
     announcements.value = res.data.records;
     pagination.value.total = res.data.total;
     pagination.value.size = res.data.size;
@@ -51,7 +51,7 @@ const getAnnouncementByPage = () => {
   }).catch(error => {
     openErrorNotification('公告栏数据获取失败：' + error);
   });
-}
+};
 
 const handleSizeChange = (pageSize: number) => {
   pagination.value.size = pageSize;
@@ -64,8 +64,8 @@ const handleCurrentChange = (currentPage: number) => {
 };
 
 onMounted(() => {
-  getVersionLogList()
-  getAnnouncementByPage()
+  getVersionLogList();
+  getAnnouncementByPage();
 });
 
 const versionLogForm: VersionLog = reactive({
@@ -81,7 +81,7 @@ const insertVersionLog = () => {
     data: versionLogForm
   };
 
-  http.request<any>('post', '/api/article/admin/insertVersionLog', param).then(res => {
+  http.request<any>("post", "/api/article/admin/insertVersionLog", param).then(res => {
     if (res.ok) {
       openSuccessNotification("已新增版本日志");
       getVersionLogList();
@@ -105,13 +105,13 @@ const insertAnnouncement = () => {
     data: announcementForm,
   };
 
-  http.request<any>('put', '/api/article/admin/insertAnnouncement', param).then(res => {
+  http.request<any>("post", "/api/article/admin/insertAnnouncement", param).then(res => {
     if (res.ok) {
-      openSuccessNotification('公告发布成功');
+      openSuccessNotification("公告发布成功");
       getAnnouncementByPage();
     }
   }).catch(error => {
-    openErrorNotification('Error:' + error);
+    openErrorNotification("Error:" + error);
   });
 }
 
@@ -141,25 +141,25 @@ const updateAnnouncement = (updateFrom?: Announcement) => {
   const param = {
     data: updateFrom, // 将 updateFrom 对象作为 data 属性的值
   };
-  http.request<any>('put', '/api/article/admin/updateAnnouncement', param).then(res => {
+  http.request<any>("put", "/api/article/admin/updateAnnouncement", param).then(res => {
     if (res.ok) {
-      openSuccessNotification('资料更新成功');
+      openSuccessNotification("资料更新成功");
       getAnnouncementByPage();
     }
   }).catch(error => {
-    openErrorNotification('Error:' + error);
+    openErrorNotification("Error:" + error);
   });
 }
 
 // 发送删除请求
 const deleteAnnouncement = (id: number) => {
-  http.request<any>('delete', '/api/article/admin/deleteAnnouncementById/' + id).then(res => {
+  http.request<any>("delete", "/api/article/admin/deleteAnnouncementById/" + id).then(res => {
     if (res.ok) {
-      openSuccessNotification('该公告已被删除');
+      openSuccessNotification("该公告已被删除");
       getAnnouncementByPage();
     }
   }).catch(error => {
-    openErrorNotification('Error:' + error);
+    openErrorNotification("Error:" + error);
   });
 }
 
