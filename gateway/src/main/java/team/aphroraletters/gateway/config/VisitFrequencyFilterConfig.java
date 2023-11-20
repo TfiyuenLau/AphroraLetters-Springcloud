@@ -43,7 +43,7 @@ public class VisitFrequencyFilterConfig {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            int limit_count = 45; // 最大访问次数
+            int limit_count = 128; // 最大请求次数
             int limit_time = 60; // 访问限制的单位时间（1min）
 
             String ip = RequestUtils.getRemoteIp(request);
