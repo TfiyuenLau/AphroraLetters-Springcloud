@@ -102,11 +102,11 @@ onBeforeUnmount(() => {
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch
-          v-model="dataTheme"
-          inline-prompt
-          :active-icon="dayIcon"
-          :inactive-icon="darkIcon"
-          @change="dataThemeChange"
+        v-model="dataTheme"
+        inline-prompt
+        :active-icon="dayIcon"
+        :inactive-icon="darkIcon"
+        @change="dataThemeChange"
       />
     </div>
     <div class="login-container">
@@ -121,27 +121,27 @@ onBeforeUnmount(() => {
           </Motion>
 
           <el-form
-              ref="ruleFormRef"
-              :model="ruleForm"
-              :rules="loginRules"
-              size="large"
+            ref="ruleFormRef"
+            :model="ruleForm"
+            :rules="loginRules"
+            size="large"
           >
             <Motion :delay="100">
               <el-form-item
-                  :rules="[
+                :rules="[
                   {
                     required: true,
                     message: '请输入账号',
                     trigger: 'blur'
                   }
                 ]"
-                  prop="username"
+                prop="username"
               >
                 <el-input
-                    clearable
-                    v-model="ruleForm.username"
-                    placeholder="账号"
-                    :prefix-icon="useRenderIcon(User)"
+                  clearable
+                  v-model="ruleForm.username"
+                  placeholder="账号"
+                  :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>
             </Motion>
@@ -149,11 +149,11 @@ onBeforeUnmount(() => {
             <Motion :delay="150">
               <el-form-item prop="password">
                 <el-input
-                    clearable
-                    show-password
-                    v-model="ruleForm.password"
-                    placeholder="密码"
-                    :prefix-icon="useRenderIcon(Lock)"
+                  clearable
+                  show-password
+                  v-model="ruleForm.password"
+                  placeholder="密码"
+                  :prefix-icon="useRenderIcon(Lock)"
                 />
               </el-form-item>
             </Motion>
@@ -163,16 +163,16 @@ onBeforeUnmount(() => {
                 <el-row :gutter="4">
                   <el-col :span="12">
                     <el-input
-                        clearable
-                        v-model="ruleForm.code"
-                        placeholder="验证码"
+                      clearable
+                      v-model="ruleForm.code"
+                      placeholder="验证码"
                     />
                   </el-col>
                   <el-col :span="12">
                     <el-button @click="changeImageCode">
                       <el-image
-                          id="imageCode"
-                          src="/api/article/admin/generateValidateCode">
+                        id="imageCode"
+                        src="/api/article/admin/generateValidateCode">
                       </el-image>
                     </el-button>
                   </el-col>
@@ -182,11 +182,11 @@ onBeforeUnmount(() => {
 
             <Motion :delay="250">
               <el-button
-                  class="w-full mt-4"
-                  size="default"
-                  type="primary"
-                  :loading="loading"
-                  @click="onLogin(ruleFormRef)"
+                class="w-full mt-4"
+                size="default"
+                type="primary"
+                :loading="loading"
+                @click="onLogin(ruleFormRef)"
               >
                 登录
               </el-button>
@@ -203,7 +203,7 @@ onBeforeUnmount(() => {
       <div class="bg-white p-8 rounded-lg shadow-lg text-center w-full">
         <h1 class="text-2xl mb-4 text-left">欢迎偶然闯入AL社区的管理面板！ 🌟</h1>
         <p class="text-gray-700 mb-6 text-left">
-          如果你突然发现自己在这里，或者想要加入我们热闹非凡的社区，那么请你立即行动：
+          如果你突然发现已不知自己身在何处，或者想要加入我们热闹非凡的社区，那么请你立即行动：
         </p>
         <ul class="text-left mb-6">
           <li class="mb-2 flex items-start">
@@ -215,7 +215,7 @@ onBeforeUnmount(() => {
           <li class="mb-2 flex items-start">
             <span class="mr-2 text-green-600">&#x1F680;</span>
             <span>如果你是一个神秘的旅行者，迷失在这片互联网的海洋中，别担心！我们为你准备了一条<strong>安全的逃生通道</strong>：
-              <a href="https://aphrora-letters.hk.cpolar.io/home" class="text-red-600 font-bold">点击逃离</a>
+              <a href="https://aphrora-letters.cpolar.io/home" class="text-red-600 font-bold">点击逃离</a>
             </span>
           </li>
         </ul>
@@ -228,10 +228,14 @@ onBeforeUnmount(() => {
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="tipsDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="">
-          <a href="https://aphrora-letters.hk.cpolar.io/home" target="_blank">跳转主站</a>
-        </el-button>
+        <el-space :size="8">
+          <el-button @click="tipsDialogVisible = false">取消</el-button>
+        </el-space>
+        <a href="https://aphrora-letters.cpolar.io/home" target="_blank">
+          <el-button type="primary" @click="">
+              跳转主站
+          </el-button>
+        </a>
       </span>
     </template>
   </el-dialog>

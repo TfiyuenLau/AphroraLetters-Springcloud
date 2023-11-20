@@ -23,9 +23,9 @@ onBeforeMount(() => {
           <hr class="text-danger">
 
           <div class="row mt-3 rounded">
-            <a-image class="img-thumbnail img-fluid mx-auto d-block" src="/img/封面图.jpg" alt="导师"/>
+            <a-image class="img-thumbnail img-fluid mx-auto d-block" src="/img/封面图.jpg" alt="封面图"/>
             <p class="h6 text-center text-muted" style="font-weight: bold">
-              图中从左到右依次为——马克思、马赫诺、列宁、毛泽东、阿尔都塞、齐泽克.
+              图中从左到右依次为——黑格尔、马克思、弗洛伊德、胡塞尔、阿尔都塞、齐泽克
             </p>
           </div>
 
@@ -89,7 +89,7 @@ onBeforeMount(() => {
                     。我们欢迎有才华和热情的个人加入我们的团队，共同推动本文库的发展和壮大。
                   </p>
                   <p style="text-indent: 0">
-                    <strong>后台管理面板：</strong><a href="https://aphrora-letters.hk.cpolar.io/admin/#/login"
+                    <strong>后台管理面板：</strong><a href="https://aphrora-letters.cpolar.io/admin/#/login"
                                                      class="h5 text-danger" target="_blank">点我进入</a>
                   </p>
                 </div>
